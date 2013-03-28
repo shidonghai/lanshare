@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:orientation="vertical" android:background="@drawable/dm_cover_background" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <ImageView android:id="@id/cover_image" android:background="@drawable/zapya_loading" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="110.0dip" android:layout_centerHorizontal="true" />
+    <TextView android:textSize="14.0sp" android:textColor="#ff7c7c7c" android:gravity="center" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginBottom="35.0dip" android:text="@string/app_cover_name" android:maxLines="1" android:layout_alignParentBottom="true" />
+    <TextView android:textSize="14.0sp" android:textColor="#ff7c7c7c" android:ellipsize="marquee" android:gravity="center" android:id="@id/dm_traffic_stat" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginBottom="10.0dip" android:text="@string/dm_cover_traffic_stat" android:maxLines="1" android:layout_alignParentBottom="true" android:lineSpacingMultiplier="1.2" />
+</RelativeLayout>

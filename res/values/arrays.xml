@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="age_feed">
+        <item>90s</item>
+        <item>80s</item>
+        <item>70s</item>
+        <item>70ago</item>
+    </string-array>
+    <string-array name="viewmodename">
+        <item>@string/dm_viewmode_default</item>
+        <item>@string/dm_viewmode_list</item>
+        <item>@string/dm_viewmode_grid</item>
+    </string-array>
+    <string-array name="viewmodevalues">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+    <string-array name="sortname">
+        <item>@string/menu_default_sort</item>
+        <item>@string/menu_time_asc</item>
+        <item>@string/menu_time_desc</item>
+        <item>@string/menu_name_asc</item>
+        <item>@string/menu_name_desc</item>
+        <item>@string/menu_size_asc</item>
+        <item>@string/menu_size_desc</item>
+    </string-array>
+    <string-array name="sortvalues">
+        <item>0</item>
+        <item>4</item>
+        <item>20</item>
+        <item>12</item>
+        <item>28</item>
+        <item>8</item>
+        <item>24</item>
+    </string-array>
+    <string-array name="sensitivityname">
+        <item>@string/transe_sensitivity_low</item>
+        <item>@string/transe_sensitivity_midle</item>
+        <item>@string/transe_sensitivity_high</item>
+    </string-array>
+    <string-array name="sensitivityvalues">
+        <item>1500</item>
+        <item>1250</item>
+        <item>750</item>
+    </string-array>
+    <string-array name="storagesname">
+        <item>@string/dm_storage_sdcard</item>
+        <item>@string/dm_storage_ext_card</item>
+    </string-array>
+    <string-array name="storagevalues">
+        <item>0</item>
+        <item>1</item>
+    </string-array>
+</resources>

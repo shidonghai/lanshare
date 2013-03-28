@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:background="@color/white" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout android:layout_width="fill_parent" android:layout_height="30.0dip">
+        <TextView android:textSize="12.0sp" android:textColor="#ff464646" android:layout_width="59.0dip" android:layout_height="15.0dip" android:layout_marginLeft="15.0dip" android:layout_marginTop="8.0dip" android:text="@string/translateach" />
+    </LinearLayout>
+    <LinearLayout android:background="@drawable/zapya_common_v_2" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="7.0dip" android:layout_marginRight="7.0dip" />
+    <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent">
+        <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="10.0dip" android:layout_marginRight="10.0dip">
+            <FrameLayout android:layout_width="88.0dip" android:layout_height="88.0dip" android:layout_marginLeft="7.0dip" android:layout_marginTop="8.0dip">
+                <ImageView android:layout_gravity="center" android:id="@id/point" android:layout_width="81.0dip" android:layout_height="81.0dip" android:src="@drawable/dm_icon_default_user" />
+                <ImageView android:layout_width="88.0dip" android:layout_height="88.0dip" android:src="@drawable/zapya_group_person_big_cover_normal" />
+            </FrameLayout>
+            <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="54.0dip" android:layout_marginLeft="10.0dip" android:layout_marginTop="24.0dip">
+                <TextView android:textSize="12.0sp" android:textColor="#ff464646" android:id="@id/nicknamepoint" android:background="@null" android:layout_width="fill_parent" android:layout_height="16.0dip" android:text="Nickname" android:singleLine="true" android:maxLength="16" android:layout_weight="1.0" />
+                <LinearLayout android:orientation="horizontal" android:layout_width="54.0dip" android:layout_height="27.0dip" android:layout_marginTop="10.0dip">
+                    <ImageView android:layout_width="27.0dip" android:layout_height="27.0dip" android:src="@drawable/zapya_exploits_level1" />
+                    <ImageView android:layout_width="27.0dip" android:layout_height="27.0dip" android:src="@drawable/zapya_exploits_level1" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout android:background="@drawable/zapya_common_v_2" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="7.0dip" android:layout_marginTop="9.0dip" android:layout_marginRight="7.0dip" />
+        <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content">
+            <LinearLayout android:orientation="horizontal" android:layout_width="100.0dip" android:layout_height="16.0dip" android:layout_marginLeft="30.0dip" android:layout_marginTop="15.0dip">
+                <TextView android:textSize="12.0sp" android:textColor="#ff464646" android:id="@id/ttvv" android:layout_width="fill_parent" android:layout_height="fill_parent" android:text="总积分:" />
+                <TextView android:textSize="24.0sp" android:textColor="#ff464646" android:layout_width="fill_parent" android:layout_height="fill_parent" android:text="" />
+            </LinearLayout>
+            <TextView android:textColor="@color/white" android:gravity="center" android:layout_gravity="center" android:id="@id/exchangeprizetv" android:background="@drawable/zapya_exploits_green_normal_400x60" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_margin="1.0dip" android:layout_marginLeft="27.0dip" android:layout_marginBottom="15.0dip" android:text="@string/exchangerize" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

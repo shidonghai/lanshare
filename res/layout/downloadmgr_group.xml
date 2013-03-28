@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:gravity="center_vertical" android:id="@id/download_mgr_group" android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <View android:visibility="invisible" android:layout_width="fill_parent" android:layout_height="@dimen/dm_history_group_height" />
+    <ImageView android:background="@drawable/zapya_history_h" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="@dimen/dm_history_group_spliter_left" android:layout_marginRight="@dimen/dm_history_group_spliter_left" android:layout_centerInParent="true" />
+    <TextView android:textSize="@dimen/dm_history_group_text_size" android:textColor="@color/dm_history_group_text_color" android:gravity="center" android:id="@id/download_mgr_group_title" android:background="@color/dm_history_group_text_bg_color" android:layout_width="wrap_content" android:layout_height="wrap_content" android:minWidth="@dimen/dm_history_group_text_min_width" android:text="group" android:includeFontPadding="false" android:layout_centerInParent="true" />
+</RelativeLayout>

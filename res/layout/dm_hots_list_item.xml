@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:orientation="vertical" android:background="@drawable/zapya_common_list_selector" android:layout_width="fill_parent" android:layout_height="@dimen/dm_hots_list_item_height"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <View android:visibility="invisible" android:layout_width="fill_parent" android:layout_height="@dimen/dm_hots_list_item_height" />
+    <RelativeLayout android:id="@id/dm_hots_list_thumbnail_frame" android:layout_width="@dimen/dm_hots_list_thumb_size" android:layout_height="@dimen/dm_hots_list_thumb_size" android:layout_marginLeft="@dimen/dm_hots_list_thumb_left" android:layout_marginTop="@dimen/dm_hots_list_thumb_top">
+        <ImageView android:id="@id/dm_hots_list_thumbnail" android:layout_width="56.0dip" android:layout_height="56.0dip" android:layout_centerInParent="true" />
+    </RelativeLayout>
+    <RelativeLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="@dimen/dm_hots_list_first_text_left" android:layout_toLeftOf="@id/dm_hots_download_btn" android:layout_toRightOf="@id/dm_hots_list_thumbnail_frame" android:layout_centerVertical="true">
+        <TextView android:textSize="@dimen/dm_hots_list_first_text_size" android:textColor="@color/dm_hots_first_text_color" android:ellipsize="end" android:id="@id/dm_hots_list_first_text" android:layout_width="fill_parent" android:layout_height="wrap_content" android:singleLine="true" />
+        <TextView android:textSize="@dimen/dm_hots_list_second_text_size" android:textColor="@color/dm_hots_second_text_color" android:ellipsize="end" android:id="@id/dm_hots_list_second_text" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/dm_hots_list_second_text_top" android:maxLines="2" android:layout_below="@id/dm_hots_list_first_text" />
+    </RelativeLayout>
+    <Button android:textSize="12.0dip" android:textColor="#ffffffff" android:id="@id/dm_hots_download_btn" android:background="@drawable/zapya_hots_download_bg" android:focusable="false" android:fadingEdge="horizontal|vertical" android:fadingEdgeLength="4.0dip" android:clickable="false" android:layout_width="60.0dip" android:layout_height="wrap_content" android:layout_marginRight="@dimen/dm_hots_list_checkbox_right" android:scaleType="fitXY" android:text="@string/dm_hots_download" android:layout_alignParentRight="true" android:layout_centerVertical="true" />
+    <ImageView android:background="@drawable/zapya_common_v_2" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="@dimen/dm_hots_list_spliter_left" android:layout_marginRight="@dimen/dm_hots_list_spliter_left" android:layout_alignParentBottom="true" />
+</RelativeLayout>

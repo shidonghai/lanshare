@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:orientation="vertical" android:background="@drawable/zapya_common_list_selector" android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <View android:visibility="invisible" android:layout_width="fill_parent" android:layout_height="@dimen/dm_history_traffic_height" />
+    <ImageView android:id="@id/dm_traffic_hspliter" android:background="@drawable/zapya_history_h" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="@dimen/dm_history_traffic_hspliter_left" android:layout_marginRight="@dimen/dm_history_traffic_hspliter_left" android:layout_alignParentTop="true" />
+    <LinearLayout android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="@dimen/dm_history_traffic_text_left" android:layout_centerVertical="true">
+        <LinearLayout android:orientation="vertical" android:layout_width="@dimen/dm_history_traffic_text_width" android:layout_height="wrap_content">
+            <TextView android:id="@id/dm_traffic_send" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="@string/dm_traffic_total_tx" style="@style/history_traffic_text" />
+            <TextView android:id="@id/dm_traffic_mobile" android:paddingTop="@dimen/dm_history_traffic_text_vgap" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="@string/dm_traffic_total_mobile" style="@style/history_traffic_text" />
+        </LinearLayout>
+        <LinearLayout android:orientation="vertical" android:paddingLeft="@dimen/dm_history_traffic_text_hgap" android:layout_width="@dimen/dm_history_traffic_text_width" android:layout_height="wrap_content">
+            <TextView android:id="@id/dm_traffic_recv" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="@string/dm_traffic_total_rx" style="@style/history_traffic_text" />
+            <TextView android:id="@id/dm_traffic_save" android:paddingTop="@dimen/dm_history_traffic_text_vgap" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="@string/dm_traffic_total_save" style="@style/history_traffic_text" />
+        </LinearLayout>
+    </LinearLayout>
+    <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="@dimen/dm_history_traffic_hspliter_left" android:src="@drawable/zapya_history_arrow_right" android:layout_alignParentRight="true" android:layout_centerVertical="true" />
+</RelativeLayout>

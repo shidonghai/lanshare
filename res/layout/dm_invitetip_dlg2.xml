@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_width="wrap_content" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <RelativeLayout android:background="@drawable/zapya_group_popup_bg1" android:layout_width="@dimen/grpslt_total_width" android:layout_height="wrap_content">
+        <ImageView android:id="@id/image2" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="10.0dip" android:src="@drawable/zapya_group_popup_pic_4v" android:layout_below="@id/image1" android:layout_centerHorizontal="true" />
+        <CheckBox android:id="@id/checkbox" android:background="@null" android:layout_width="30.0dip" android:layout_height="30.0dip" android:layout_marginLeft="15.0dip" android:checked="false" android:button="@drawable/checkbox_bg" android:layout_below="@id/image2" android:layout_alignBaseline="@id/done" />
+        <TextView android:textSize="12.0sp" android:textColor="#ffa9a9a9" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/dm_smsinvite_tips_dont_show" android:layout_toRightOf="@id/checkbox" android:layout_below="@id/image2" android:layout_alignBaseline="@id/done" android:layout_alignParentRight="true" />
+        <TextView android:textSize="16.0sp" android:textColor="#ff98ff62" android:id="@id/done" android:paddingTop="5.0dip" android:paddingBottom="15.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="10.0dip" android:text="@string/dm_smsinvite_tips_done" android:drawableRight="@drawable/zapya_group_arrow_right_green" android:layout_below="@id/image2" android:layout_alignParentRight="true" />
+    </RelativeLayout>
+</RelativeLayout>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:background="@drawable/zapya_group_bg_upper_layer" android:layout_width="320.0dip" android:layout_height="240.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <RelativeLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="30.0dip">
+        <TextView android:textSize="15.0sp" android:textColor="#ff464646" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/joinrequest" android:layout_centerInParent="true" />
+        <ImageView android:id="@id/joindialogcancle" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/zapya_data_downmenu_cancel" android:layout_alignParentRight="true" />
+    </RelativeLayout>
+    <LinearLayout android:background="@drawable/zapya_common_v_2" android:layout_width="fill_parent" android:layout_height="wrap_content" />
+    <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="40.0dip" android:layout_marginLeft="10.0dip" android:layout_marginTop="10.0dip" android:layout_marginRight="10.0dip" android:layout_weight="1.0">
+        <FrameLayout android:layout_width="88.0dip" android:layout_height="88.0dip" android:layout_marginLeft="14.0dip" android:layout_marginTop="10.0dip">
+            <ImageView android:layout_gravity="center" android:id="@id/avatar" android:layout_width="78.0dip" android:layout_height="78.0dip" android:src="@drawable/dm_icon_default_user" />
+            <ImageView android:layout_gravity="center" android:layout_width="88.0dip" android:layout_height="88.0dip" android:src="@drawable/zapya_group_person_big_cover_normal" />
+        </FrameLayout>
+        <LinearLayout android:orientation="vertical" android:layout_width="0.0dip" android:layout_height="wrap_content" android:layout_marginLeft="15.0dip" android:layout_weight="1.0">
+            <TextView android:textSize="17.299988sp" android:textColor="#ff464646" android:id="@id/nickname" android:layout_width="wrap_content" android:layout_height="23.0dip" android:layout_marginTop="20.0dip" android:text="Nickname" android:shadowColor="#ffffffff" android:shadowDy="1.0" android:shadowRadius="1.0" />
+            <TextView android:textSize="12.0sp" android:textColor="#ffa9a9a9" android:ellipsize="end" android:id="@id/sign" android:layout_width="141.0dip" android:layout_height="wrap_content" android:layout_marginTop="5.0dip" android:text="@string/sign_default" android:singleLine="true" android:shadowColor="#ffffffff" android:shadowDy="1.0" android:shadowRadius="1.0" />
+            <RelativeLayout android:layout_width="fill_parent" android:layout_height="wrap_content">
+                <CheckBox android:id="@id/remember" android:background="@null" android:layout_width="30.0dip" android:layout_height="30.0dip" android:checked="true" android:button="@drawable/checkbox_bg" />
+                <TextView android:textSize="12.0sp" android:textColor="#ffa9a9a9" android:id="@id/agreement" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/remember_join" android:singleLine="true" android:shadowColor="#ffffffff" android:shadowDy="1.0" android:shadowRadius="1.0" android:layout_toRightOf="@id/remember" android:layout_centerVertical="true" />
+            </RelativeLayout>
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="10.0dip" android:layout_marginTop="10.0dip" android:layout_marginRight="10.0dip" android:layout_marginBottom="10.0dip">
+        <Button android:id="@id/left" android:background="@drawable/button_gray_left" android:paddingRight="20.0dip" android:layout_width="0.0dip" android:layout_height="50.0dip" android:text="@string/reject" android:layout_weight="1.0" style="@style/dm_backward_btn" />
+        <Button android:textSize="16.0sp" android:id="@id/right" android:background="@drawable/button_green_right" android:layout_width="0.0dip" android:layout_height="50.0dip" android:text="@string/accept" android:layout_weight="1.0" style="@style/dm_forward_btn" />
+    </LinearLayout>
+</LinearLayout>

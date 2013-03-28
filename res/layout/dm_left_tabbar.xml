@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <ImageView android:gravity="bottom|center" android:id="@id/tab_background" android:layout_width="fill_parent" android:layout_height="fill_parent" android:scaleType="matrix" />
+    <LinearLayout android:gravity="bottom" android:layout_gravity="bottom" android:orientation="horizontal" android:id="@id/tabbarleftsub" android:layout_width="fill_parent" android:layout_height="fill_parent">
+        <TextView android:textColor="@color/tab_apps_text_color" android:id="@id/leftTab1" android:text="@string/title_apps" android:drawableTop="@drawable/zapya_common_apps" style="@style/tabbar_title" />
+        <TextView android:textColor="@color/tab_gallery_text_color" android:id="@id/leftTab2" android:text="@string/title_gallery" android:drawableTop="@drawable/zapya_common_photo" style="@style/tabbar_title" />
+        <TextView android:textColor="@color/tab_audio_text_color" android:id="@id/leftTab3" android:text="@string/title_audio" android:drawableTop="@drawable/zapya_common_audio" style="@style/tabbar_title" />
+        <TextView android:textColor="@color/tab_browser_text_color" android:id="@id/leftTab4" android:text="@string/title_browser" android:drawableTop="@drawable/zapya_common_browse" style="@style/tabbar_title" />
+        <TextView android:textColor="@color/tab_hist_text_color" android:id="@id/leftTab5" android:text="@string/title_history" android:drawableTop="@drawable/zapya_common_history" style="@style/tabbar_title" />
+    </LinearLayout>
+    <LinearLayout android:layout_gravity="bottom" android:orientation="horizontal" android:focusableInTouchMode="false" android:clickable="false" android:layout_width="fill_parent" android:layout_height="@dimen/dm_tab_hist_indicator_height">
+        <View android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_weight="1.0" />
+        <View android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_weight="1.0" />
+        <View android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_weight="1.0" />
+        <View android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_weight="1.0" />
+        <ImageView android:layout_width="wrap_content" android:layout_height="@dimen/dm_tab_hist_indicator_height" android:src="@drawable/zapya_common_v" android:scaleType="fitXY" />
+        <View android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_weight="1.0" />
+    </LinearLayout>
+</merge>

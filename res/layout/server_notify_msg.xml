@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <ImageView android:id="@id/server_notification_icon" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="14.0dip" android:layout_marginTop="12.0dip" android:src="@drawable/zapya_notificationtray_normal" />
+    <TextView android:textSize="16.0sp" android:id="@id/server_notification_title_text" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="9.299988dip" android:layout_marginTop="0.0dip" android:text="" android:layout_toRightOf="@id/server_notification_icon" android:layout_alignTop="@id/server_notification_icon" style="@style/NotificationTitle" />
+</RelativeLayout>

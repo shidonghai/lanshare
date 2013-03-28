@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Cache-Control" content="no-cache"/>
+<meta name="viewport" content="width=device-width; initial-scale=1.0; minimum-scale=1.0; maximum-scale=2.0"/>
+<meta name="MobileOptimized" content="260"/>
+<title>下载快牙</title>
+<style type="text/css" id="internalStyle">
+html, body {
+	word-wrap:break-word;
+}
+body {
+	background:#464646;
+	margin:0px;
+}
+.tip {
+	background-color:#DDDDDD;
+	height:60px;
+	text-align:center;
+}
+.detail {
+	margin:10px 0px 20px;
+	padding-bottom:20px;
+	padding-left:15px;
+	padding-right:2px;
+	text-align:center
+}
+.detail li {
+	color:#cbcbcb;
+	list-style-type: none;
+	line-height: 2;
+	font-family: SimHei;
+	font-size: 16px
+}
+a:visited{                     
+    color:#ffffff;                
+    text-decoration:none;  
+}
+.main{
+    text-align:center;
+    margin-top:20px;
+}
+
+</style>
+</head>
+<body>
+<div class="tip"><img style="width:260px;margin-top:12px;" src="app_icon.png"><br/>
+</div>
+<div class="main"> <a href="/media/db/fetch/app/com.dewmobile.kuaiya/Zapya.apk"><img style="width:260px;" src="download.png"/></a>
+  <ul class="detail">
+    <li>全球最快的手机传输工具！</li>
+    <li>30M游戏，只需15秒</li>
+    <li>无需WLAN环境，无需2G/3G</li>
+    <li>任意文件格式，任意文件大小</li>
+    <li>多人同时互传互联，自由分享</li>
+  </ul>
+</div>
+</body>
+</html>

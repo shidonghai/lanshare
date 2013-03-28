@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="@string/dm_common" android:key="dmAppSettings">
+        <CheckBoxPreference android:title="@string/dm_enable_auto_disconnect" android:key="dm_pref_enable_auto_disconnect" android:summary="@string/dm_enable_auto_disconnect_summ" android:defaultValue="true" />
+        <CheckBoxPreference android:title="@string/dm_enable_sound" android:key="dm_pref_enable_beep_sound" android:summary="@string/dm_enable_sound_summary" android:defaultValue="true" />
+        <CheckBoxPreference android:title="@string/dm_enable_vibrate" android:key="dm_pref_enable_vibrate" android:summary="@string/dm_enable_vibrate_summary" android:defaultValue="true" />
+        <ListPreference android:entries="@array/viewmodename" android:title="@string/dm_set_default_viewmode" android:key="dm_default_viewmode" android:summary="@string/dm_viewmode_default" android:defaultValue="0" android:dialogTitle="@string/dm_viewmode_dialog_title" android:entryValues="@array/viewmodevalues" />
+        <ListPreference android:persistent="true" android:entries="@array/sortname" android:title="@string/dm_set_default_sort" android:key="dm_default_sort" android:summary="@string/menu_default_sort" android:defaultValue="0" android:dialogTitle="@string/dm_sort_dialog_title" android:entryValues="@array/sortvalues" />
+        <ListPreference android:persistent="true" android:entries="@array/sensitivityname" android:title="@string/dm_transe_sensitivity" android:key="dm_default_sensitivity" android:summary="@string/transe_sensitivity_low" android:defaultValue="1250" android:dialogTitle="@string/dm_set_transe_sensitivity" android:entryValues="@array/sensitivityvalues" />
+        <ListPreference android:persistent="true" android:entries="@array/storagesname" android:title="@string/dm_storage_title" android:key="dm_default_disk" android:summary="@string/dm_storage_sdcard" android:defaultValue="0" android:dialogTitle="@string/dm_storage_dlg_title" android:entryValues="@array/storagevalues" />
+        <Preference android:title="@string/dm_clear_cache" android:key="dm_pref_clear_cache" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/dm_pref_privacy" android:key="dm_pref_privacy">
+        <CheckBoxPreference android:title="@string/dm_pref_receive_files" android:key="dm_pref_receive_files_confirm" android:summary="@string/dm_pref_receive_files_summary" android:defaultValue="false" />
+        <Preference android:title="@string/filter" android:key="dm_pref_filter" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/dm_traffic_statistics">
+        <Preference android:title="@string/dm_traffic_stat" android:key="dm_pref_traffic_stat" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/dm_soft_ware">
+        <Preference android:title="@string/dm_pref_invite" android:key="dm_pref_invite" />
+        <CheckBoxPreference android:title="@string/dm_enable_check_update" android:key="dm_pref_check_update" android:summary="@string/dm_enable_check_update_summary" android:defaultValue="true" />
+        <Preference android:title="@string/dm_check_update_now" android:key="dm_pref_check_update_now" />
+        <Preference android:title="@string/dm_pref_feedback" android:key="dm_pref_feedback" />
+        <Preference android:title="@string/dm_pref_faq" android:key="dm_pref_faq" />
+        <Preference android:title="@string/dm_pref_aboutus" android:key="dm_pref_about" />
+    </PreferenceCategory>
+</PreferenceScreen>

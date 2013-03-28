@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <ImageView android:id="@id/background" android:layout_width="fill_parent" android:layout_height="@dimen/dm_data_grid_img_height" android:src="@drawable/zapya_data_photo_cover_l" android:scaleType="fitXY" />
+    <ImageView android:id="@id/icon" android:paddingLeft="@dimen/dm_data_grid_img_padding_left" android:paddingTop="@dimen/dm_data_grid_img_padding_top" android:paddingRight="@dimen/dm_data_grid_img_padding_right" android:paddingBottom="@dimen/dm_data_grid_img_padding_bottom" android:layout_width="fill_parent" android:layout_height="@dimen/dm_data_grid_img_height" android:scaleType="fitXY" />
+</merge>

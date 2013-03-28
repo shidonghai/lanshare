@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:background="@color/white" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <TextView android:textSize="20.0sp" android:textColor="#ff000000" android:paddingLeft="15.0dip" android:paddingTop="15.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="请填写您的用户资料，稍后会有客服给您电话：" />
+    <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginLeft="5.0dip" android:layout_marginTop="20.0dip">
+        <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content">
+            <EditText android:textSize="20.0sp" android:textColor="#ff000000" android:background="@null" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="姓名:  大苏打" android:singleLine="true" android:editable="true" android:drawableBottom="@drawable/line" />
+        </LinearLayout>
+        <LinearLayout android:orientation="vertical" android:paddingTop="15.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content">
+            <EditText android:textSize="20.0sp" android:textColor="#ff000000" android:background="@null" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="电话号码:  大苏打" android:singleLine="true" android:editable="true" android:drawableBottom="@drawable/line" />
+        </LinearLayout>
+        <LinearLayout android:orientation="vertical" android:paddingTop="15.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content">
+            <EditText android:textSize="20.0sp" android:textColor="#ff000000" android:background="@null" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="身份证号:  大苏打" android:singleLine="true" android:editable="true" android:drawableBottom="@drawable/line" />
+        </LinearLayout>
+        <LinearLayout android:orientation="vertical" android:paddingTop="15.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content">
+            <EditText android:textSize="20.0sp" android:textColor="#ff000000" android:background="@null" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="电子邮箱:  大苏打" android:singleLine="true" android:editable="true" android:drawableBottom="@drawable/line" />
+        </LinearLayout>
+        <RelativeLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="140.0dip">
+            <ImageButton android:background="@drawable/icon" android:layout_width="100.0dip" android:layout_height="wrap_content" android:layout_marginRight="32.0dip" android:layout_alignParentTop="true" android:layout_alignParentRight="true" />
+            <ImageButton android:background="@drawable/icon" android:layout_width="100.0dip" android:layout_height="wrap_content" android:layout_marginLeft="32.0dip" android:layout_alignParentLeft="true" android:layout_alignParentTop="true" />
+        </RelativeLayout>
+    </LinearLayout>
+</LinearLayout>

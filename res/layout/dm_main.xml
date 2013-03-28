@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.dewmobile.kuaiya.ui.DmMultiTouchLayout android:orientation="vertical" android:id="@id/dm_multitouch_layout" android:background="@drawable/dm_common_bg" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <RelativeLayout android:gravity="top" android:orientation="horizontal" android:id="@id/dm_user_bar_layout" android:background="@drawable/zapya_common_connect_bg" android:layout_width="fill_parent" android:layout_height="@dimen/dm_invite_lay_height">
+        <RelativeLayout android:layout_width="fill_parent" android:layout_height="@dimen/dm_invite_lay_height" android:layout_toLeftOf="@id/dm_invite">
+            <LinearLayout android:layout_width="@dimen/connect_btn_width" android:layout_height="@dimen/dm_invite_inside_height" android:layout_centerHorizontal="true">
+                <TextView android:gravity="center" android:layout_gravity="center" android:id="@id/connect_btn" android:background="@drawable/zapya_common_connect_addfriends_bg" android:layout_width="@dimen/connect_btn_width" android:layout_height="wrap_content" android:text="@string/quick_connect" style="@style/quick_connect_text" />
+            </LinearLayout>
+            <ImageView android:id="@id/quit_btn" android:background="@drawable/zapya_common_connect_plus" android:visibility="invisible" android:layout_width="wrap_content" android:layout_height="73.0dip" android:src="@drawable/zapya_group_landing_head_cancel" android:scaleType="centerInside" />
+            <RelativeLayout android:id="@id/dm_conn_status" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="@dimen/dm_invite_inside_height" android:layout_marginLeft="@dimen/dm_invite_inside_instance" android:layout_toRightOf="@id/quit_btn">
+                <ImageView android:id="@id/dm_conn_status_progress" android:background="@drawable/zapya_common_refresh_wait" android:layout_width="@dimen/grpslt_status_waiting_width" android:layout_height="@dimen/grpslt_status_waiting_height" android:layout_marginLeft="@dimen/grpslt_status_waiting_left_offset" android:layout_centerVertical="true" />
+                <TextView android:textSize="@dimen/grpslt_status_waiting_txt_size" android:textColor="@color/grpslt_title_text_color" android:id="@id/dm_conn_status_text" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="@dimen/grpslt_status_waiting_txt_left_offset" android:layout_toRightOf="@id/dm_conn_status_progress" android:layout_centerVertical="true" android:layout_alignWithParentIfMissing="true" />
+            </RelativeLayout>
+            <LinearLayout android:id="@id/dm_user_bar" android:layout_width="fill_parent" android:layout_height="@dimen/dm_invite_inside_height" android:layout_toRightOf="@id/quit_btn" />
+        </RelativeLayout>
+        <include layout="@layout/dm_invite_button" />
+    </RelativeLayout>
+    <RelativeLayout android:id="@id/containerBody" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginTop="@dimen/container_layout_margin_top" android:layout_marginBottom="@dimen/dm_tab_placeholder_bottom_height" android:layout_below="@id/dm_user_bar_layout" />
+    <FrameLayout android:orientation="horizontal" android:id="@id/tabbar" android:layout_width="fill_parent" android:layout_height="@dimen/dm_tab_height" android:layout_alignParentBottom="true">
+        <FrameLayout android:layout_gravity="bottom" android:id="@id/tabbarleft" android:layout_width="fill_parent" android:layout_height="@dimen/dm_tab_height" android:layout_alignParentBottom="true">
+            <include layout="@layout/dm_left_tabbar" />
+        </FrameLayout>
+        <LinearLayout android:layout_gravity="bottom" android:orientation="horizontal" android:id="@id/tabbar_history_delete" android:background="@drawable/zapya_group_landing_bottom_bg" android:paddingLeft="@dimen/dm_tab_exit_button_left" android:paddingTop="@dimen/dm_tab_exit_button_top" android:paddingRight="@dimen/dm_tab_exit_button_left" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="@dimen/dm_tab_height" android:layout_alignParentBottom="true">
+            <TextView android:gravity="center" android:id="@id/tabbar_button_cancel" android:background="@drawable/button_gray_left" android:layout_width="fill_parent" android:layout_height="@dimen/dm_tab_exit_button_height" android:text="@string/dm_dialog_cancel" android:layout_weight="13.0" style="@style/dm_backward_btn" />
+            <com.dewmobile.kuaiya.ui.DmButton android:id="@id/tabbar_button_delete" android:background="@drawable/button_red_right" android:paddingLeft="@dimen/dm_tab_between_button_gap" android:layout_width="fill_parent" android:layout_height="@dimen/dm_tab_exit_button_height" android:text="@string/dm_tabbar_delete" android:layout_weight="5.0" style="@style/dm_forward_btn" />
+        </LinearLayout>
+    </FrameLayout>
+    <include layout="@layout/dm_main_guide" />
+    <View android:id="@id/context_menu_id" android:visibility="gone" android:layout_width="0.0px" android:layout_height="0.0px" />
+</com.dewmobile.kuaiya.ui.DmMultiTouchLayout>

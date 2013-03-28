@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="64.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <ImageView android:id="@id/notification_icon" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="14.0dip" android:layout_marginTop="12.0dip" android:src="@drawable/zapya_notificationtray_connection" />
+    <TextView android:textSize="16.0sp" android:id="@id/notification_title_text" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="9.299988dip" android:layout_marginTop="0.0dip" android:text="dddd" android:singleLine="true" android:layout_toRightOf="@id/notification_icon" android:layout_alignTop="@id/notification_icon" style="@style/NotificationTitle" />
+    <TextView android:textSize="12.0sp" android:id="@id/notification_status_text" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="0.0dip" android:text="dddd" android:singleLine="true" android:layout_below="@id/notification_title_text" android:layout_alignLeft="@id/notification_title_text" style="@style/NotificationText" />
+</RelativeLayout>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <SurfaceView android:id="@id/surface" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+    <ImageView android:layout_gravity="top|left|center" android:id="@id/sound_btn" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="30.0dip" android:layout_marginTop="10.0dip" android:src="@drawable/sound_open" />
+    <ImageView android:layout_gravity="top|left|center" android:id="@id/vibrate_btn" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="80.0dip" android:layout_marginTop="10.0dip" android:src="@drawable/shack_open" />
+    <ImageView android:layout_gravity="top|right|center" android:id="@id/close_btn" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/closed" />
+    <RelativeLayout android:layout_gravity="top" android:id="@id/control_btn" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content">
+        <TextView android:textSize="15.0sp" android:gravity="center" android:id="@id/restart_btn" android:background="@drawable/button_bg" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="@string/dm_game_restart" />
+        <TextView android:textSize="15.0sp" android:gravity="center" android:id="@id/exit_btn" android:background="@drawable/button_bg" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="@string/dm_game_exit" android:layout_below="@id/restart_btn" />
+    </RelativeLayout>
+</merge>

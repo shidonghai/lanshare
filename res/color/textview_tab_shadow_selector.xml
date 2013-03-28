@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_selected="true" android:drawable="@color/dm_shadow_second_text_color" />
+    <item android:drawable="@color/dm_history_child_first_text_color" />
+</animation-list>

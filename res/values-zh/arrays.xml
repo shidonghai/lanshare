@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="age_feed">
+        <item>90后</item>
+        <item>80后</item>
+        <item>70后</item>
+        <item>70前</item>
+    </string-array>
+</resources>
