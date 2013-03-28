@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout android:orientation="vertical" android:background="@color/gray" android:layout_width="fill_parent" android:layout_height="fill_parent"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <include android:id="@id/banner" layout="@layout/banner_left_back" />
-    <ImageView android:id="@id/zapya_logo" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="@dimen/about_icon_top" android:src="@drawable/zapya_common_loading_logo" android:layout_below="@id/banner" android:layout_centerHorizontal="true" />
-    <TextView android:textSize="@dimen/about_version_text_size" android:textColor="#ff464646" android:id="@id/zapya_version" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="@dimen/about_version_top" android:layout_below="@id/zapya_logo" android:layout_centerHorizontal="true" />
-    <ImageView android:background="@drawable/zapya_common_v_2" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="-2.0dip" android:layout_marginRight="-2.0dip" android:layout_below="@id/zapya_version" android:layout_alignLeft="@id/zapya_version" android:layout_alignRight="@id/zapya_version" />
-    <TextView android:textSize="@dimen/about_copyright_text_size" android:textColor="#ff464646" android:gravity="center" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="4.0dip" android:text="@string/about_copyright" android:layout_alignParentBottom="true" android:layout_centerHorizontal="true" android:lineSpacingMultiplier="1.2" />
-</RelativeLayout>

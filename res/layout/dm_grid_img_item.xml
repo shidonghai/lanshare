@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<FrameLayout android:orientation="vertical" android:id="@id/thumb" android:layout_width="fill_parent" android:layout_height="@dimen/dm_data_grid_img_height" android:layout_centerHorizontal="true"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <include layout="@layout/dm_grid_img_item_base" />
-</FrameLayout>

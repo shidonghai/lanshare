@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout android:id="@id/layout" android:padding="5.0dip" android:layout_width="fill_parent" android:layout_height="fill_parent"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <ImageView android:id="@id/dm_notification_image" android:layout_width="16.0dip" android:layout_height="16.0dip" android:layout_marginLeft="5.0dip" android:layout_marginTop="2.0dip" android:layout_marginRight="10.0dip" android:layout_marginBottom="2.0dip" android:scaleType="fitXY" android:layout_alignParentLeft="true" />
-    <TextView android:id="@id/dm_notification_title" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_toRightOf="@id/dm_notification_image" style="@style/dm_notification_title" />
-    <TextView android:id="@id/dm_notification_text" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_below="@id/dm_notification_image" style="@style/dm_notification_text" />
-</RelativeLayout>

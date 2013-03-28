@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:orientation="vertical" android:background="@color/gray" android:layout_width="fill_parent" android:layout_height="fill_parent"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <include android:id="@id/banner" layout="@layout/banner_right_next" />
-    <include android:id="@id/modify_pwd_bar" layout="@layout/modify_pwd" />
-    <include android:id="@id/logout_bar" layout="@layout/logoff" />
-</LinearLayout>

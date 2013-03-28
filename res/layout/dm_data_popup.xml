@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout android:layout_width="wrap_content" android:layout_height="wrap_content"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <ScrollView android:id="@id/scroller" android:background="@drawable/zapya_data_downmenu" android:scrollbars="vertical" android:layout_width="wrap_content" android:layout_height="wrap_content">
-        <LinearLayout android:orientation="vertical" android:id="@id/tracks" android:layout_width="wrap_content" android:layout_height="wrap_content" />
-    </ScrollView>
-    <ImageView android:id="@id/arrow_up" android:focusableInTouchMode="false" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/zapya_data_downmenu_arrow_up" />
-    <ImageView android:id="@id/arrow_down" android:focusableInTouchMode="false" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="@dimen/dm_popup_arrowdown_margin_top" android:src="@drawable/zapya_data_downmenu_arrow_down" android:layout_below="@id/scroller" />
-</RelativeLayout>

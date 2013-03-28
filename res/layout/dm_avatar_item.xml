@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<FrameLayout android:orientation="horizontal" android:layout_width="45.0dip" android:layout_height="45.0dip" android:layout_weight="1.0"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <ImageView android:layout_gravity="center" android:id="@id/avatar" android:layout_width="39.0dip" android:layout_height="39.0dip" android:src="@drawable/avatar1" />
-    <ImageView android:layout_gravity="center" android:layout_width="45.0dip" android:layout_height="45.0dip" android:src="@drawable/zapya_avatar_bg_selector" />
-</FrameLayout>

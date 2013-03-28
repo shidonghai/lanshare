@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:orientation="vertical" android:background="@color/white" android:layout_width="fill_parent" android:layout_height="fill_parent"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <TextView android:textSize="20.0sp" android:textColor="#ff000000" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="兑奖专区" />
-    <LinearLayout android:background="@color/black" android:layout_width="fill_parent" android:layout_height="1.0dip" />
-    <ListView android:id="@id/exchangelv" android:clickable="false" android:layout_width="fill_parent" android:layout_height="fill_parent" android:cacheColorHint="#00000000" />
-</LinearLayout>

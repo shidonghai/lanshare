@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <View android:visibility="invisible" android:layout_width="fill_parent" android:layout_height="@dimen/dm_history_child_memory_height" />
-    <ImageView android:background="@drawable/zapya_history_h" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="@dimen/dm_history_traffic_hspliter_left" android:layout_marginRight="@dimen/dm_history_traffic_hspliter_left" />
-    <TextView android:id="@id/dm_histoy_child_memory_text" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="@dimen/dm_history_child_memory_text_left" android:layout_centerVertical="true" style="@style/history_traffic_text" />
-</RelativeLayout>

@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:orientation="horizontal" android:id="@id/banner_relativelayout" android:background="@drawable/zapya_common_connect_bg" android:layout_width="fill_parent" android:layout_height="80.0dip"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <Button android:id="@id/left" android:text="Left" android:drawableTop="@drawable/button_cancel" style="@style/banner_left" />
-    <LinearLayout android:layout_gravity="center" android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="fill_parent" android:layout_weight="1.0">
-        <TextView android:id="@id/title" android:text="Title" style="@style/banner_title" />
-    </LinearLayout>
-    <Button android:id="@id/right" android:text="Done" android:drawableTop="@drawable/button_done" style="@style/banner_right" />
-</LinearLayout>

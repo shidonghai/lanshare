@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout android:orientation="vertical" android:background="@color/gray" android:layout_width="fill_parent" android:layout_height="fill_parent"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <include android:id="@id/banner" layout="@layout/banner_right_next" />
-    <ListView android:id="@id/filters" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginTop="-6.0dip" android:listSelector="#00000000" android:cacheColorHint="#00000000" android:divider="@null" android:layout_below="@id/banner" style="@style/dm_listview" />
-</RelativeLayout>
