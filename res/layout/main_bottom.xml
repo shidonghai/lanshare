@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <ImageView
+        android:id="@id/tab_background"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:gravity="bottom|center"
+        android:scaleType="matrix" />
+
+    <LinearLayout
+        android:id="@id/tabbarleftsub"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_gravity="bottom"
+        android:gravity="bottom"
+        android:clickable="true"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@id/leftTab1"
+            style="@style/tabbar_title"
+            android:drawableTop="@drawable/zapya_common_apps"
+            android:text="@string/title_apps"
+            android:textColor="@color/tab_apps_text_color" />
+
+        <TextView
+            android:id="@id/leftTab2"
+            style="@style/tabbar_title"
+            android:clickable="true"
+            android:drawableTop="@drawable/zapya_common_photo"
+            android:text="@string/title_gallery"
+            android:textColor="@color/tab_gallery_text_color" />
+
+        <TextView
+            android:id="@id/leftTab3"
+            style="@style/tabbar_title"
+            android:drawableTop="@drawable/zapya_common_audio"
+            android:text="@string/title_audio"
+            android:textColor="@color/tab_audio_text_color" />
+
+        <TextView
+            android:id="@id/leftTab4"
+            style="@style/tabbar_title"
+            android:drawableTop="@drawable/zapya_common_browse"
+            android:text="@string/title_browser"
+            android:textColor="@color/tab_browser_text_color" />
+        
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dm_tab_hist_indicator_height"
+            android:scaleType="fitXY"
+            android:src="@drawable/zapya_common_v" />
+
+        <TextView
+            android:id="@id/leftTab5"
+            style="@style/tabbar_title"
+            android:drawableTop="@drawable/zapya_common_history"
+            android:text="@string/title_history"
+            android:textColor="@color/tab_hist_text_color" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/dm_tab_hist_indicator_height"
+        android:layout_gravity="bottom"
+        android:clickable="true"
+        android:visibility="gone"
+        android:focusableInTouchMode="true"
+        android:orientation="horizontal" >
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1.0"
+            android:clickable="true"
+             />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1.0" 
+            android:clickable="true"
+            />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1.0" />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1.0" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dm_tab_hist_indicator_height"
+            android:scaleType="fitXY"
+            android:src="@drawable/zapya_common_v" />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1.0" />
+    </LinearLayout>
+
+</merge>

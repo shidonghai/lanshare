@@ -6,7 +6,7 @@
     <dimen name="connect_btn_text_size">18.0sp</dimen>
     <dimen name="dm_title_button_padding">16.0dip</dimen>
     <dimen name="dm_title_button_text_size">10.699982sp</dimen>
-    <dimen name="dm_title_button_drawable_padding">-23.0dip</dimen>
+    <dimen name="dm_title_button_drawable_padding">-10.0dip</dimen>
     <dimen name="dm_userhead_width">60.0dip</dimen>
     <dimen name="dm_userhead_height">73.29999dip</dimen>
     <dimen name="dm_userhead_img_padding">10.599976dip</dimen>

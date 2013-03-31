@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@id/main_top"
+    android:layout_width="fill_parent"
+    android:layout_height="80.0dip"
+    android:background="@drawable/zapya_common_connect_bg"
+    android:orientation="horizontal" >
+
+    <Button
+        android:id="@id/left"
+        style="@style/banner_left"
+        android:drawableTop="@drawable/button_cancel"
+        android:text="@string/main_quick_click" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:layout_gravity="center"
+        android:layout_weight="1.0"
+        android:gravity="center"
+        android:orientation="horizontal" >
+
+            <LinearLayout
+                android:layout_width="200dip"
+                android:layout_height="50dip" 
+                android:gravity="center"
+                android:background="@drawable/zapya_common_connect_addfriends_bg"
+                android:clickable="true"
+                >
+                  <TextView 
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:text="@string/main_conn_friends"
+                      android:textColor="@color/white"
+                      /> 
+               
+                
+            </LinearLayout>
+    </LinearLayout>
+
+    <Button
+        android:id="@id/right"
+        style="@style/banner_right"
+        android:drawableTop="@drawable/zapya_common_connect_invite"
+        android:text="@string/userrpl_prompt_dlg_title" />
+
+</LinearLayout>

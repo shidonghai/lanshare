@@ -596,4 +596,6 @@ All Rights Resevered"</string>
     <string name="feed_hint_contact">请留下邮箱或电话，我们将尽快答复您</string>
     <string name="submit_success">提交成功</string>
     <string name="bind">绑定到</string>
+    <string name="main_quick_click">快点</string>
+    <string name="main_conn_friends">连接朋友</string>
 </resources>

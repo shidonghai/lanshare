@@ -606,4 +606,6 @@ Others can't see."</string>
     <string name="dm_zapya_music_name">Music</string>
     <string name="dm_zapya_photo_name">Photo</string>
     <string name="dm_zapya_video_name">Video</string>
+    <string name="main_quick_click">click</string>
+    <string name="main_conn_friends">Connect Friends</string>
 </resources>
