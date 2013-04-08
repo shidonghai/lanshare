@@ -2,6 +2,7 @@ package com.nano.lanshare.audio.ui;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +25,7 @@ public class MusicTabFragment extends Fragment implements OnItemClickListener,
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.music_tab, container);
+		return inflater.inflate(R.layout.music_tab, null);
 	}
 
 	@Override
@@ -38,16 +39,11 @@ public class MusicTabFragment extends Fragment implements OnItemClickListener,
 		ListView listView = (ListView) getView().findViewById(R.id.music_list);
 		listView.setAdapter(adapter);
 		listView.setOnItemClickListener(this);
-
-		// if (!manger.isStartServer()) {
-		// manger.bindServer(getActivity());
-		// }
 	}
 
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-		MusicManger manger = MusicManger.getInstance(getActivity());
-		manger.play(arg2);
+
 	}
 
 	@Override

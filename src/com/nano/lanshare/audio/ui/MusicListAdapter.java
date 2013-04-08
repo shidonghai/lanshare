@@ -4,16 +4,12 @@ import java.text.DecimalFormat;
 import java.util.List;
 
 import android.content.Context;
-import android.database.Cursor;
-import android.provider.MediaStore.Audio.Media;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
-import android.widget.CursorAdapter;
-import android.widget.ListPopupWindow;
 import android.widget.TextView;
 
 import com.nano.lanshare.R;
