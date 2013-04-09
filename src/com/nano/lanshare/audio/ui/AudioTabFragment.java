@@ -44,11 +44,16 @@ public class AudioTabFragment extends Fragment {
 
 	// Query the music or video count.
 	private int setVideoCount(Uri uri) {
+		int count = 0;
+
 		String selection = Media.SIZE + " >0 ";
 		Cursor cursor = getActivity().getContentResolver().query(uri, null,
 				selection, null, null);
-		int count = cursor.getCount();
-		cursor.close();
+		if (null != cursor) {
+			count = cursor.getCount();
+			cursor.close();
+		}
+
 		return count;
 	}
 
