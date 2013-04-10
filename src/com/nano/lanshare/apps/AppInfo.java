@@ -3,23 +3,27 @@
  */
 package com.nano.lanshare.apps;
 
+import android.graphics.Bitmap;
+
 /**
  * @author King Bright
  * 
  */
 public class AppInfo {
-	// °üÃû
+	// åŒ…å
 	public String pkg;
-	// Ó¦ÓÃÃû³Æ
+	// ç¨‹åºå
 	public String name;
-	// Ó¦ÓÃ´óĞ¡
+	// ç¨‹åºå¤§å°
 	public String size;
-	// °æ±¾ºÅ
+	// ç‰ˆæœ¬å·
 	public String version;
-	// °²×°Î»ÖÃ
+	// å®‰è£…ä½ç½®
 	public String position;
-	// ĞŞ¸ÄÊ±¼ä
-	public String modiy;
-	// ÊÇÓ¦ÓÃ»¹ÊÇÓÎÏ·
-	public String type;
+	// ä¿®æ”¹æ—¶é—´
+	public String modify;
+	// ç±»å‹
+	public int type;
+	//å›¾æ ‡
+	public Bitmap icon;
 }

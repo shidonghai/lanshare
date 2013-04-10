@@ -24,6 +24,8 @@
         </activity>
         <activity android:name=".main.BaseActivity" >
         </activity>
+        <activity android:name=".apps.ui.AppActivity" >
+        </activity>
     </application>
 
 </manifest>
