@@ -5,4 +5,6 @@ import android.widget.BaseAdapter;
 public abstract class BasicAdapter extends BaseAdapter {
 
 	public abstract void setContent(Object o);
+
+	public abstract Object getContent();
 }

@@ -65,7 +65,6 @@ public class AppLoader {
 		filter.addAction(Intent.ACTION_PACKAGE_REMOVED);
 
 		context.registerReceiver(mAppChangedReceiver, filter);
-
 	}
 
 	public void setAppListener(AppListener listener) {
