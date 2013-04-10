@@ -2,9 +2,9 @@ package com.nano.lanshare.apps.ui;
 
 import java.util.List;
 
+import android.content.pm.PackageInfo;
 import android.os.Message;
 
-import com.nano.lanshare.apps.AppInfo;
 import com.nano.lanshare.apps.AppListener;
 import com.nano.lanshare.apps.AppLoader;
 import com.nano.lanshare.components.BasicTabFragment;
@@ -14,11 +14,11 @@ public class AppFragment extends BasicTabFragment {
 	private AppListener mAppListener = new AppListener() {
 
 		@Override
-		public void onInstallApp(AppInfo info) {
+		public void onInstallApp(PackageInfo info) {
 		}
 
 		@Override
-		public void onUninstallApp(AppInfo info) {
+		public void onUninstallApp(PackageInfo info) {
 		}
 
 		@Override
@@ -26,7 +26,7 @@ public class AppFragment extends BasicTabFragment {
 		}
 
 		@Override
-		public void onLoaded(List<AppInfo> mGames, List<AppInfo> mApps) {
+		public void onLoaded(List<PackageInfo> mGames, List<PackageInfo> mApps) {
 		}
 
 	};
@@ -35,6 +35,7 @@ public class AppFragment extends BasicTabFragment {
 	protected void init() {
 		mAppLoader = new AppLoader(getActivity());
 		mAppLoader.setAppListener(mAppListener);
+		mAppLoader.startLoading();
 	}
 
 	@Override
