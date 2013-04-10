@@ -36,8 +36,6 @@ public abstract class BasicTabFragment extends Fragment implements
 
 	private View mScroller;
 
-	private DataLoadListener mDataLoadListener;
-
 	private Handler mHandler = new Handler() {
 
 		@Override
@@ -90,32 +88,15 @@ public abstract class BasicTabFragment extends Fragment implements
 		mRightContent.setOnItemLongClickListener(this);
 
 		init();
-		mDataLoadListener = initListener();
-
-		onStartLoading(mDataLoadListener);
 		return view;
 	}
 
 	/**
-	 * 开始读取数据，一般在此方法中开启线程
-	 * 
-	 * @param listener
-	 */
-	protected abstract void onStartLoading(DataLoadListener listener);
-
-	/**
-	 * 实现更新界面的方法
+	 * 实现更新界面的方法，为了区别更新哪个adapter，可以在message的arg1参数中声明LEFT或者RIGHT，来区别更新。
 	 * 
 	 * @param msg
 	 */
 	protected abstract void onUpdateData(Message msg);
-
-	/**
-	 * 初始化对应的监听器。用于回调更新界面
-	 * 
-	 * @return
-	 */
-	protected abstract DataLoadListener initListener();
 
 	/**
 	 * 在这个方法中做一些初始化工作
@@ -128,6 +109,10 @@ public abstract class BasicTabFragment extends Fragment implements
 
 	protected void notifyFinishLoading() {
 		mHandler.sendEmptyMessage(FINISH_LOADING);
+	}
+
+	public Handler getHandler() {
+		return mHandler;
 	}
 
 	protected void setTitle(int side, String title) {
