@@ -28,8 +28,6 @@ import android.content.pm.PackageManager;
  * 
  */
 public class AppLoader {
-	private static final int TYPE_GAME = 1;
-	private static final int TYPE_APP = 2;
 	private static final String GAME_NAME_LIST = "appinfo.xml";
 
 	private Context mContext;
@@ -37,8 +35,8 @@ public class AppLoader {
 	private PackageManager mPkgMgr;
 
 	private List<String> mAllGameList;
-	private List<AppInfo> mGames;
-	private List<AppInfo> mApps;
+	private List<PackageInfo> mGames;
+	private List<PackageInfo> mApps;
 
 	private AppChangedReceiver mAppChangedReceiver;
 
@@ -54,8 +52,8 @@ public class AppLoader {
 	 */
 	private void init(Context context) {
 		mPkgMgr = context.getPackageManager();
-		mGames = new ArrayList<AppInfo>();
-		mApps = new ArrayList<AppInfo>();
+		mGames = new ArrayList<PackageInfo>();
+		mApps = new ArrayList<PackageInfo>();
 
 		// 注册广播接收器
 		mAppChangedReceiver = new AppChangedReceiver();
@@ -65,6 +63,10 @@ public class AppLoader {
 		filter.addAction(Intent.ACTION_PACKAGE_REMOVED);
 
 		context.registerReceiver(mAppChangedReceiver, filter);
+	}
+
+	public PackageManager getPackageManager() {
+		return mPkgMgr;
 	}
 
 	public void setAppListener(AppListener listener) {
@@ -93,23 +95,20 @@ public class AppLoader {
 		List<PackageInfo> list = mPkgMgr
 				.getInstalledPackages(PackageManager.GET_ACTIVITIES);
 		for (PackageInfo info : list) {
-			AppInfo appInfo = new AppInfo();
 
-			appInfo.name = info.applicationInfo.name;
-			appInfo.position = info.applicationInfo.sourceDir;
-			appInfo.pkg = info.packageName;
-			appInfo.modify = info.lastUpdateTime + "";
-			appInfo.version = info.versionName;
+			// info.applicationInfo.name;
+			// info.applicationInfo.sourceDir;
+			// info.packageName;
+			// info.lastUpdateTime + "";
+			// version: info.versionName;
 			// TODO 获取应用大小需要用到反射。。
 			// appInfo.size=info.applicationInfo.
 			// TODO 获取图标
 			// appInfo.icon=
 			if (list.contains(info.packageName)) {
-				appInfo.type = TYPE_GAME;
-				mGames.add(appInfo);
+				mGames.add(info);
 			} else {
-				appInfo.type = TYPE_APP;
-				mApps.add(appInfo);
+				mApps.add(info);
 			}
 		}
 		mAllGameList.clear();
