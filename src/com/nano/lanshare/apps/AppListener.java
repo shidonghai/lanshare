@@ -10,9 +10,9 @@ import java.util.List;
  * 
  */
 public interface AppListener {
-	public void onInstallApp();
+	public void onInstallApp(AppInfo info);
 
-	public void onUninstallApp();
+	public void onUninstallApp(AppInfo info);
 
 	public void onLoading();
 

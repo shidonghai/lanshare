@@ -145,15 +145,15 @@ public class AppLoader {
 			String action = intent.getAction();
 			if (action.equals(Intent.ACTION_PACKAGE_ADDED)) {
 				if (mListener != null) {
-					mListener.onInstallApp();
+					mListener.onInstallApp(null);
 				}
 			} else if (action.equals(Intent.ACTION_PACKAGE_REPLACED)) {
 				if (mListener != null) {
-					mListener.onInstallApp();
+					mListener.onInstallApp(null);
 				}
 			} else if (action.equals(Intent.ACTION_PACKAGE_REMOVED)) {
 				if (mListener != null) {
-					mListener.onUninstallApp();
+					mListener.onUninstallApp(null);
 				}
 			} else {
 				// something wrong happened

@@ -25,6 +25,7 @@ public abstract class BasicTabFragment extends Fragment implements
 
 	private static final int START_LOADING = 3;
 	private static final int FINISH_LOADING = 4;
+	private static final int UPDATE_UI = 5;
 
 	private TextView mLeftTab;
 	private TextView mRightTab;
@@ -55,6 +56,8 @@ public abstract class BasicTabFragment extends Fragment implements
 						.setVisibility(!mLeftTab.isSelected() ? View.VISIBLE
 								: View.GONE);
 				mProgress.setVisibility(View.GONE);
+				break;
+			case UPDATE_UI:
 				onUpdateData(msg);
 				break;
 			}
