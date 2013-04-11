@@ -13,7 +13,6 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
-        Log.d("wyg", "-------------->>");
         setContentView(R.layout.main_bottom);
         startActivity(new Intent(this, BaseActivity.class));
         finish();

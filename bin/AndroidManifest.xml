@@ -6,6 +6,8 @@
     <uses-sdk
         android:minSdkVersion="8"
         android:targetSdkVersion="15" />
+    
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <application
         android:icon="@drawable/ic_launcher"
@@ -24,6 +26,9 @@
         </activity>
         <activity android:name=".main.BaseActivity" >
         </activity>
+        <activity android:name=".invitation.ui.InviteFriendsActivity" >
+        </activity>
+        <activity android:name=".history.fragment.TrafficInformationFragment"></activity>
     </application>
 
 </manifest>
