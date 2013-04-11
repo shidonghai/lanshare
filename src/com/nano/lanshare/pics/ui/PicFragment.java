@@ -1,4 +1,4 @@
-package com.nano.lanshare.apps.ui;
+package com.nano.lanshare.pics.ui;
 
 import java.util.List;
 
@@ -9,7 +9,7 @@ import com.nano.lanshare.apps.AppListener;
 import com.nano.lanshare.apps.AppLoader;
 import com.nano.lanshare.components.BasicTabFragment;
 
-public class AppFragment extends BasicTabFragment {
+public class PicFragment extends BasicTabFragment {
 	private AppLoader mAppLoader;
 	private AppListener mAppListener = new AppListener() {
 
@@ -48,8 +48,8 @@ public class AppFragment extends BasicTabFragment {
 		mAppLoader.setAppListener(mAppListener);
 		mAppLoader.startLoading();
 
-		setAdapter(LEFT, new AppAdapter(getLayoutInflater(null)));
-		setAdapter(RIGHT, new AppAdapter(getLayoutInflater(null)));
+		setAdapter(LEFT, new PicAdapter(getLayoutInflater(null)));
+		setAdapter(RIGHT, new PicAdapter(getLayoutInflater(null)));
 
 		getGridView(LEFT).setNumColumns(4);
 		getGridView(RIGHT).setNumColumns(4);

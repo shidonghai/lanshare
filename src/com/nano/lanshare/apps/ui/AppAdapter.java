@@ -7,17 +7,18 @@ import android.content.pm.PackageInfo;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.nano.lanshare.R;
-import com.nano.lanshare.components.BasicAdapter;
+import com.nano.lanshare.components.BasicContentStore;
 
-public class AppAdapter extends BasicAdapter {
+public class AppAdapter extends BaseAdapter implements BasicContentStore {
 	private List<PackageInfo> mList;
-	private LayoutInflater mInflater;
+	LayoutInflater mLayoutInflater;
 
-	public AppAdapter(LayoutInflater mLayoutInflater) {
-		mInflater = mLayoutInflater;
+	public AppAdapter(LayoutInflater layoutInflater) {
+		mLayoutInflater = layoutInflater;
 	}
 
 	@Override
@@ -38,7 +39,7 @@ public class AppAdapter extends BasicAdapter {
 	@Override
 	public View getView(int position, View view, ViewGroup parent) {
 		if (view == null) {
-			view = mInflater.inflate(R.layout.app_item, null);
+			view = mLayoutInflater.inflate(R.layout.app_item, null);
 		}
 		PackageInfo info = mList.get(position);
 		((TextView) view.findViewById(R.id.title))

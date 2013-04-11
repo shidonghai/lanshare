@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.GridView;
+import android.widget.ListAdapter;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -129,12 +130,12 @@ public abstract class BasicTabFragment extends Fragment implements
 		}
 	}
 
-	protected BasicAdapter getAdapter(int side) {
+	protected BasicContentStore getStore(int side) {
 		switch (side) {
 		case LEFT:
-			return (BasicAdapter) mLeftContent.getAdapter();
+			return (BasicContentStore) mLeftContent.getAdapter();
 		case RIGHT:
-			return (BasicAdapter) mRightContent.getAdapter();
+			return (BasicContentStore) mRightContent.getAdapter();
 		}
 		return null;
 	}
@@ -149,13 +150,13 @@ public abstract class BasicTabFragment extends Fragment implements
 		return null;
 	}
 
-	protected void setAdapter(int side, BasicAdapter adapter) {
+	protected void setAdapter(int side, BasicContentStore adapter) {
 		switch (side) {
 		case LEFT:
-			mLeftContent.setAdapter(adapter);
+			mLeftContent.setAdapter((ListAdapter) adapter);
 			break;
 		case RIGHT:
-			mRightContent.setAdapter(adapter);
+			mRightContent.setAdapter((ListAdapter) adapter);
 			break;
 		}
 	}
