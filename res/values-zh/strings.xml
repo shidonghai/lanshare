@@ -598,4 +598,5 @@ All Rights Resevered"</string>
     <string name="bind">绑定到</string>
     <string name="main_quick_click">快点</string>
     <string name="main_conn_friends">连接朋友</string>
+    <string name="file_back">上一级</string>
 </resources>
