@@ -27,14 +27,11 @@
         </activity>
         <activity android:name=".main.BaseActivity" >
         </activity>
-<<<<<<< HEAD
         <activity android:name=".invitation.ui.InviteFriendsActivity" >
         </activity>
         <activity android:name=".history.fragment.TrafficInformationFragment"></activity>
-=======
         <activity android:name=".apps.ui.AppActivity" >
         </activity>
->>>>>>> b12baa42143aacf88304e244648451593c932948
     </application>
 
 </manifest>

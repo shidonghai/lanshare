@@ -599,10 +599,7 @@ All Rights Resevered"</string>
     <string name="bind">绑定到</string>
     <string name="main_quick_click">快点</string>
     <string name="main_conn_friends">连接朋友</string>
-<<<<<<< HEAD
     <string name="invite_friends">邀请朋友</string>
 </resources>
-=======
 
-</resources>
->>>>>>> b12baa42143aacf88304e244648451593c932948
+
