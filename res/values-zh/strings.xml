@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="attention">注意</string>
     <string name="delete_all">是否要删除这条微博？</string>
     <string name="ok">是</string>
@@ -511,8 +512,8 @@ All Rights Resevered"</string>
     <string name="dm_guid_ok_2">开始使用</string>
     <string name="dm_play_game">冰球游戏</string>
     <string name="name_size_tips">最多支持6个汉字或12个英文字母</string>
-    <string name="dm_tab_title_game">游戏 (%1$d)</string>
-    <string name="dm_tab_title_apps">应用 (%1$d)</string>
+    <string name="tab_game">游戏 (%1$d)</string>
+    <string name="tab_app">应用 (%1$d)</string>
     <string name="dm_tab_title_camera">相机胶卷 (%1$d)</string>
     <string name="dm_tab_title_photos">照片图库 (%1$d)</string>
     <string name="dm_tab_title_movies">视频 (%1$d)</string>
@@ -598,5 +599,10 @@ All Rights Resevered"</string>
     <string name="bind">绑定到</string>
     <string name="main_quick_click">快点</string>
     <string name="main_conn_friends">连接朋友</string>
+<<<<<<< HEAD
     <string name="invite_friends">邀请朋友</string>
 </resources>
+=======
+
+</resources>
+>>>>>>> b12baa42143aacf88304e244648451593c932948

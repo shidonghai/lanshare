@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/list_selector" >
+
+    <com.nano.lanshare.components.RectImageView
+        android:id="@+id/music_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginBottom="5dip"
+        android:layout_marginLeft="10dip"
+        android:layout_marginTop="10dip"
+        android:src="@drawable/zapya_data_audio" />
+
+    <TextView
+        android:id="@+id/music_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="3dip"
+        android:layout_marginTop="10dip"
+        android:layout_toRightOf="@id/music_image"
+        android:textColor="@color/dm_data_list_item_title_color"
+        android:textSize="@dimen/dm_data_list_item_title_size" />
+
+    <TextView
+        android:id="@+id/music_artist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/music_title"
+        android:layout_marginLeft="3dip"
+        android:layout_marginTop="5dip"
+        android:layout_toRightOf="@id/music_image"
+        android:textColor="@color/dm_data_list_item_subtitle_color"
+        android:textSize="@dimen/dm_data_list_item_subtitle_size" />
+
+    <TextView
+        android:id="@+id/music_size"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="5dip"
+        android:layout_marginTop="3dip"
+        android:textColor="@color/dm_data_list_item_subtitle_color"
+        android:textSize="@dimen/dm_data_list_item_subtitle_size" />
+
+</RelativeLayout>
