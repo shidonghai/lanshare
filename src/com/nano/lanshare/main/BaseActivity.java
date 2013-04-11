@@ -4,19 +4,22 @@ package com.nano.lanshare.main;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.app.Activity;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.nano.lanshare.R;
+import com.nano.lanshare.main.adapter.MainViewPagerAdapter;
+import com.nano.lanshare.main.ui.ExitDialog;
 
-public class BaseActivity extends Activity implements OnPageChangeListener, OnClickListener {
+public class BaseActivity extends FragmentActivity implements OnPageChangeListener, OnClickListener {
     private ViewPager mViewPager;
     private List<View> mViewList = new ArrayList<View>();
     private List<TextView> mTabs = new ArrayList<TextView>();
@@ -61,7 +64,7 @@ public class BaseActivity extends Activity implements OnPageChangeListener, OnCl
 
         mViewPager = (ViewPager) findViewById(R.id.viewpager);
         addViews2List();
-        mPagerAdapter = new MainViewPagerAdapter(mViewList);
+        mPagerAdapter = new MainViewPagerAdapter(getSupportFragmentManager());
         mViewPager.setOnPageChangeListener(this);
         mViewPager.setAdapter(mPagerAdapter);
         // 设置第一个tab为默认为选中状态
@@ -109,6 +112,27 @@ public class BaseActivity extends Activity implements OnPageChangeListener, OnCl
     @Override
     protected void onDestroy() {
         super.onDestroy();
+    }
+
+    private void showExitDialog() {
+
+        DialogFragment exitDialog = ExitDialog.newInstance();
+        exitDialog.show(getSupportFragmentManager(), "");
+    }
+
+    public void doPositiveClick() {
+        finish();
+    }
+
+    public void doNegativeClick() {
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (KeyEvent.KEYCODE_BACK == keyCode) {
+            showExitDialog();
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
     @Override

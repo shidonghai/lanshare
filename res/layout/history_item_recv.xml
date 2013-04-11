@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="5dip"
+    android:layout_marginRight="5dip" >
+
+    <ImageView
+        android:id="@+id/item_thumb"
+        android:layout_width="30dip"
+        android:layout_height="30dip"
+        android:src="@drawable/zapya_history_person_hot" />
+
+    <TextView
+        android:id="@+id/item_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/item_thumb"
+        android:text="ssssdfsd" />
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/item_name" >
+
+        <ImageView
+            android:id="@+id/file_type"
+            android:layout_width="15dip"
+            android:layout_height="15dip"
+            android:layout_marginTop="2dip"
+            android:src="@drawable/zapya_history_person_hot" />
+
+        <ImageView
+            android:id="@+id/file_uncheck"
+            android:layout_width="15dip"
+            android:layout_height="15dip"
+            android:layout_marginTop="2dip"
+            android:src="@drawable/zapya_group_signal_checkbox_normal"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/file_checked"
+            android:layout_width="15dip"
+            android:layout_height="15dip"
+            android:layout_marginTop="2dip"
+            android:src="@drawable/zapya_group_signal_checkbox_pressed"
+            android:visibility="gone" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="260dip"
+        android:layout_height="80dip"
+        android:layout_alignTop="@id/item_thumb"
+        android:layout_marginLeft="20dip"
+        android:layout_toRightOf="@id/item_thumb"
+        android:background="@drawable/history_recv_bg" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical" >
+
+            <ImageView
+                android:id="@+id/file_icon"
+                android:layout_width="40dip"
+                android:layout_height="40dip"
+                android:layout_marginLeft="10dip"
+                android:src="@drawable/logo_qweibo" />
+
+            <TextView
+                android:id="@+id/file_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dip"
+                android:layout_toRightOf="@id/file_icon"
+                android:text="sdfsfsdf"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/file_size"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/file_name"
+                android:layout_marginTop="20dip"
+                android:layout_toRightOf="@id/file_icon"
+                android:text="20MB"
+                android:textColor="@color/black" />
+        </RelativeLayout>
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/file_opeart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="20dip"
+        android:background="@drawable/transfer_install_btn"
+        android:gravity="center"
+        android:text="open"
+        android:textColor="@color/black" />
+
+</RelativeLayout>

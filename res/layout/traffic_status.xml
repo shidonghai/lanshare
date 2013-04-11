@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" 
+    android:background="@color/white"
+     >
+
+    <LinearLayout
+        android:id="@+id/traffic_top"
+        android:layout_width="fill_parent"
+        android:layout_height="80dip"
+        android:background="@drawable/zapya_common_connect_bg" >
+
+        <Button
+            android:id="@+id/btn_back"
+            style="@style/banner_left"
+            android:drawableTop="@drawable/zapya_group_landing_head_back"
+            android:text="@string/back" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/dm_traffic_statistics"
+                android:textColor="@color/grpslt_title_text_color"
+                android:textSize="20sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/traffic_top"
+        android:orientation="vertical"
+         >
+
+        <TextView
+            android:id="@+id/send_traffic"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+             />
+
+        <TextView
+            android:id="@+id/recv_traffic"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+             />
+
+        <TextView
+            android:id="@+id/mobile_traffic"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/hotspots_traffic"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/wifi_traffic"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+</RelativeLayout>

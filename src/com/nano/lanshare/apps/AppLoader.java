@@ -3,63 +3,202 @@
  */
 package com.nano.lanshare.apps;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.text.TextUtils;
+import android.util.Log;
 
 /**
  * @author King Bright
  * 
  */
 public class AppLoader {
+	private static final String GAME_NAME_LIST = "appinfo.xml";
 
 	private Context mContext;
 
 	private PackageManager mPkgMgr;
 
+	private List<String> mAllGameList;
+	private List<PackageInfo> mGames;
+	private List<PackageInfo> mApps;
+
+	private AppChangedReceiver mAppChangedReceiver;
+
+	private AppListener mListener;
+
 	public AppLoader(Context context) {
-		mPkgMgr = context.getPackageManager();
-	}
-
-	public void startLoading() {
-		// 1.¶ÁÈ¡xmlÎÄ¼ş£¬¶Á³öËùÓĞÓÎÏ·µÄ°üÃû
-
-		// 2.¶Á³öÈ«²¿appĞÅÏ¢£¬²¢°´ÕÕÀà±ğ·ÖÀà
-		List<PackageInfo> list = mPkgMgr
-				.getInstalledPackages(PackageManager.GET_ACTIVITIES);
-		for (PackageInfo info : list) {
-			// info.
-		}
-	}
-
-	public void setAppLoadListener(AppListener listener) {
-
+		init(context);
+		mContext = context;
 	}
 
 	/**
-	 * µ±ÓĞÈÎºÎappĞÅÏ¢·¢Éú±ä»¯Ê±£¬¸üĞÂÊı¾İ£¬Ë¢ĞÂui
+	 * åˆå§‹åŒ–AppLoader
+	 */
+	private void init(Context context) {
+		mPkgMgr = context.getPackageManager();
+		mGames = new ArrayList<PackageInfo>();
+		mApps = new ArrayList<PackageInfo>();
+
+		// æ³¨å†Œå¹¿æ’­æ¥æ”¶å™¨
+		mAppChangedReceiver = new AppChangedReceiver();
+
+	}
+
+	public void onResume() {
+		IntentFilter filter = new IntentFilter();
+		filter.addAction(Intent.ACTION_PACKAGE_ADDED);
+		filter.addAction(Intent.ACTION_PACKAGE_REPLACED);
+		filter.addAction(Intent.ACTION_PACKAGE_REMOVED);
+		mContext.registerReceiver(mAppChangedReceiver, filter);
+	}
+
+	public void onStop() {
+		mContext.unregisterReceiver(mAppChangedReceiver);
+	}
+
+	public PackageManager getPackageManager() {
+		return mPkgMgr;
+	}
+
+	public void setAppListener(AppListener listener) {
+		this.mListener = listener;
+	}
+
+	public void startLoading() {
+		new Thread() {
+			public void run() {
+				if (mListener != null) {
+					mListener.onLoading();
+				}
+				// 1.è¯»å–xml
+				loadXml();
+				// 2.å¯¹æ¯”åŒ…åï¼Œè¿›è¡Œåˆ†ç±»
+				loadPkg();
+
+				if (mListener != null) {
+					mListener.onLoaded(mGames, mApps);
+				}
+			}
+		}.start();
+	}
+
+	private void loadPkg() {
+		List<PackageInfo> list = mPkgMgr
+				.getInstalledPackages(PackageManager.GET_ACTIVITIES);
+		for (PackageInfo info : list) {
+
+			// info.applicationInfo.name;
+			// info.applicationInfo.sourceDir;
+			// info.packageName;
+			// info.lastUpdateTime + "";
+			// version: info.versionName;
+			// TODO è·å–åº”ç”¨å¤§å°éœ€è¦ç”¨åˆ°åå°„ã€‚ã€‚
+			// appInfo.size=info.applicationInfo.
+			// TODO è·å–å›¾æ ‡
+			// appInfo.icon=
+			if (mAllGameList.contains(info.packageName)) {
+				mGames.add(info);
+			} else {
+				mApps.add(info);
+			}
+		}
+		mAllGameList.clear();
+	}
+
+	private void loadXml() {
+		SAXParserFactory factory = SAXParserFactory.newInstance();
+		try {
+			SAXParser parser = factory.newSAXParser();
+			InputStream is = mContext.getAssets().open(GAME_NAME_LIST);
+			mAllGameList = new ArrayList<String>();
+			parser.parse(is, new GameAppInfoHandler(mAllGameList));
+		} catch (ParserConfigurationException e) {
+			e.printStackTrace();
+		} catch (SAXException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * åº”ç”¨å˜æ›´æ—¶æ”¶åˆ°é€šçŸ¥æ›´æ–°ui. Intent.ACTION_PACKAGE_ADDED Intent.ACTION_PACKAGE_REPLACED
+	 * Intent.ACTION_PACKAGE_REMOVED
 	 * 
 	 * @author King Bright
 	 * 
 	 */
 	class AppChangedReceiver extends BroadcastReceiver {
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * android.content.BroadcastReceiver#onReceive(android.content.Context,
-		 * android.content.Intent)
-		 */
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			// TODO Auto-generated method stub
+			String action = intent.getAction();
+			if (action.equals(Intent.ACTION_PACKAGE_ADDED)) {
+				if (mListener != null) {
+					mListener.onInstallApp(null);
+				}
+			} else if (action.equals(Intent.ACTION_PACKAGE_REPLACED)) {
+				if (mListener != null) {
+					mListener.onInstallApp(null);
+				}
+			} else if (action.equals(Intent.ACTION_PACKAGE_REMOVED)) {
+				if (mListener != null) {
+					mListener.onUninstallApp(null);
+				}
+			} else {
+				// something wrong happened
+			}
+		}
+	}
 
+	/**
+	 * è§£æxml
+	 * 
+	 * @author King Bright
+	 * 
+	 */
+	class GameAppInfoHandler extends DefaultHandler {
+
+		final String ITEM_TAG = "name";
+		String tag;
+		List<String> list;
+
+		public GameAppInfoHandler(List<String> mAllGameList) {
+			list = mAllGameList;
 		}
 
+		public void startElement(String uri, String localName, String qName,
+				Attributes attributes) throws SAXException {
+			super.startElement(uri, localName, qName, attributes);
+			tag = localName;
+		}
+
+		public void characters(char[] ch, int start, int length)
+				throws SAXException {
+			if (tag.equals(ITEM_TAG)) {
+				String pkgname = new String(ch, start, length).trim();
+				if (!TextUtils.isEmpty(pkgname)) {
+					list.add(pkgname);
+				}
+			}
+		}
 	}
 }
