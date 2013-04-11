@@ -22,6 +22,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.text.TextUtils;
+import android.util.Log;
 
 /**
  * @author King Bright
@@ -57,12 +59,19 @@ public class AppLoader {
 
 		// 注册广播接收器
 		mAppChangedReceiver = new AppChangedReceiver();
+
+	}
+
+	public void onResume() {
 		IntentFilter filter = new IntentFilter();
 		filter.addAction(Intent.ACTION_PACKAGE_ADDED);
 		filter.addAction(Intent.ACTION_PACKAGE_REPLACED);
 		filter.addAction(Intent.ACTION_PACKAGE_REMOVED);
+		mContext.registerReceiver(mAppChangedReceiver, filter);
+	}
 
-		context.registerReceiver(mAppChangedReceiver, filter);
+	public void onStop() {
+		mContext.unregisterReceiver(mAppChangedReceiver);
 	}
 
 	public PackageManager getPackageManager() {
@@ -105,7 +114,7 @@ public class AppLoader {
 			// appInfo.size=info.applicationInfo.
 			// TODO 获取图标
 			// appInfo.icon=
-			if (list.contains(info.packageName)) {
+			if (mAllGameList.contains(info.packageName)) {
 				mGames.add(info);
 			} else {
 				mApps.add(info);
@@ -185,8 +194,10 @@ public class AppLoader {
 		public void characters(char[] ch, int start, int length)
 				throws SAXException {
 			if (tag.equals(ITEM_TAG)) {
-				String pkgname = new String(ch, start, length);
-				list.add(pkgname);
+				String pkgname = new String(ch, start, length).trim();
+				if (!TextUtils.isEmpty(pkgname)) {
+					list.add(pkgname);
+				}
 			}
 		}
 	}

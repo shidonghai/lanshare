@@ -15,7 +15,7 @@ import com.nano.lanshare.components.BasicContentStore;
 
 public class AppAdapter extends BaseAdapter implements BasicContentStore {
 	private List<PackageInfo> mList;
-	LayoutInflater mLayoutInflater;
+	private LayoutInflater mLayoutInflater;
 
 	public AppAdapter(LayoutInflater layoutInflater) {
 		mLayoutInflater = layoutInflater;

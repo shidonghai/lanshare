@@ -56,6 +56,18 @@ public class AppFragment extends BasicTabFragment {
 	}
 
 	@Override
+	public void onResume() {
+		super.onResume();
+		mAppLoader.onResume();
+	}
+
+	@Override
+	public void onStop() {
+		super.onStop();
+		mAppLoader.onStop();
+	}
+
+	@Override
 	protected void onUpdateData(Message msg) {
 		getStore(msg.arg1).setContent(msg.obj);
 	}
