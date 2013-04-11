@@ -119,6 +119,7 @@ public class AppLoader {
 		try {
 			SAXParser parser = factory.newSAXParser();
 			InputStream is = mContext.getAssets().open(GAME_NAME_LIST);
+			mAllGameList = new ArrayList<String>();
 			parser.parse(is, new GameAppInfoHandler(mAllGameList));
 		} catch (ParserConfigurationException e) {
 			e.printStackTrace();

@@ -23,9 +23,9 @@ public abstract class BasicTabFragment extends Fragment implements
 	protected static final int LEFT = 1;
 	protected static final int RIGHT = 2;
 
-	private static final int START_LOADING = 3;
-	private static final int FINISH_LOADING = 4;
-	private static final int UPDATE_UI = 5;
+	protected static final int START_LOADING = 3;
+	protected static final int FINISH_LOADING = 4;
+	protected static final int UPDATE_UI = 5;
 
 	private TextView mLeftTab;
 	private TextView mRightTab;
@@ -135,6 +135,16 @@ public abstract class BasicTabFragment extends Fragment implements
 			return (BasicAdapter) mLeftContent.getAdapter();
 		case RIGHT:
 			return (BasicAdapter) mRightContent.getAdapter();
+		}
+		return null;
+	}
+
+	protected GridView getGridView(int side) {
+		switch (side) {
+		case LEFT:
+			return mLeftContent;
+		case RIGHT:
+			return mRightContent;
 		}
 		return null;
 	}

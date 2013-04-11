@@ -4,10 +4,10 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.PaintFlagsDrawFilter;
 import android.graphics.Rect;
 import android.util.AttributeSet;
-import android.widget.ImageView;
+
+import com.nano.lanshare.thumbnail.util.RecyclingImageView;
 
 /**
  * Custom IamgeView with rect.
@@ -15,7 +15,7 @@ import android.widget.ImageView;
  * @author Xiaohu
  * 
  */
-public class RectImageView extends ImageView {
+public class RectImageView extends RecyclingImageView {
 
 	public RectImageView(Context context) {
 		super(context);

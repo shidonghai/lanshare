@@ -27,6 +27,17 @@ public class AppFragment extends BasicTabFragment {
 
 		@Override
 		public void onLoaded(List<PackageInfo> mGames, List<PackageInfo> mApps) {
+			Message msg1 = getHandler().obtainMessage();
+			msg1.arg1 = LEFT;
+			msg1.what = UPDATE_UI;
+			msg1.obj = mGames;
+			msg1.sendToTarget();
+
+			Message msg2 = getHandler().obtainMessage();
+			msg2.arg1 = RIGHT;
+			msg2.what = UPDATE_UI;
+			msg2.obj = mApps;
+			msg2.sendToTarget();
 		}
 
 	};
@@ -36,10 +47,17 @@ public class AppFragment extends BasicTabFragment {
 		mAppLoader = new AppLoader(getActivity());
 		mAppLoader.setAppListener(mAppListener);
 		mAppLoader.startLoading();
+
+		setAdapter(LEFT, new AppAdapter(getLayoutInflater(null)));
+		setAdapter(RIGHT, new AppAdapter(getLayoutInflater(null)));
+
+		getGridView(LEFT).setNumColumns(4);
+		getGridView(RIGHT).setNumColumns(4);
 	}
 
 	@Override
 	protected void onUpdateData(Message msg) {
+		getAdapter(msg.arg1).setContent(msg.obj);
 	}
 
 }

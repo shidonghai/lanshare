@@ -1,7 +1,5 @@
 package com.nano.lanshare.audio.ui;
 
-import com.nano.lanshare.R;
-
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,6 +11,8 @@ import android.support.v4.app.FragmentTabHost;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.nano.lanshare.R;
 
 public class AudioTabFragment extends Fragment {
 	private FragmentTabHost mTabHost;

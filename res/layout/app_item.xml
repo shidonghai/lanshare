@@ -8,7 +8,8 @@
         android:id="@+id/icon"
         android:layout_width="50dip"
         android:layout_height="50dip"
-        android:scaleType="fitXY" />
+        android:scaleType="fitXY"
+        android:src="@drawable/icon" />
 
     <TextView
         android:id="@+id/title"
