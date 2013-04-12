@@ -11,8 +11,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.GridView;
-import android.widget.ListView;
-import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.nano.lanshare.R;

@@ -608,9 +608,6 @@ Others can't see."</string>
     <string name="dm_zapya_video_name">Video</string>
     <string name="main_quick_click">click</string>
     <string name="main_conn_friends">Connect Friends</string>
-<<<<<<< HEAD
     <string name="empty_folder">Empty Folder</string>
-=======
     <string name="invite_friends">Invite Friends</string>
->>>>>>> 940a224a9e296beeb1d5afba8c70a82f28dc0bdb
 </resources>

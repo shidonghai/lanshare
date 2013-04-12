@@ -1,20 +1,12 @@
 package com.nano.lanshare.file.ui;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-
 import android.os.Bundle;
 import android.os.Message;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.PopupMenu;
 
-import com.nano.lanshare.R;
 import com.nano.lanshare.file.FileItem;
 import com.nano.lanshare.file.FileList;
 import com.nano.lanshare.file.scan.FileScanListener;
