@@ -9,18 +9,13 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.animation.TranslateAnimation;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AdapterView.OnItemLongClickListener;
-import android.widget.GridView;
-import android.widget.ListAdapter;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.nano.lanshare.R;
 
 public abstract class BasicTabFragment extends Fragment implements
-		OnClickListener, OnItemClickListener, OnItemLongClickListener {
+		OnClickListener {
 	protected static final int LEFT = 1;
 	protected static final int RIGHT = 2;
 
@@ -31,8 +26,8 @@ public abstract class BasicTabFragment extends Fragment implements
 	private TextView mLeftTab;
 	private TextView mRightTab;
 
-	private GridView mLeftContent;
-	private GridView mRightContent;
+	private ViewGroup mLeftContent;
+	private ViewGroup mRightContent;
 
 	private ProgressBar mProgress;
 
@@ -78,18 +73,18 @@ public abstract class BasicTabFragment extends Fragment implements
 		mRightTab = (TextView) view.findViewById(R.id.right_tab);
 		mLeftTab.setSelected(true);
 
-		mLeftContent = (GridView) view.findViewById(R.id.left_content);
-		mRightContent = (GridView) view.findViewById(R.id.right_content);
+		mLeftContent = (ViewGroup) view.findViewById(R.id.left_container);
+		mRightContent = (ViewGroup) view.findViewById(R.id.right_container);
 
 		// register tab click listener
 		mLeftTab.setOnClickListener(this);
 		mRightTab.setOnClickListener(this);
 		// register adapter item click listener
-		mLeftContent.setOnItemClickListener(this);
-		mRightContent.setOnItemClickListener(this);
-		// register adapter item long click listener
-		mLeftContent.setOnItemLongClickListener(this);
-		mRightContent.setOnItemLongClickListener(this);
+		// mLeftContent.setOnItemClickListener(this);
+		// mRightContent.setOnItemClickListener(this);
+		// // register adapter item long click listener
+		// mLeftContent.setOnItemLongClickListener(this);
+		// mRightContent.setOnItemLongClickListener(this);
 
 		init();
 		return view;
@@ -126,37 +121,6 @@ public abstract class BasicTabFragment extends Fragment implements
 			break;
 		case RIGHT:
 			mLeftTab.setText(title);
-			break;
-		}
-	}
-
-	protected BasicContentStore getStore(int side) {
-		switch (side) {
-		case LEFT:
-			return (BasicContentStore) mLeftContent.getAdapter();
-		case RIGHT:
-			return (BasicContentStore) mRightContent.getAdapter();
-		}
-		return null;
-	}
-
-	protected GridView getGridView(int side) {
-		switch (side) {
-		case LEFT:
-			return mLeftContent;
-		case RIGHT:
-			return mRightContent;
-		}
-		return null;
-	}
-
-	protected void setAdapter(int side, BasicContentStore adapter) {
-		switch (side) {
-		case LEFT:
-			mLeftContent.setAdapter((ListAdapter) adapter);
-			break;
-		case RIGHT:
-			mRightContent.setAdapter((ListAdapter) adapter);
 			break;
 		}
 	}
@@ -205,73 +169,13 @@ public abstract class BasicTabFragment extends Fragment implements
 		}
 	}
 
-	@Override
-	public void onItemClick(AdapterView<?> adapterView, View view,
-			int position, long id) {
-		if (adapterView.getAdapter() == mLeftContent.getAdapter()) {
-			onLeftItemClick(adapterView, view, position, id);
-		} else {
-			onRightItemClick(adapterView, view, position, id);
+	public ViewGroup getGroup(int side) {
+		switch (side) {
+		case LEFT:
+			return mLeftContent;
+		case RIGHT:
+			return mRightContent;
 		}
-	}
-
-	/**
-	 * click listener for right side items
-	 * 
-	 * @param adapterView
-	 * @param view
-	 * @param position
-	 * @param id
-	 */
-	private void onRightItemClick(AdapterView<?> adapterView, View view,
-			int position, long id) {
-	}
-
-	/**
-	 * click listener for left side items
-	 * 
-	 * @param adapterView
-	 * @param view
-	 * @param position
-	 * @param id
-	 */
-	private void onLeftItemClick(AdapterView<?> adapterView, View view,
-			int position, long id) {
-	}
-
-	@Override
-	public boolean onItemLongClick(AdapterView<?> adapterView, View view,
-			int position, long id) {
-		if (adapterView.getAdapter() == mLeftContent.getAdapter()) {
-			return onLeftItemLongClick(adapterView, view, position, id);
-		} else {
-			return onRightItemLongClick(adapterView, view, position, id);
-		}
-	}
-
-	/**
-	 * long click listener for left side items
-	 * 
-	 * @param adapterView
-	 * @param view
-	 * @param position
-	 * @param id
-	 */
-	private boolean onLeftItemLongClick(AdapterView<?> adapterView, View view,
-			int position, long id) {
-		return false;
-	}
-
-	/**
-	 * long click listener for right side items
-	 * 
-	 * @param adapterView
-	 * @param view
-	 * @param position
-	 * @param id
-	 */
-	private boolean onRightItemLongClick(AdapterView<?> adapterView, View view,
-			int position, long id) {
-		return false;
+		return null;
 	}
 }

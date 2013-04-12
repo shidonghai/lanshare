@@ -8,10 +8,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.nano.lanshare.R;
 import com.nano.lanshare.components.BasicContentStore;
+import com.nano.lanshare.util.FileSizeUtil;
 
 public class AppAdapter extends BaseAdapter implements BasicContentStore {
 	private List<PackageInfo> mList;
@@ -42,11 +44,13 @@ public class AppAdapter extends BaseAdapter implements BasicContentStore {
 			view = mLayoutInflater.inflate(R.layout.app_item, null);
 		}
 		PackageInfo info = mList.get(position);
-		((TextView) view.findViewById(R.id.title))
-				.setText(info.applicationInfo.name);
-		String dir = info.applicationInfo.publicSourceDir;
-		int size = Integer.valueOf((int) new File(dir).length());
-		((TextView) view.findViewById(R.id.size)).setText(size + "");
+		// ((ImageView) view.findViewById(R.id.icon))
+		// .setImageResource(info.applicationInfo.icon);
+		// ((TextView) view.findViewById(R.id.title))
+		// .setText(info.applicationInfo.labelRes);
+		File file = new File(info.applicationInfo.publicSourceDir);
+		((TextView) view.findViewById(R.id.size)).setText(FileSizeUtil
+				.formatFromByte(file.length()));
 		return view;
 	}
 

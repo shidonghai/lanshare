@@ -4,10 +4,14 @@ import java.util.List;
 
 import android.content.pm.PackageInfo;
 import android.os.Message;
+import android.widget.GridView;
 
+import com.nano.lanshare.R;
 import com.nano.lanshare.apps.AppListener;
 import com.nano.lanshare.apps.AppLoader;
 import com.nano.lanshare.components.BasicTabFragment;
+import com.nano.lanshare.history.fragment.HistoryFragment;
+import com.nano.lanshare.pics.ui.PicFragment;
 
 public class AppFragment extends BasicTabFragment {
 	private AppLoader mAppLoader;
@@ -42,34 +46,55 @@ public class AppFragment extends BasicTabFragment {
 
 	};
 
+	GridView mLeftGrid;
+	GridView mRightGrid;
+	AppAdapter mLeftAdapter;
+	AppAdapter mRightAdapter;
+
 	@Override
 	protected void init() {
-		mAppLoader = new AppLoader(getActivity());
-		mAppLoader.setAppListener(mAppListener);
-		mAppLoader.startLoading();
-
-		setAdapter(LEFT, new AppAdapter(getLayoutInflater(null)));
-		setAdapter(RIGHT, new AppAdapter(getLayoutInflater(null)));
-
-		getGridView(LEFT).setNumColumns(4);
-		getGridView(RIGHT).setNumColumns(4);
+		// mAppLoader = new AppLoader(getActivity());
+		// mAppLoader.setAppListener(mAppListener);
+		// mAppLoader.startLoading();
+		getFragmentManager().beginTransaction()
+				.add(R.id.left_container, new HistoryFragment()).commit();
+		// mLeftGrid = new GridView(getActivity());
+		// mLeftGrid.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
+		// LayoutParams.MATCH_PARENT));
+		// mLeftGrid.setNumColumns(4);
+		// getGroup(LEFT).addView(mLeftGrid);
+		// mLeftAdapter = new AppAdapter(getLayoutInflater(null));
+		// mLeftGrid.setAdapter(mLeftAdapter);
+		//
+		// mRightGrid = new GridView(getActivity());
+		// mRightGrid.setLayoutParams(new
+		// LayoutParams(LayoutParams.MATCH_PARENT,
+		// LayoutParams.MATCH_PARENT));
+		// mRightGrid.setNumColumns(4);
+		//
+		// mRightAdapter = new AppAdapter(getLayoutInflater(null));
+		// getGroup(RIGHT).addView(mRightGrid);
+		// mRightGrid.setAdapter(mRightAdapter);
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
-		mAppLoader.onResume();
+		// mAppLoader.onResume();
 	}
 
 	@Override
 	public void onStop() {
 		super.onStop();
-		mAppLoader.onStop();
+		// mAppLoader.onStop();
 	}
 
 	@Override
 	protected void onUpdateData(Message msg) {
-		getStore(msg.arg1).setContent(msg.obj);
+		// if (msg.arg1 == LEFT) {
+		// mLeftAdapter.setContent(msg.obj);
+		// } else {
+		// mLeftAdapter.setContent(msg.obj);
+		// }
 	}
-
 }

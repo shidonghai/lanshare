@@ -89,13 +89,13 @@ public abstract class BasicFragment extends Fragment implements
 			boolean multiSelectionMode);
 
 	protected void setMultiMode(boolean multi) {
-		getActivity().invalidateOptionsMenu();
+		getActivity().supportInvalidateOptionsMenu();
 		mAdapter.notifyDataSetChanged();
 	}
 
 	protected void exitQueryMode(boolean restore) {
 		// mAdapter.exitQueryMode(restore);
-		getActivity().invalidateOptionsMenu();
+		getActivity().supportInvalidateOptionsMenu();
 	}
 
 	// public PopupMenu getPopupMenu(View view, Handler handler, List<File>
