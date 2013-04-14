@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <TextView
+        android:id="@+id/create_connect"
+        android:layout_width="match_parent"
+        android:layout_height="50dip"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/zapya_exploits_green_normal_300x50"
+        android:gravity="center"
+        android:text="@string/grpslt_create_new_group"
+        android:textSize="20sp" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/create_connect" >
+
+        <com.nano.lanshare.conn.ui.PullToRefreshListView
+            android:id="@+id/friends_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone" >
+        </com.nano.lanshare.conn.ui.PullToRefreshListView>
+    </FrameLayout>
+
+</RelativeLayout>

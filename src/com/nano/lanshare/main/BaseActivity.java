@@ -3,14 +3,13 @@ package com.nano.lanshare.main;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
-import android.util.Log;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -19,13 +18,13 @@ import android.widget.TextView;
 
 import com.nano.lanshare.R;
 import com.nano.lanshare.common.DragController;
+import com.nano.lanshare.conn.ui.ConnectActivity;
 import com.nano.lanshare.main.adapter.MainViewPagerAdapter;
 import com.nano.lanshare.main.ui.ExitDialog;
 
 public class BaseActivity extends FragmentActivity implements
 		OnPageChangeListener, OnClickListener {
 	private ViewPager mViewPager;
-	private List<View> mViewList = new ArrayList<View>();
 	private List<TextView> mTabs = new ArrayList<TextView>();
 	private MainViewPagerAdapter mPagerAdapter;
 	private TextView mAppTab;
@@ -34,6 +33,8 @@ public class BaseActivity extends FragmentActivity implements
 	private TextView mFileTab;
 	private TextView mHistoryTab;
 
+	private View mConnectFriends;
+
 	private DragController mDragController;
 
 	@Override
@@ -41,7 +42,6 @@ public class BaseActivity extends FragmentActivity implements
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main_base);
 		initView();
-
 		mDragController = DragController
 				.getInstance((ViewGroup) findViewById(R.id.base_viewgroup));
 	}
@@ -70,26 +70,15 @@ public class BaseActivity extends FragmentActivity implements
 		mHistoryTab.setOnClickListener(this);
 		mTabs.add(mHistoryTab);
 
+		mConnectFriends = findViewById(R.id.connect_friends);
+		mConnectFriends.setOnClickListener(this);
+
 		mViewPager = (ViewPager) findViewById(R.id.viewpager);
-		addViews2List();
 		mPagerAdapter = new MainViewPagerAdapter(getSupportFragmentManager());
 		mViewPager.setOnPageChangeListener(this);
-		mViewPager.setAdapter(mPagerAdapter);
-		// 设置第一个tab为默认为选中状态
+		mViewPager.setAdapter(mPagerAdapter); // 设置第一个tab为默认为选中状态
 		mViewPager.setCurrentItem(0);
 		setTabSelected(mAppTab);
-	}
-
-	/**
-	 * 添加view到ViewPagerList中去
-	 * 
-	 * @param view
-	 */
-	private void addViews2List() {
-		LayoutInflater layoutInflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-
-		mViewList.add(layoutInflater.inflate(R.layout.test1, null));
-		mViewList.add(layoutInflater.inflate(R.layout.test2, null));
 	}
 
 	/**
@@ -170,6 +159,8 @@ public class BaseActivity extends FragmentActivity implements
 			setTabSelected(mFileTab);
 		} else if (v == mHistoryTab) {
 			setTabSelected(mHistoryTab);
+		} else if (v == mConnectFriends) {
+			startActivity(new Intent(this, ConnectActivity.class));
 		}
 
 	}
@@ -196,5 +187,4 @@ public class BaseActivity extends FragmentActivity implements
 		}
 		return true;
 	}
-
 }
