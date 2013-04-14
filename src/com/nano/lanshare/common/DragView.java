@@ -2,6 +2,8 @@ package com.nano.lanshare.common;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.view.View;
 
 /**
@@ -10,16 +12,44 @@ import android.view.View;
  * @author King Bright
  * 
  */
-public class DragView extends View{
+public class DragView extends View {
 
-	private float mX, mY;
-	private int alpha;
-	private Bitmap mDragView;
+	private static int ALPHA = 128;
+	private Bitmap mDrawingCache;
 
 	private DragObject mDragObject;
 
-	public DragView(Context context) {
+	private int left, top;
+	private Paint paint;
+
+	public DragView(Context context, Bitmap drawingCache) {
 		super(context);
-		// TODO Auto-generated constructor stub
+		mDrawingCache = drawingCache;
+		paint = new Paint();
+		paint.setAlpha(ALPHA);
+	}
+
+	@Override
+	protected void onDraw(Canvas canvas) {
+		super.onDraw(canvas);
+		canvas.drawBitmap(mDrawingCache, left, top, paint);
+	}
+
+	public DragObject getDragObject() {
+		return mDragObject;
+	}
+
+	public void setDragObject(DragObject object) {
+		this.mDragObject = object;
+	}
+
+	public void show() {
+		DragController.getInstance(null).dragModeStart(this);
+	}
+
+	public void move(int x, int y) {
+		left = x;
+		top = y;
+		invalidate();
 	}
 }

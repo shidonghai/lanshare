@@ -7,6 +7,8 @@ import java.util.List;
 
 import android.content.pm.PackageInfo;
 
+import com.nano.lanshare.apps.AppLoader.AppInfo;
+
 /**
  * @author King Bright
  * 
@@ -18,5 +20,5 @@ public interface AppListener {
 
 	public void onLoading();
 
-	public void onLoaded(List<PackageInfo> mGames, List<PackageInfo> mApps);
+	public void onLoaded(List<AppInfo> mGames, List<AppInfo> mApps);
 }

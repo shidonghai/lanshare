@@ -1,9 +1,13 @@
 package com.nano.lanshare.apps.ui;
 
-import java.io.File;
 import java.util.List;
 
-import android.content.pm.PackageInfo;
+import android.content.Context;
+import android.content.pm.ApplicationInfo;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,15 +16,37 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.nano.lanshare.R;
+import com.nano.lanshare.apps.AppLoader.AppInfo;
 import com.nano.lanshare.components.BasicContentStore;
-import com.nano.lanshare.util.FileSizeUtil;
+import com.nano.lanshare.thumbnail.util.ImageWorker;
+import com.nano.lanshare.thumbnail.util.ImageWorker.LoadMethod;
 
 public class AppAdapter extends BaseAdapter implements BasicContentStore {
-	private List<PackageInfo> mList;
+	private List<AppInfo> mList;
 	private LayoutInflater mLayoutInflater;
+	private ImageWorker mWorker;
+	private Bitmap mLoadingBitmap;
+	private Context mContext;
 
-	public AppAdapter(LayoutInflater layoutInflater) {
+	private LoadMethod mAppIconLoader = new LoadMethod() {
+
+		@Override
+		public Bitmap processBitmap(Object obj, Context context) {
+			ApplicationInfo info = (ApplicationInfo) obj;
+			Drawable drawable = info.loadIcon(context.getPackageManager());
+			BitmapDrawable bd = (BitmapDrawable) drawable;
+			return bd.getBitmap();
+		}
+
+	};
+
+	public AppAdapter(Context context, ImageWorker worker,
+			LayoutInflater layoutInflater) {
+		mContext = context;
 		mLayoutInflater = layoutInflater;
+		mWorker = worker;
+		mLoadingBitmap = BitmapFactory.decodeResource(context.getResources(),
+				R.drawable.app_default_icon);
 	}
 
 	@Override
@@ -43,20 +69,18 @@ public class AppAdapter extends BaseAdapter implements BasicContentStore {
 		if (view == null) {
 			view = mLayoutInflater.inflate(R.layout.app_item, null);
 		}
-		PackageInfo info = mList.get(position);
-		// ((ImageView) view.findViewById(R.id.icon))
-		// .setImageResource(info.applicationInfo.icon);
-		// ((TextView) view.findViewById(R.id.title))
-		// .setText(info.applicationInfo.labelRes);
-		File file = new File(info.applicationInfo.publicSourceDir);
-		((TextView) view.findViewById(R.id.size)).setText(FileSizeUtil
-				.formatFromByte(file.length()));
+		AppInfo info = mList.get(position);
+		ImageView icon = (ImageView) view.findViewById(R.id.icon);
+		mWorker.loadImage(info.info, icon, mLoadingBitmap, mAppIconLoader);
+		((TextView) view.findViewById(R.id.title)).setText(info.name);
+		((TextView) view.findViewById(R.id.size)).setText(info.size);
+		view.setDrawingCacheEnabled(true);
 		return view;
 	}
 
 	@Override
 	public void setContent(Object o) {
-		mList = (List<PackageInfo>) o;
+		mList = (List<AppInfo>) o;
 		notifyDataSetChanged();
 	}
 

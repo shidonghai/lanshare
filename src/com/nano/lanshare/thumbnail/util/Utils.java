@@ -16,9 +16,7 @@
 
 package com.nano.lanshare.thumbnail.util;
 
-import android.annotation.TargetApi;
 import android.os.Build;
-import android.os.StrictMode;
 
 /**
  * Class containing some static utility methods.

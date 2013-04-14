@@ -1,13 +1,13 @@
 
 package com.nano.lanshare.invitation.ui;
 
-import com.nano.lanshare.R;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+
+import com.nano.lanshare.R;
 
 public class InviteFriendsActivity extends Activity implements OnClickListener {
     private Button mBack;

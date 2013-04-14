@@ -1,15 +1,21 @@
 package com.nano.lanshare.common;
 
+import android.content.Context;
 import android.view.View;
 
 public class DragViewFactory {
 	/**
 	 * 根据被长按的item的数据和他的view构造一个DragView
+	 * 
+	 * @param context
 	 * @param view
 	 * @param object
 	 * @return
 	 */
-	public static DragView createDragView(View view, DragObject object) {
-		return null;
+	public static DragView createDragView(Context context, View view,
+			DragObject object) {
+		DragView dragView = new DragView(context, view.getDrawingCache(true));
+		dragView.setDragObject(object);
+		return dragView;
 	}
 }

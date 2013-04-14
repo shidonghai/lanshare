@@ -5,7 +5,6 @@ import android.content.ContentProvider;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
-import android.provider.ContactsContract;
 
 public class HistoryProvider extends ContentProvider {
 

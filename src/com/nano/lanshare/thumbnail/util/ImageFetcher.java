@@ -32,7 +32,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.nano.lanshare.BuildConfig;
 
