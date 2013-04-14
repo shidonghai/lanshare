@@ -609,5 +609,8 @@ Others can't see."</string>
     <string name="main_quick_click">click</string>
     <string name="main_conn_friends">Connect Friends</string>
     <string name="empty_folder">Empty Folder</string>
-    <string name="invite_friends">Invite Friends</string>
+    <string name="pull_to_refresh_pull_label">Pull to refresh...</string>
+    <string name="pull_to_refresh_release_label">Release to refresh...</string>
+    <string name="pull_to_refresh_refreshing_label">Loading...</string>
+    <string name="pull_to_refresh_tap_label">Tap to refresh...</string>
 </resources>

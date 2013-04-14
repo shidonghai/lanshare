@@ -5,11 +5,12 @@ import com.nano.lanshare.R;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 
-public class InviteFriendsActivity extends Activity implements OnClickListener {
+public class InviteFriendsActivity extends FragmentActivity implements OnClickListener {
     private Button mBack;
 
     @Override

@@ -99,7 +99,7 @@ public class HistoryFragment extends Fragment implements OnItemClickListener,
         @Override
         public List<HistoryInfo> loadInBackground() {
             // just test date
-            for (int i = 0; i < 20; i++) {
+          /*  for (int i = 0; i < 20; i++) {
                 HistoryInfo info = new HistoryInfo();
                 info.filePath = "1" + i;
                 info.date = System.currentTimeMillis() + "";
@@ -107,7 +107,7 @@ public class HistoryFragment extends Fragment implements OnItemClickListener,
                 info.sender = (i + 222) + "";
                 info.historyType = i % 2;
                 dbManager.insert(info);
-            }
+            }*/
             return dbManager.listAll();
         }
 
