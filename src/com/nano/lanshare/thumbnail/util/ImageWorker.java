@@ -21,7 +21,6 @@ import java.lang.ref.WeakReference;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -29,6 +28,7 @@ import android.graphics.drawable.TransitionDrawable;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
+import android.widget.AbsListView;
 import android.widget.ImageView;
 
 import com.nano.lanshare.BuildConfig;
@@ -43,9 +43,9 @@ public class ImageWorker {
 	private static final String TAG = "ImageWorker";
 	private static final int FADE_IN_TIME = 200;
 
+	private Context mContext;
 	private ImageCache mImageCache;
 	private ImageCache.ImageCacheParams mImageCacheParams;
-	private Bitmap mLoadingBitmap;
 	private boolean mFadeInBitmap = true;
 	private boolean mExitTasksEarly = false;
 	protected boolean mPauseWork = false;
@@ -58,7 +58,30 @@ public class ImageWorker {
 	private static final int MESSAGE_FLUSH = 2;
 	private static final int MESSAGE_CLOSE = 3;
 
+	private AbsListView.OnScrollListener mScrollerListener = new AbsListView.OnScrollListener() {
+		@Override
+		public void onScrollStateChanged(AbsListView absListView,
+				int scrollState) {
+			// Pause fetcher to ensure smoother scrolling when flinging
+			if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_FLING) {
+				ImageWorker.this.setPauseWork(true);
+			} else {
+				ImageWorker.this.setPauseWork(false);
+			}
+		}
+
+		@Override
+		public void onScroll(AbsListView absListView, int firstVisibleItem,
+				int visibleItemCount, int totalItemCount) {
+		}
+	};
+
+	public AbsListView.OnScrollListener getScrollerListener() {
+		return mScrollerListener;
+	}
+
 	public ImageWorker(Context context) {
+		mContext = context;
 		mResources = context.getResources();
 	}
 
@@ -76,7 +99,8 @@ public class ImageWorker {
 	 * @param imageView
 	 *            The ImageView to bind the downloaded image to.
 	 */
-	public void loadImage(Object data, ImageView imageView, LoadMethod method) {
+	public void loadImage(Object data, ImageView imageView, Bitmap loading,
+			LoadMethod method) {
 		if (data == null) {
 			return;
 		}
@@ -93,7 +117,7 @@ public class ImageWorker {
 		} else if (cancelPotentialWork(data, imageView)) {
 			final BitmapWorkerTask task = new BitmapWorkerTask(imageView);
 			final AsyncDrawable asyncDrawable = new AsyncDrawable(mResources,
-					mLoadingBitmap, task);
+					loading, task);
 			imageView.setImageDrawable(asyncDrawable);
 
 			// NOTE: This uses a custom version of AsyncTask that has been
@@ -103,26 +127,6 @@ public class ImageWorker {
 			// for more info on what was changed.
 			task.executeOnExecutor(AsyncTask.DUAL_THREAD_EXECUTOR, data, method);
 		}
-	}
-
-	/**
-	 * Set placeholder bitmap that shows when the the background thread is
-	 * running.
-	 * 
-	 * @param bitmap
-	 */
-	public void setLoadingImage(Bitmap bitmap) {
-		mLoadingBitmap = bitmap;
-	}
-
-	/**
-	 * Set placeholder bitmap that shows when the the background thread is
-	 * running.
-	 * 
-	 * @param resId
-	 */
-	public void setLoadingImage(int resId) {
-		mLoadingBitmap = BitmapFactory.decodeResource(mResources, resId);
 	}
 
 	/**
@@ -295,7 +299,8 @@ public class ImageWorker {
 			// process method (as implemented by a subclass)
 			if (bitmap == null && !isCancelled()
 					&& getAttachedImageView() != null && !mExitTasksEarly) {
-				bitmap = ((LoadMethod) params[1]).processBitmap(params[0]);
+				bitmap = ((LoadMethod) params[1]).processBitmap(params[0],
+						mContext);
 			}
 
 			// If the bitmap was processed and the image cache is available,
@@ -411,9 +416,6 @@ public class ImageWorker {
 					new Drawable[] {
 							new ColorDrawable(android.R.color.transparent),
 							drawable });
-			// Set background to loading bitmap
-			imageView.setBackgroundDrawable(new BitmapDrawable(mResources,
-					mLoadingBitmap));
 
 			imageView.setImageDrawable(td);
 			td.startTransition(FADE_IN_TIME);
@@ -502,7 +504,7 @@ public class ImageWorker {
 		new CacheAsyncTask().execute(MESSAGE_CLOSE);
 	}
 
-	static interface LoadMethod {
-		public Bitmap processBitmap(Object obj);
+	public static interface LoadMethod {
+		public Bitmap processBitmap(Object obj, Context context);
 	}
 }
