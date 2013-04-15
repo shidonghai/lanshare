@@ -10,11 +10,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 
 import com.nano.lanshare.R;
+import com.nano.lanshare.components.operation.OperationDialog;
 
-public class VideoListFragment extends Fragment {
+public class VideoListFragment extends Fragment implements OnItemClickListener {
 
 	private QueryVideo mQueryVideo;
 
@@ -75,8 +78,16 @@ public class VideoListFragment extends Fragment {
 					result);
 			GridView gridView = (GridView) getActivity().findViewById(
 					R.id.gridview);
+			gridView.setOnItemClickListener(VideoListFragment.this);
 			gridView.setAdapter(adapter);
 		}
 
+	}
+
+	@Override
+	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+		OperationDialog dialog = new OperationDialog(getActivity(),
+				OperationDialog.TYPE_VIDEO, null);
+		dialog.showAsDropDown(arg1);
 	}
 }

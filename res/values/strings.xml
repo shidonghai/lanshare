@@ -121,6 +121,8 @@
     <string name="menu_share">Share</string>
     <string name="menu_open">Open</string>
     <string name="menu_play">Play</string>
+    <string name="menu_transport">Transport</string>
+     <string name="menu_operation">Operation</string>
     <string name="menu_install">Install</string>
     <string name="menu_view">View</string>
     <string name="menu_friends">Search friends</string>

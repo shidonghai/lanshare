@@ -108,6 +108,8 @@
     <string name="menu_share">分享</string>
     <string name="menu_open">打开</string>
     <string name="menu_play">播放</string>
+    <string name="menu_transport">传输</string>
+    <string name="menu_operation">操作</string>
     <string name="menu_install">安装</string>
     <string name="menu_view">查看</string>
     <string name="menu_friends">查找好友</string>

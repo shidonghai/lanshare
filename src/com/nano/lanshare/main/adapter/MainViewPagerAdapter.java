@@ -19,7 +19,7 @@ public class MainViewPagerAdapter extends FragmentPagerAdapter {
 
 	@Override
 	public int getCount() {
-		return 2;
+		return 4;
 	}
 
 }

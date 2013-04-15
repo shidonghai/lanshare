@@ -7,6 +7,7 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.widget.AdapterView;
 
+import com.nano.lanshare.components.operation.OperationDialog;
 import com.nano.lanshare.file.FileItem;
 import com.nano.lanshare.file.FileList;
 import com.nano.lanshare.file.scan.FileScanListener;
@@ -128,6 +129,9 @@ public class FileListFragment extends BasicFragment {
 			break;
 		}
 		default: {
+			OperationDialog operationDialog = new OperationDialog(
+					getActivity(), OperationDialog.TYPE_FILE, null);
+			operationDialog.showAsDropDown(view);
 			break;
 		}
 		}
