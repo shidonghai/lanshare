@@ -48,7 +48,7 @@ public abstract class BasicTabFragment extends Fragment implements
 				// progress dialog dismiss;
 				mLeftContent.setVisibility(mLeftTab.isSelected() ? View.VISIBLE
 						: View.GONE);
-				mLeftContent
+				mRightContent
 						.setVisibility(!mLeftTab.isSelected() ? View.VISIBLE
 								: View.GONE);
 				mProgress.setVisibility(View.GONE);

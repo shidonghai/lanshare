@@ -1,7 +1,6 @@
-package com.nano.lanshare.util;
+package com.nano.lanshare.utils;
 
 import java.math.BigDecimal;
-import java.text.DecimalFormat;
 
 public class FileSizeUtil {
 	public static final int BYTES = 0;
@@ -21,16 +20,16 @@ public class FileSizeUtil {
 		result.append(format.setScale(2, BigDecimal.ROUND_HALF_UP));
 		switch (suffix) {
 		case BYTES:
-			result.append(" bytes");
+			result.append("bytes");
 			break;
 		case KB:
-			result.append(" KB");
+			result.append("KB");
 			break;
 		case MB:
-			result.append(" MB");
+			result.append("MB");
 			break;
 		case GB:
-			result.append(" GB");
+			result.append("GB");
 			break;
 		}
 		return result.toString();
