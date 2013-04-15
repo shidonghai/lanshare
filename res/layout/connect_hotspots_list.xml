@@ -19,7 +19,7 @@
         android:layout_above="@id/create_connect" >
 
         <com.nano.lanshare.conn.ui.PullToRefreshListView
-            android:id="@+id/friends_list"
+            android:id="@+id/hotspots_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="gone" >
@@ -46,12 +46,20 @@
                 android:text="@string/grpno_center_text" />
 
             <Button
+                android:id="@+id/search_hotspots_button"
                 android:layout_width="220dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/indicate_info"
                 android:layout_marginTop="10dip"
                 android:text="@string/grpno_search_to_enter" />
         </RelativeLayout>
+
+        <ProgressBar
+            android:id="@+id/search_hotspots_progress"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:indeterminateDrawable="@drawable/zapya_common_refresh_wait"
+            android:visibility="gone" />
     </FrameLayout>
 
 </RelativeLayout>

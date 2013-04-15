@@ -601,6 +601,7 @@ All Rights Resevered"</string>
     <string name="main_conn_friends">连接朋友</string>
     <string name="file_back">上一级</string>
     <string name="invite_friends">邀请朋友</string>
+    <string name="no_friend_in_same_net">当前无线网络未发现其他用户\r\n同一网络内的用户可实时发现互联互传</string>
 </resources>
 
 
