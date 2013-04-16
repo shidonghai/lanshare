@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.nano.lanshare.R;
+import com.nano.lanshare.audio.logic.MusicManger;
 import com.nano.lanshare.common.DragController;
 import com.nano.lanshare.conn.ui.ConnectActivity;
 import com.nano.lanshare.main.adapter.MainViewPagerAdapter;
@@ -44,6 +45,8 @@ public class BaseActivity extends FragmentActivity implements
 		initView();
 		mDragController = DragController
 				.getInstance((ViewGroup) findViewById(R.id.base_viewgroup));
+
+        MusicManger.getInstance(this).bindServer(this);
 	}
 
 	/**
@@ -107,9 +110,10 @@ public class BaseActivity extends FragmentActivity implements
 	}
 
 	@Override
-	protected void onDestroy() {
-		super.onDestroy();
-	}
+    protected void onDestroy() {
+        super.onDestroy();
+        MusicManger.getInstance(this).unBindServer(this);
+    }
 
 	private void showExitDialog() {
 
@@ -125,12 +129,13 @@ public class BaseActivity extends FragmentActivity implements
 	}
 
 	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (KeyEvent.KEYCODE_BACK == keyCode) {
-			showExitDialog();
-		}
-		return super.onKeyDown(keyCode, event);
-	}
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (getSupportFragmentManager().findFragmentByTag("music") == null
+                && KeyEvent.KEYCODE_BACK == keyCode) {
+            showExitDialog();
+        }
+        return super.onKeyDown(keyCode, event);
+    }
 
 	@Override
 	public void onPageScrollStateChanged(int position) {

@@ -3,6 +3,7 @@ package com.nano.lanshare.audio.logic;
 interface MusicBinderAidl
 {
     boolean isPlaying();
+    boolean isStarted();
     void stop();
     void pause();
     void startPlay();

@@ -1,45 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
     android:background="@drawable/zapya_hot_drawbar_gray"
     android:orientation="vertical" >
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/umeng_xp_detail_bg" >
+        android:background="@drawable/umeng_xp_detail_bg"
+        android:orientation="vertical" >
 
-        <ImageView
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" >
+
+            <ImageView
+                android:id="@+id/music_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/zapya_data_music_normal" />
+
+            <ImageView
+                android:id="@+id/music_pre"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/zapya_data_music_back_normal" />
+
+            <ImageView
+                android:id="@+id/music_pause"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/zapya_data_music_play_normal" />
+
+            <ImageView
+                android:id="@+id/music_next"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/zapya_data_music_speed_normal" />
+
+            <ImageView
+                android:id="@+id/music_mode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/zapya_data_music_random_ist_normal" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/music_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/zapya_data_music_normal" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/zapya_data_music_back_normal" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/zapya_data_music_play_normal" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/zapya_data_music_speed_normal" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/zapya_data_music_random_ist_normal" />
+            android:layout_gravity="center"
+            android:textColor="@color/dialog_title_blue"
+            android:textSize="@dimen/title_text_size" />
     </LinearLayout>
 
-    <ImageView
+    <SeekBar
+        android:id="@+id/music_seekbar"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:src="@drawable/line" />
+        android:layout_height="5dip"
+        android:layout_below="@id/music_artist"
+        android:progressDrawable="@drawable/seekbar_progerss"
+        android:thumb="@drawable/music_thumb" />
 
     <ListView
         android:id="@+id/music_list"

@@ -10,19 +10,24 @@ import android.media.MediaPlayer.OnPreparedListener;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.RemoteException;
+import android.util.Log;
 
 public class MusicPlayService extends Service implements OnPreparedListener,
 		OnCompletionListener, OnErrorListener {
+
+	private boolean isStarted = false;
 
 	private MediaPlayer mPlayer;
 
 	private MusicManger mMusicManger;
 
+	private int mCureentIndex;
+
 	@Override
 	public void onCreate() {
 		super.onCreate();
 		mPlayer = new MediaPlayer();
-
+		Log.d("zxh", "MusicPlayService onCreate");
 		mMusicManger = MusicManger.getInstance(getApplicationContext());
 	}
 
@@ -41,7 +46,7 @@ public class MusicPlayService extends Service implements OnPreparedListener,
 
 		@Override
 		public void startPlay() throws RemoteException {
-
+			mPlayer.start();
 		}
 
 		@Override
@@ -51,25 +56,26 @@ public class MusicPlayService extends Service implements OnPreparedListener,
 
 		@Override
 		public void seek(int msec) throws RemoteException {
-			// TODO Auto-generated method stub
-
+			mPlayer.seekTo(msec);
 		}
 
 		@Override
 		public void release() throws RemoteException {
-			// TODO Auto-generated method stub
 
 		}
 
 		@Override
 		public void prev(Bundle SongInfo) throws RemoteException {
-			// TODO Auto-generated method stub
-
+			mCureentIndex = mCureentIndex - 1;
+			if (mCureentIndex < 0) {
+				mCureentIndex = mMusicManger.getMusicList().size() - 1;
+			}
+			Log.d("zxh", "mCureentIndex" + mCureentIndex);
+			playMusic(mCureentIndex);
 		}
 
 		@Override
 		public void playOnLine(Bundle songInfo) throws RemoteException {
-			// TODO Auto-generated method stub
 
 		}
 
@@ -80,20 +86,23 @@ public class MusicPlayService extends Service implements OnPreparedListener,
 
 		@Override
 		public void pause() throws RemoteException {
-			// TODO Auto-generated method stub
-
+			mPlayer.pause();
 		}
 
 		@Override
 		public void next(Bundle SongInfo) throws RemoteException {
-			// TODO Auto-generated method stub
-
+			mCureentIndex = mCureentIndex + 1;
+			if (mCureentIndex == mMusicManger.getMusicList().size()) {
+				mCureentIndex = 0;
+			}
+			Log.d("zxh", "mCureentIndex" + mCureentIndex);
+			playMusic(mCureentIndex);
 		}
 
 		@Override
 		public boolean isPlaying() throws RemoteException {
 			// TODO Auto-generated method stub
-			return false;
+			return mPlayer.isPlaying();
 		}
 
 		@Override
@@ -104,14 +113,12 @@ public class MusicPlayService extends Service implements OnPreparedListener,
 
 		@Override
 		public int getDuration() throws RemoteException {
-			// TODO Auto-generated method stub
-			return 0;
+			return isStarted ? mPlayer.getDuration() : 0;
 		}
 
 		@Override
 		public int getCurrentPosion() throws RemoteException {
-			// TODO Auto-generated method stub
-			return 0;
+			return isStarted ? mPlayer.getCurrentPosition() : 0;
 		}
 
 		@Override
@@ -121,7 +128,13 @@ public class MusicPlayService extends Service implements OnPreparedListener,
 
 		@Override
 		public int getMusicIndex() throws RemoteException {
-			return 0;
+			return mCureentIndex;
+		}
+
+		@Override
+		public boolean isStarted() throws RemoteException {
+			// TODO Auto-generated method stub
+			return isStarted;
 		}
 	};
 
@@ -144,6 +157,7 @@ public class MusicPlayService extends Service implements OnPreparedListener,
 
 	public void playMusic(int id) {
 		if (null != mPlayer) {
+			isStarted = true;
 			mPlayer.reset();
 			try {
 				mPlayer.setDataSource(getApplicationContext(), mMusicManger
@@ -152,7 +166,7 @@ public class MusicPlayService extends Service implements OnPreparedListener,
 				mPlayer.setOnPreparedListener(this);
 				mPlayer.setOnErrorListener(this);
 				mPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-				mPlayer.prepare();
+				mPlayer.prepareAsync();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -163,6 +177,7 @@ public class MusicPlayService extends Service implements OnPreparedListener,
 	public void onDestroy() {
 		super.onDestroy();
 		if (null != mPlayer) {
+			Log.d("zxh", " MusicPlayService onDestroy");
 			mPlayer.release();
 			mPlayer = null;
 		}

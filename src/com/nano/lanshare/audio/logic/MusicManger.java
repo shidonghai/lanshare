@@ -3,12 +3,14 @@ package com.nano.lanshare.audio.logic;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.R.integer;
 import android.content.ComponentName;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.database.Cursor;
+import android.os.Handler;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.provider.MediaStore.Audio;
@@ -154,8 +156,10 @@ public class MusicManger {
 	}
 
 	public void unBindServer(Context context) {
-		context.unbindService(mServiceConnection);
-		context.stopService(new Intent(context, MusicPlayService.class));
+		if (null != mServiceConnection) {
+			context.unbindService(mServiceConnection);
+			context.stopService(new Intent(context, MusicPlayService.class));
+		}
 	}
 
 	public void start() {
@@ -188,12 +192,29 @@ public class MusicManger {
 		}
 	}
 
-	public void getDuration() {
+	public void next() {
 		try {
-			mServerAidl.getDuration();
+			mServerAidl.next(null);
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public void previou() {
+		try {
+			mServerAidl.prev(null);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public int getDuration() {
+		try {
+			return mServerAidl.getDuration();
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+		return 0;
 	}
 
 	public void seek(int msec) {
@@ -204,4 +225,43 @@ public class MusicManger {
 		}
 	}
 
+	public int getCurrentPosition() {
+		try {
+			return mServerAidl.getCurrentPosion();
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+
+		return 0;
+	}
+
+	public int getCurrentIndex() {
+		try {
+			return mServerAidl.getMusicIndex();
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+
+		return 0;
+	}
+
+	public boolean isStarted() {
+		try {
+			return mServerAidl.isStarted();
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+
+		return false;
+	}
+
+	public boolean isPlaying() {
+		try {
+			return mServerAidl.isPlaying();
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+
+		return false;
+	}
 }

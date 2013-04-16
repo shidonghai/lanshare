@@ -1,0 +1,164 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/zapya_hot_drawbar_gray"
+    android:clickable="true"
+    android:orientation="vertical" >
+
+    <!-- Title -->
+
+    <RelativeLayout
+        android:id="@+id/title_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dip" >
+
+        <ImageView
+            android:id="@+id/music_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/zapya_data_music_single_golist_normal" />
+
+        <TextView
+            android:id="@+id/music_index"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="1/7"
+            android:textColor="@color/dm_data_list_item_subtitle_color" />
+
+        <ImageView
+            android:id="@+id/music_play_mode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/zapya_data_music_random_circlelist_normal" />
+    </RelativeLayout>
+
+    <!-- Music bg -->
+
+    <LinearLayout
+        android:id="@+id/music_bg"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_above="@+id/msuci_detail_layout"
+        android:layout_below="@id/title_layout"
+        android:background="@drawable/zapya_data_music_single_default" >
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/title_layout"
+        android:src="@color/black" />
+    <!-- Deatil -->
+
+    <RelativeLayout
+        android:id="@+id/msuci_detail_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/music_operation_layout"
+        android:background="#ff000000" >
+
+        <TextView
+            android:id="@+id/music_current_duration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/music_seekbar"
+            android:layout_alignParentLeft="true"
+            android:layout_marginBottom="2dip"
+            android:layout_marginLeft="10dip"
+            android:text="00:00"
+            android:textColor="@color/dm_data_list_item_subtitle_color" />
+
+        <TextView
+            android:id="@+id/music_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dip"
+            android:text="abcde"
+            android:textColor="@color/dm_data_list_item_title_color"
+            android:textSize="@dimen/connect_btn_text_size" />
+
+        <TextView
+            android:id="@+id/music_artist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/music_name"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="8dip"
+            android:text="fgh"
+            android:textColor="@color/dm_data_list_item_title_color" />
+
+        <TextView
+            android:id="@+id/music_duration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/music_seekbar"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="2dip"
+            android:layout_marginRight="10dip"
+            android:text="05:01"
+            android:textColor="@color/dm_data_list_item_subtitle_color" />
+
+        <SeekBar
+            android:id="@+id/music_seekbar"
+            android:layout_width="fill_parent"
+            android:layout_height="5dip"
+            android:layout_below="@id/music_artist"
+            android:progressDrawable="@drawable/seekbar_progerss"
+            android:thumb="@drawable/music_thumb" />
+    </RelativeLayout>
+
+    <!-- Operation -->
+
+    <LinearLayout
+        android:id="@+id/music_operation_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:paddingBottom="10dip"
+        android:paddingTop="10dip" >
+
+        <ImageView
+            android:id="@+id/music_pre"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/zapya_data_music_single_back_pressed" />
+
+        <ImageView
+            android:id="@+id/music_rewind"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/zapya_data_music_single_rewind_normal" />
+
+        <ImageView
+            android:id="@+id/music_pause"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/zapya_data_music_single_play_normal" />
+
+        <ImageView
+            android:id="@+id/music_forward"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/zapya_data_music_single_forward_normal" />
+
+        <ImageView
+            android:id="@+id/music_next"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/zapya_data_music_single_speed_normal" />
+    </LinearLayout>
+
+</RelativeLayout>
