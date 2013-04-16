@@ -29,7 +29,8 @@
             android:id="@+id/empty_hotspots"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center_horizontal" >
+            android:gravity="center_horizontal"
+            android:visibility="gone" >
 
             <ImageView
                 android:id="@+id/indicate_status"
@@ -56,10 +57,11 @@
 
         <ProgressBar
             android:id="@+id/search_hotspots_progress"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:indeterminateDrawable="@drawable/zapya_common_refresh_wait"
-            android:visibility="gone" />
+            android:visibility="visible" />
     </FrameLayout>
 
 </RelativeLayout>
