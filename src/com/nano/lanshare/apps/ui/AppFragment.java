@@ -7,6 +7,7 @@ import android.os.Message;
 import android.widget.FrameLayout.LayoutParams;
 import android.widget.GridView;
 
+import com.nano.lanshare.R;
 import com.nano.lanshare.apps.AppListener;
 import com.nano.lanshare.apps.AppLoader;
 import com.nano.lanshare.apps.AppLoader.AppInfo;
@@ -67,6 +68,7 @@ public class AppFragment extends BasicTabFragment {
 		mLeftGrid.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
 				LayoutParams.MATCH_PARENT));
 		mLeftGrid.setNumColumns(4);
+		mLeftGrid.setVerticalSpacing(16);
 		getGroup(LEFT).addView(mLeftGrid);
 		mLeftAdapter = new AppAdapter(getActivity().getApplicationContext(),
 				worker, getLayoutInflater(null));
@@ -76,6 +78,7 @@ public class AppFragment extends BasicTabFragment {
 		mRightGrid.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
 				LayoutParams.MATCH_PARENT));
 		mRightGrid.setNumColumns(4);
+		mRightGrid.setVerticalSpacing(16);
 		mRightAdapter = new AppAdapter(getActivity().getApplicationContext(),
 				worker, getLayoutInflater(null));
 		getGroup(RIGHT).addView(mRightGrid);
@@ -85,7 +88,7 @@ public class AppFragment extends BasicTabFragment {
 		mLeftGrid.setOnScrollListener(worker.getScrollerListener());
 		mRightGrid.setOnScrollListener(worker.getScrollerListener());
 		LongClickListener mLongClickListener = new LongClickListener(
-				getActivity());
+				getActivity(), R.id.icon);
 		mLeftGrid.setOnItemLongClickListener(mLongClickListener);
 		mRightGrid.setOnItemLongClickListener(mLongClickListener);
 

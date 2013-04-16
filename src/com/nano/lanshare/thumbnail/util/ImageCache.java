@@ -500,6 +500,7 @@ public class ImageCache {
 		 */
 		public ImageCacheParams(Context context, String diskCacheDirectoryName) {
 			diskCacheDir = getDiskCacheDir(context, diskCacheDirectoryName);
+			setMemCacheSizePercent(0.5f);
 		}
 
 		/**

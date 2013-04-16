@@ -151,14 +151,19 @@ public class BaseActivity extends FragmentActivity implements
 	public void onClick(View v) {
 		if (v == mAppTab) {
 			setTabSelected(mAppTab);
+			mViewPager.setCurrentItem(0, false);
 		} else if (v == mPhotoTab) {
 			setTabSelected(mPhotoTab);
+			mViewPager.setCurrentItem(1, false);
 		} else if (v == mMediaTab) {
 			setTabSelected(mMediaTab);
+			mViewPager.setCurrentItem(2, false);
 		} else if (v == mFileTab) {
 			setTabSelected(mFileTab);
+			mViewPager.setCurrentItem(3, false);
 		} else if (v == mHistoryTab) {
 			setTabSelected(mHistoryTab);
+			mViewPager.setCurrentItem(4, false);
 		} else if (v == mConnectFriends) {
 			startActivity(new Intent(this, ConnectActivity.class));
 		}

@@ -4,10 +4,11 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <ImageView
+    <com.nano.lanshare.components.RectImageView
         android:id="@+id/icon"
-        android:layout_width="80dip"
-        android:layout_height="60dip"
-        android:scaleType="fitXY" />
+        android:layout_width="fill_parent"
+        android:layout_height="100dip"
+        android:layout_gravity="center"
+        android:scaleType="centerCrop" />
 
 </LinearLayout>

@@ -34,11 +34,9 @@ public class FragmentTabsFactory {
 			return new AudioBase();
 		case TABS_FIEL:
 			return new FileListFragment();
+		case TABS_HISTORY:
+			return new HistoryFragment();
 		}
-		return new HistoryFragment();
-		/*
-		 * switch (tabId) { case TABS_HISTORY: return new HistoryFragment();
-		 * default: return null; }
-		 */
+		return null;
 	}
 }

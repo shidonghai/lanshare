@@ -74,7 +74,7 @@ public class AppAdapter extends BaseAdapter implements BasicContentStore {
 		mWorker.loadImage(info.info, icon, mLoadingBitmap, mAppIconLoader);
 		((TextView) view.findViewById(R.id.title)).setText(info.name);
 		((TextView) view.findViewById(R.id.size)).setText(info.size);
-		view.setDrawingCacheEnabled(true);
+		icon.setDrawingCacheEnabled(true);
 		return view;
 	}
 

@@ -34,8 +34,8 @@ public class DragView extends View {
 		mSrc = new Rect(0, 0, mDrawingCache.getWidth(),
 				mDrawingCache.getHeight());
 		mDest = new Rect(0, 0, 0, 0);
-		widthHalf = mDrawingCache.getWidth() * 3 / 4;
-		heightHalf = mDrawingCache.getHeight() * 3 / 4;
+		widthHalf = mDrawingCache.getWidth() * 3 / 5;
+		heightHalf = mDrawingCache.getHeight() * 3 / 5;
 	}
 
 	@Override
@@ -59,8 +59,8 @@ public class DragView extends View {
 	public void move(int x, int y) {
 		mDest.left = x - widthHalf;
 		mDest.right = x + widthHalf;
-		mDest.top = y - heightHalf;
-		mDest.bottom = y + heightHalf;
+		mDest.top = y - 2 * heightHalf;
+		mDest.bottom = y;
 		invalidate();
 	}
 }

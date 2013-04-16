@@ -1,7 +1,7 @@
 package com.nano.lanshare.common;
 
 import android.content.Context;
-import android.view.View;
+import android.widget.ImageView;
 
 public class DragViewFactory {
 	/**
@@ -12,7 +12,7 @@ public class DragViewFactory {
 	 * @param object
 	 * @return
 	 */
-	public static DragView createDragView(Context context, View view,
+	public static DragView createDragView(Context context, ImageView view,
 			DragObject object) {
 		DragView dragView = new DragView(context, view.getDrawingCache(true));
 		dragView.setDragObject(object);
