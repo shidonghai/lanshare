@@ -758,4 +758,9 @@
     <item type="id" name="menu_view_default">false</item>
     <item type="id" name="menu_view_list">false</item>
     <item type="id" name="menu_view_grid">false</item>
+
+    <item type="id" name="music_left_tab">false</item>
+    <item type="id" name="music_right_tab">false</item>
+    <item type="id" name="file_left_tab">false</item>
+    <item type="id" name="file_right_tab">false</item>
 </resources>

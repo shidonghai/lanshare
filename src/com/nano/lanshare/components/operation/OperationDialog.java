@@ -22,15 +22,17 @@ public class OperationDialog extends PopupWindow {
 
 	private final int Y_OFF_BASE = -20;
 
-	private View mContentView;
+	// private View mContentView;
 
 	private int screenH;
 
-	public OperationDialog(Context context, int type, String path) {
+	public OperationDialog(Context context) {
 		super(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 
-		mContentView = OperationContent.CreateContentView(context, type);
-		setContentView(mContentView);
+		// mOperationContent = new OperationContent(type);
+		// mContentView = mOperationContent.CreateContentView(context);
+		// setContentView(mContentView);
+
 		setFocusable(true);
 		setOutsideTouchable(true);
 		setBackgroundDrawable(new BitmapDrawable());
@@ -39,6 +41,14 @@ public class OperationDialog extends PopupWindow {
 				.getSystemService(Context.WINDOW_SERVICE);
 		screenH = windowManage.getDefaultDisplay().getHeight();
 	}
+
+	// public void setActionListener(OnClickListener clickListener) {
+	// mOperationContent.setActionListener(clickListener);
+	// }
+
+	// public void setOperationListener(OnClickListener clickListener) {
+	// mOperationContent.setOperationListener(clickListener);
+	// }
 
 	@Override
 	public void showAsDropDown(View anchor) {
@@ -49,8 +59,8 @@ public class OperationDialog extends PopupWindow {
 
 	private int getXoff(View anchor) {
 		int anchorWidth = anchor.getWidth();
-		mContentView.measure(0, 0);
-		int contentWidth = mContentView.getMeasuredWidth();
+		getContentView().measure(0, 0);
+		int contentWidth = getContentView().getMeasuredWidth();
 
 		if (anchorWidth > contentWidth) {
 			return anchorWidth / 2 - contentWidth / 2;
@@ -60,8 +70,8 @@ public class OperationDialog extends PopupWindow {
 
 	private int getYoff(View anchor) {
 		int anchorHeight = anchor.getHeight();
-		mContentView.measure(0, 0);
-		int contentHeight = mContentView.getMeasuredHeight();
+		getContentView().measure(0, 0);
+		int contentHeight = getContentView().getMeasuredHeight();
 		int[] location = new int[2];
 		anchor.getLocationInWindow(location);
 		int y = location[1] + anchorHeight;

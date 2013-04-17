@@ -12,6 +12,8 @@ public class MusicInfo {
 
 	public String title;
 
+	public String path;
+
 	public long size;
 
 }

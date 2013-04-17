@@ -167,6 +167,8 @@ public class MusicPlayService extends Service implements OnPreparedListener,
 				mPlayer.setOnErrorListener(this);
 				mPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
 				mPlayer.prepareAsync();
+
+				mCureentIndex = id;
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

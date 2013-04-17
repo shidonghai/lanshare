@@ -40,7 +40,6 @@ public abstract class BasicFragment extends Fragment implements
 		return mHandler;
 	}
 
-	@SuppressWarnings("unchecked")
 	protected void handleMsg(Message msg) {
 		switch (msg.what) {
 		case SAVE_POSITION: {

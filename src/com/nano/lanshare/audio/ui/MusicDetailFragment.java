@@ -6,11 +6,9 @@ import java.util.Locale;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnKeyListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.SeekBar;
@@ -90,9 +88,9 @@ public class MusicDetailFragment extends Fragment implements OnClickListener,
 
 	private void init() {
 		int index = mMusicManger.getCurrentIndex();
-		Log.d("zxh", "index:" + index);
 		mTitle.setText(String.format(getString(R.string.musci_title_index),
 				index + 1, mMusicManger.getMusicList().size()));
+
 		MusicInfo info = mMusicManger.getMusicList().get(index);
 		mArtist.setText(info.artist);
 		mMusicName.setText(info.title);
@@ -100,6 +98,7 @@ public class MusicDetailFragment extends Fragment implements OnClickListener,
 		mDuration.setText(parseSec(mMusicManger.getDuration()));
 		mSeekBar.setMax(mMusicManger.getDuration());
 		mSeekBar.setProgress(mMusicManger.getCurrentPosition());
+
 		if (mMusicManger.isPlaying()) {
 			mHandler.sendEmptyMessage(0);
 			mPlay.setImageResource(R.drawable.zapya_data_music_single_pause_normal);

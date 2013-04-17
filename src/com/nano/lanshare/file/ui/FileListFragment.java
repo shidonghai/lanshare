@@ -2,11 +2,13 @@ package com.nano.lanshare.file.ui;
 
 import android.os.Bundle;
 import android.os.Message;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.widget.AdapterView;
 
+import com.nano.lanshare.components.operation.FileOperationContentView;
 import com.nano.lanshare.components.operation.OperationDialog;
 import com.nano.lanshare.file.FileItem;
 import com.nano.lanshare.file.FileList;
@@ -92,6 +94,7 @@ public class FileListFragment extends BasicFragment {
 		super.onViewCreated(view, bundle);
 		mScanner = FileScanner.getInstance();
 		mScanner.startScanning(null, mListener);
+		Log.d("zxh", "FileListFragment onViewCreated");
 	}
 
 	@Override
@@ -129,18 +132,38 @@ public class FileListFragment extends BasicFragment {
 			break;
 		}
 		default: {
-			OperationDialog operationDialog = new OperationDialog(
-					getActivity(), OperationDialog.TYPE_FILE, null);
-			operationDialog.showAsDropDown(view);
+			showDialog(fileItem, view);
 			break;
 		}
 		}
 	}
 
+	private void showDialog(FileItem item, View view) {
+		final OperationDialog operationDialog = new OperationDialog(
+				getActivity());
+
+		FileOperationContentView fileOperationContentView = new FileOperationContentView(
+				OperationDialog.TYPE_FILE, item.file.getAbsolutePath(),
+				operationDialog);
+
+		fileOperationContentView
+				.setActionClickListener(new View.OnClickListener() {
+
+					@Override
+					public void onClick(View arg0) {
+						operationDialog.dismiss();
+					}
+				});
+
+		operationDialog.setContentView(fileOperationContentView
+				.createContentView(getActivity()));
+		operationDialog.showAsDropDown(view);
+	}
+
 	@Override
 	public boolean onItemLongClick(AdapterView<?> parent, View view,
 			int position, long id) {
-		FileItem file = mAdapter.getItem(position);
+		// FileItem file = mAdapter.getItem(position);
 		// PopupMenu menu = getPopupMenu(view, getHandler(), file,
 		// mRefreshOperation);
 		// menu.getMenu().findItem(R.id.menu_remove_favourite).setVisible(false);

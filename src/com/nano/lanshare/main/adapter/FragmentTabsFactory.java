@@ -4,7 +4,7 @@ import android.support.v4.app.Fragment;
 
 import com.nano.lanshare.apps.ui.AppFragment;
 import com.nano.lanshare.audio.ui.AudioBase;
-import com.nano.lanshare.file.ui.FileListFragment;
+import com.nano.lanshare.file.ui.FileTabFragment;
 import com.nano.lanshare.history.fragment.HistoryFragment;
 import com.nano.lanshare.pics.ui.PicFragment;
 
@@ -33,7 +33,7 @@ public class FragmentTabsFactory {
 		case TABS_AUDIO:
 			return new AudioBase();
 		case TABS_FIEL:
-			return new FileListFragment();
+			return new FileTabFragment();
 		case TABS_HISTORY:
 			return new HistoryFragment();
 		}

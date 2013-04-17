@@ -2,24 +2,23 @@ package com.nano.lanshare.audio.ui;
 
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SeekBar;
-import android.widget.TextView;
 import android.widget.SeekBar.OnSeekBarChangeListener;
+import android.widget.TextView;
 
 import com.nano.lanshare.R;
 import com.nano.lanshare.audio.logic.IMusicStatusListener;
 import com.nano.lanshare.audio.logic.MusicManger;
+import com.nano.lanshare.components.BasicItemFragment;
+import com.nano.lanshare.components.operation.FileOperationContentView;
 import com.nano.lanshare.components.operation.OperationDialog;
 
 /**
@@ -28,12 +27,11 @@ import com.nano.lanshare.components.operation.OperationDialog;
  * @author Xiaohu
  * 
  */
-public class MusicTabFragment extends Fragment implements OnItemClickListener,
-		IMusicStatusListener, OnClickListener, OnSeekBarChangeListener {
+public class MusicTabFragment extends BasicItemFragment implements
+		OnItemClickListener, IMusicStatusListener, OnClickListener,
+		OnSeekBarChangeListener {
 
 	private MusicManger mMusicManger;
-
-	private int mCurrentIndex;
 
 	private SeekBar mSeekBar;
 
@@ -47,12 +45,6 @@ public class MusicTabFragment extends Fragment implements OnItemClickListener,
 			sendEmptyMessageDelayed(0, 500);
 		};
 	};
-
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.music_tab, null);
-	}
 
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -81,29 +73,49 @@ public class MusicTabFragment extends Fragment implements OnItemClickListener,
 		mCurrentSong = (TextView) view.findViewById(R.id.music_name);
 		mSeekBar = (SeekBar) view.findViewById(R.id.music_seekbar);
 		mSeekBar.setOnSeekBarChangeListener(this);
-	}
 
-	// @Override
-	// public void onResume() {
-	// super.onResume();
-	// if (mMusicManger.isPlaying()) {
-	// mPlay.setImageResource(R.drawable.zapya_data_music_play_normal);
-	// mHandler.removeMessages(0);
-	// } else {
-	// mPlay.setImageResource(R.drawable.zapya_data_music_pause_normal);
-	// mHandler.sendEmptyMessage(0);
-	// }
-	// }
-
-	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+		mEmptyView.setText(R.string.dm_no_file_prompt_audio);
+		mEmptyView
+				.setVisibility(mMusicManger.getMusicList().size() == 0 ? View.VISIBLE
+						: View.GONE);
 	}
 
 	@Override
-	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-		OperationDialog operationDialog = new OperationDialog(getActivity(),
-				OperationDialog.TYPE_MUSIC, null);
+	public void onResume() {
+		super.onResume();
+		if (mMusicManger.isStarted()) {
+			mCurrentSong.setText(mMusicManger.getMusicList().get(
+					mMusicManger.getCurrentIndex()).title);
+			mSeekBar.setMax(mMusicManger.getDuration());
+			mSeekBar.setProgress(mMusicManger.getCurrentPosition());
+
+			if (mMusicManger.isPlaying()) {
+				mHandler.sendEmptyMessage(0);
+				mPlay.setImageResource(R.drawable.zapya_data_music_pause_normal);
+			}
+		}
+	}
+
+	@Override
+	public void onItemClick(AdapterView<?> arg0, View arg1, final int arg2,
+			long arg3) {
+		final OperationDialog operationDialog = new OperationDialog(
+				getActivity());
+
+		FileOperationContentView fileContentView = new FileOperationContentView(
+				OperationDialog.TYPE_MUSIC, mMusicManger.getMusicList().get(
+						arg2).path, operationDialog);
+		fileContentView.setActionClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				mMusicManger.play(arg2);
+				operationDialog.dismiss();
+			}
+		});
+		operationDialog.setContentView(fileContentView
+				.createContentView(getActivity()));
+
 		operationDialog.showAsDropDown(arg1);
 	}
 
@@ -178,6 +190,10 @@ public class MusicTabFragment extends Fragment implements OnItemClickListener,
 	}
 
 	private void togglePlaying() {
+		if (mMusicManger.getCurrentIndex() == -1) {
+			return;
+		}
+
 		if (!mMusicManger.isStarted()) {
 			mMusicManger.play(mMusicManger.getCurrentIndex());
 			mPlay.setImageResource(R.drawable.zapya_data_music_pause_normal);
@@ -191,5 +207,10 @@ public class MusicTabFragment extends Fragment implements OnItemClickListener,
 			mHandler.sendEmptyMessage(0);
 		}
 
+	}
+
+	@Override
+	public View createContentView(LayoutInflater inflater) {
+		return inflater.inflate(R.layout.music_tab, null);
 	}
 }

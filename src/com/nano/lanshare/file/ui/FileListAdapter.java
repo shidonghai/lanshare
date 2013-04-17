@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.nano.lanshare.R;
 import com.nano.lanshare.file.FileItem;
 import com.nano.lanshare.file.FileList;
+import com.nano.lanshare.utils.FileSizeUtil;
 
 public class FileListAdapter extends BaseAdapter {
 
@@ -136,7 +137,7 @@ public class FileListAdapter extends BaseAdapter {
 		}
 
 		viewHolder.name.setText(file.getName());
-		viewHolder.size.setText(String.valueOf(file.length()));
+		viewHolder.size.setText(FileSizeUtil.formatFromByte(file.length()));
 		return convertView;
 
 	}
