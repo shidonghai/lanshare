@@ -46,7 +46,7 @@ public class BaseActivity extends FragmentActivity implements
 		mDragController = DragController
 				.getInstance((ViewGroup) findViewById(R.id.base_viewgroup));
 
-        MusicManger.getInstance(this).bindServer(this);
+		MusicManger.getInstance(this).bindServer(this);
 	}
 
 	/**
@@ -89,8 +89,8 @@ public class BaseActivity extends FragmentActivity implements
 	 * 
 	 * @param tab
 	 */
-	private void setTabSelected(TextView tab) {
-		for (TextView tv : mTabs) {
+	private void setTabSelected(View tab) {
+		for (View tv : mTabs) {
 			if (tab == tv) {
 				tv.setSelected(true);
 			} else {
@@ -110,10 +110,10 @@ public class BaseActivity extends FragmentActivity implements
 	}
 
 	@Override
-    protected void onDestroy() {
-        super.onDestroy();
-        MusicManger.getInstance(this).unBindServer(this);
-    }
+	protected void onDestroy() {
+		super.onDestroy();
+		MusicManger.getInstance(this).unBindServer(this);
+	}
 
 	private void showExitDialog() {
 
@@ -129,13 +129,13 @@ public class BaseActivity extends FragmentActivity implements
 	}
 
 	@Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (getSupportFragmentManager().findFragmentByTag("music") == null
-                && KeyEvent.KEYCODE_BACK == keyCode) {
-            showExitDialog();
-        }
-        return super.onKeyDown(keyCode, event);
-    }
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (getSupportFragmentManager().findFragmentByTag("music") == null
+				&& KeyEvent.KEYCODE_BACK == keyCode) {
+			showExitDialog();
+		}
+		return super.onKeyDown(keyCode, event);
+	}
 
 	@Override
 	public void onPageScrollStateChanged(int position) {
@@ -154,23 +154,11 @@ public class BaseActivity extends FragmentActivity implements
 
 	@Override
 	public void onClick(View v) {
-		if (v == mAppTab) {
-			setTabSelected(mAppTab);
-			mViewPager.setCurrentItem(0, false);
-		} else if (v == mPhotoTab) {
-			setTabSelected(mPhotoTab);
-			mViewPager.setCurrentItem(1, false);
-		} else if (v == mMediaTab) {
-			setTabSelected(mMediaTab);
-			mViewPager.setCurrentItem(2, false);
-		} else if (v == mFileTab) {
-			setTabSelected(mFileTab);
-			mViewPager.setCurrentItem(3, false);
-		} else if (v == mHistoryTab) {
-			setTabSelected(mHistoryTab);
-			mViewPager.setCurrentItem(4, false);
-		} else if (v == mConnectFriends) {
+		if (v == mConnectFriends) {
 			startActivity(new Intent(this, ConnectActivity.class));
+		} else {
+			setTabSelected(v);
+			mViewPager.setCurrentItem(mTabs.indexOf(v), false);
 		}
 
 	}

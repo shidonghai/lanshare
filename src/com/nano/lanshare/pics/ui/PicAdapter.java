@@ -94,6 +94,9 @@ public class PicAdapter extends CursorAdapter implements BasicContentStore {
 
 	@Override
 	public void setContent(Object o) {
+		if (o == null) {
+			return;
+		}
 		Cursor c = (Cursor) o;
 		mDataIndex = c.getColumnIndex(Images.Media.DATA);
 		this.changeCursor(c);

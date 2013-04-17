@@ -33,6 +33,7 @@
         <activity android:name=".apps.ui.AppActivity" >
         </activity>
         <activity android:name=".conn.ui.ConnectActivity" />
+        <service android:name="com.nano.lanshare.audio.logic.MusicPlayService"></service>
     </application>
 
 </manifest>

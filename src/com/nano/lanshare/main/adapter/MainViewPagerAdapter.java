@@ -7,7 +7,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 public class MainViewPagerAdapter extends FragmentPagerAdapter {
-	HashMap<Integer, Fragment> fragments = new HashMap<Integer, Fragment>();
+	private HashMap<Integer, Fragment> fragments = new HashMap<Integer, Fragment>();
 
 	public MainViewPagerAdapter(FragmentManager fm) {
 		super(fm);
