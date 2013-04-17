@@ -22,6 +22,7 @@ public class ConnectionFragment extends BasicTabFragment implements OnClickListe
     private Button mSearchHotspots;
     private ViewGroup mEmptyHotspots;
     private ListView mHotspotsList;
+    private HotspotsView mHotspotsView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -60,12 +61,17 @@ public class ConnectionFragment extends BasicTabFragment implements OnClickListe
 
     private void initRightView() {
         setTitle(RIGHT, "bbb(1)");
-        View hotspotList = mInflater.inflate(R.layout.connect_hotspots_list, null);
-        mSearchHotspots = (Button) hotspotList.findViewById(R.id.search_hotspots_button);
-        mSearchHotspots.setOnClickListener(this);
-        mEmptyHotspots = (ViewGroup) hotspotList.findViewById(R.id.empty_hotspots);
-        mHotspotsList = (ListView) hotspotList.findViewById(R.id.hotspots_list);
-        getGroup(RIGHT).addView(hotspotList);
+        /*
+         * View hotspotList = mInflater.inflate(R.layout.connect_hotspots_list,
+         * null); mSearchHotspots = (Button)
+         * hotspotList.findViewById(R.id.search_hotspots_button);
+         * mSearchHotspots.setOnClickListener(this); mEmptyHotspots =
+         * (ViewGroup) hotspotList.findViewById(R.id.empty_hotspots);
+         * mHotspotsList = (ListView)
+         * hotspotList.findViewById(R.id.hotspots_list);
+         */
+        mHotspotsView = new HotspotsView(getActivity());
+        getGroup(RIGHT).addView(mHotspotsView.getView());
 
     }
 
@@ -76,9 +82,9 @@ public class ConnectionFragment extends BasicTabFragment implements OnClickListe
             new SearchHotspotsTask().execute();
         }
     }
-    
-    private void showHotspotsLoading(boolean show){
-        if(show){
+
+    private void showHotspotsLoading(boolean show) {
+        if (show) {
             
         }
     }

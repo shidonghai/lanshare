@@ -6,8 +6,12 @@
     <uses-sdk
         android:minSdkVersion="8"
         android:targetSdkVersion="15" />
-    
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
     <application
         android:name=".main.LanshareApplication"
@@ -29,7 +33,8 @@
         </activity>
         <activity android:name=".invitation.ui.InviteFriendsActivity" >
         </activity>
-        <activity android:name=".history.fragment.TrafficInformationFragment"></activity>
+        <activity android:name=".history.fragment.TrafficInformationFragment" >
+        </activity>
         <activity android:name=".apps.ui.AppActivity" >
         </activity>
         <activity android:name=".conn.ui.ConnectActivity" />
