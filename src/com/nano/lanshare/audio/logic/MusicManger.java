@@ -13,6 +13,7 @@ import android.os.IBinder;
 import android.os.RemoteException;
 import android.provider.MediaStore.Audio;
 import android.provider.MediaStore.Audio.Media;
+import android.util.Log;
 
 import com.nano.lanshare.audio.bean.MusicInfo;
 
@@ -92,6 +93,10 @@ public class MusicManger {
 					info.size = cursor
 							.getLong(cursor
 									.getColumnIndex(android.provider.MediaStore.Audio.Media.SIZE));
+					// info.path = cursor
+					// .getString(cursor
+					// .getColumnIndexOrThrow(MediaStore.MediaColumns.DATA));
+					Log.d("zxh", "path:" + info.path);
 					info.uri = ContentUris.withAppendedId(
 							Audio.Media.EXTERNAL_CONTENT_URI, info.id);
 					list.add(info);

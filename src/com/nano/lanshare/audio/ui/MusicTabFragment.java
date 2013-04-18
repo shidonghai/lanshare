@@ -3,6 +3,7 @@ package com.nano.lanshare.audio.ui;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -19,8 +20,8 @@ import com.nano.lanshare.audio.logic.IMusicStatusListener;
 import com.nano.lanshare.audio.logic.MusicManger;
 import com.nano.lanshare.components.BasicItemFragment;
 import com.nano.lanshare.components.LongClickListener;
-import com.nano.lanshare.components.operation.FileOperationContentView;
 import com.nano.lanshare.components.operation.OperationDialog;
+import com.nano.lanshare.components.operation.PopupMenuUtil;
 
 /**
  * Music tab
@@ -94,31 +95,50 @@ public class MusicTabFragment extends BasicItemFragment implements
 			if (mMusicManger.isPlaying()) {
 				mHandler.sendEmptyMessage(0);
 				mPlay.setImageResource(R.drawable.zapya_data_music_pause_normal);
+			} else {
+				mPlay.setImageResource(R.drawable.zapya_data_music_play_normal);
+				Log.d("zxh",
+						"mPlay.setImageResource(R.drawable.zapya_data_music_play_normal)");
 			}
 		}
 	}
 
 	@Override
-	public void onItemClick(AdapterView<?> arg0, View arg1, final int arg2,
+	public void onItemClick(AdapterView<?> arg0, View view, final int position,
 			long arg3) {
 		final OperationDialog operationDialog = new OperationDialog(
 				getActivity());
 
-		FileOperationContentView fileContentView = new FileOperationContentView(
-				OperationDialog.TYPE_MUSIC, mMusicManger.getMusicList().get(
-						arg2).path, operationDialog);
-		fileContentView.setActionClickListener(new View.OnClickListener() {
+		operationDialog.setContent(PopupMenuUtil.FILE_POPUP_IAMGES,
+				PopupMenuUtil.FILE_OPUP_TEXT, new OnItemClickListener() {
 
-			@Override
-			public void onClick(View arg0) {
-				mMusicManger.play(arg2);
-				operationDialog.dismiss();
-			}
-		});
-		operationDialog.setContentView(fileContentView
-				.createContentView(getActivity()));
+					@Override
+					public void onItemClick(AdapterView<?> arg0, View arg1,
+							int arg2, long arg3) {
+						switch (arg2) {
+						case PopupMenuUtil.MENU_TRANSPORT:
 
-		operationDialog.showAsDropDown(arg1);
+							break;
+						case PopupMenuUtil.MENU_ACTION:
+							mMusicManger.play(position);
+							break;
+						case PopupMenuUtil.MENU_PROPARTY:
+							PopupMenuUtil
+									.showPropertyDialog(
+											getActivity(),
+											mMusicManger.getMusicList().get(
+													position).path);
+							break;
+						case PopupMenuUtil.MENU_OPERATION:
+
+							break;
+						default:
+							break;
+						}
+					}
+				});
+		operationDialog.showAsDropDown(view);
+
 	}
 
 	@Override

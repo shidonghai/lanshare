@@ -38,6 +38,7 @@ public class VideoListAdapter extends CursorAdapter {
 				cursor.getLong(cursor.getColumnIndex(Media._ID)),
 				Thumbnails.MICRO_KIND, null);
 		imageView.setImageBitmap(bitmap);
+		contentView.setTag(cursor.getString(cursor.getColumnIndex(Media.DATA)));
 	}
 
 	@Override

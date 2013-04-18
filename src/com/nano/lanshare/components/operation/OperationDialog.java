@@ -3,10 +3,17 @@ package com.nano.lanshare.components.operation;
 import android.content.Context;
 import android.graphics.drawable.BitmapDrawable;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.view.WindowManager;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.TextView;
+
+import com.nano.lanshare.R;
 
 public class OperationDialog extends PopupWindow {
 
@@ -22,33 +29,24 @@ public class OperationDialog extends PopupWindow {
 
 	private final int Y_OFF_BASE = -20;
 
-	// private View mContentView;
+	private int mScreenH;
 
-	private int screenH;
+	private Context mContext;
 
 	public OperationDialog(Context context) {
 		super(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-
-		// mOperationContent = new OperationContent(type);
-		// mContentView = mOperationContent.CreateContentView(context);
-		// setContentView(mContentView);
+		mContext = context;
 
 		setFocusable(true);
 		setOutsideTouchable(true);
+
+		// If do not setBackgroundDrawable, setOutsideTouchable will no used.
 		setBackgroundDrawable(new BitmapDrawable());
 
 		WindowManager windowManage = (WindowManager) context
 				.getSystemService(Context.WINDOW_SERVICE);
-		screenH = windowManage.getDefaultDisplay().getHeight();
+		mScreenH = windowManage.getDefaultDisplay().getHeight();
 	}
-
-	// public void setActionListener(OnClickListener clickListener) {
-	// mOperationContent.setActionListener(clickListener);
-	// }
-
-	// public void setOperationListener(OnClickListener clickListener) {
-	// mOperationContent.setOperationListener(clickListener);
-	// }
 
 	@Override
 	public void showAsDropDown(View anchor) {
@@ -75,7 +73,7 @@ public class OperationDialog extends PopupWindow {
 		int[] location = new int[2];
 		anchor.getLocationInWindow(location);
 		int y = location[1] + anchorHeight;
-		int spaceLeft = screenH - y;
+		int spaceLeft = mScreenH - y;
 		Log.d("zxh", "spaceLeft:" + spaceLeft + "   contentHeight:"
 				+ contentHeight);
 		if (spaceLeft < contentHeight) {
@@ -85,4 +83,77 @@ public class OperationDialog extends PopupWindow {
 		return Y_OFF_BASE;
 
 	}
+
+	public void setContent(int[] ids, int[] name,
+			final OnItemClickListener itemClickListener) {
+		final int length = ids.length;
+		LayoutInflater inflater = LayoutInflater.from(mContext);
+		LinearLayout linearLayout = new LinearLayout(mContext);
+		linearLayout.setLayoutParams(new LayoutParams(
+				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+		linearLayout.setOrientation(LinearLayout.VERTICAL);
+
+		// top view
+		final View top = inflater.inflate(R.layout.popup_menu_top, null);
+		TextView text = (TextView) top.findViewById(R.id.menu_text);
+		text.setText(name[0]);
+		ImageView image = (ImageView) top.findViewById(R.id.menu_image);
+		image.setImageResource(ids[0]);
+		top.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				dismiss();
+				itemClickListener.onItemClick(null, top, 0, 0);
+			}
+		});
+		linearLayout.addView(top);
+
+		// center view
+		if (length > 2) {
+			for (int i = 1; i < length - 1; i++) {
+				final int index = i;
+				final View center = inflater.inflate(
+						R.layout.popup_menu_center, null);
+				TextView textCenter = (TextView) center
+						.findViewById(R.id.menu_text);
+				textCenter.setText(name[i]);
+				ImageView imageCenter = (ImageView) center
+						.findViewById(R.id.menu_image);
+				imageCenter.setImageResource(ids[i]);
+				center.setOnClickListener(new View.OnClickListener() {
+
+					@Override
+					public void onClick(View arg0) {
+						dismiss();
+						itemClickListener.onItemClick(null, center, index,
+								index);
+					}
+				});
+				linearLayout.addView(center);
+			}
+		}
+
+		// bottom view
+		final View bottom = inflater.inflate(R.layout.popup_menu_bottom, null);
+		TextView textBottom = (TextView) bottom.findViewById(R.id.menu_text);
+		textBottom.setText(name[length - 1]);
+		ImageView imageBottom = (ImageView) bottom
+				.findViewById(R.id.menu_image);
+		imageBottom.setImageResource(ids[length - 1]);
+		bottom.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				dismiss();
+				itemClickListener.onItemClick(null, bottom, length - 1,
+						length - 1);
+			}
+		});
+		linearLayout.addView(bottom);
+
+		// Set up the popup window.
+		setContentView(linearLayout);
+	}
+
 }

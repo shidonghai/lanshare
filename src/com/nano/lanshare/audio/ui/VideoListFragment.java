@@ -1,6 +1,10 @@
 package com.nano.lanshare.audio.ui;
 
+import java.io.File;
+
+import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore.Video;
@@ -15,8 +19,8 @@ import android.widget.GridView;
 import com.nano.lanshare.R;
 import com.nano.lanshare.components.BasicItemFragment;
 import com.nano.lanshare.components.LongClickListener;
-import com.nano.lanshare.components.operation.FileOperationContentView;
 import com.nano.lanshare.components.operation.OperationDialog;
+import com.nano.lanshare.components.operation.PopupMenuUtil;
 
 public class VideoListFragment extends BasicItemFragment implements
 		OnItemClickListener {
@@ -96,20 +100,36 @@ public class VideoListFragment extends BasicItemFragment implements
 	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 		final OperationDialog operationDialog = new OperationDialog(
 				getActivity());
-
-		FileOperationContentView fileOperationContentView = new FileOperationContentView(
-				OperationDialog.TYPE_MUSIC, null, operationDialog);
-		operationDialog.setContentView(fileOperationContentView
-				.createContentView(getActivity()));
-		fileOperationContentView
-				.setActionClickListener(new View.OnClickListener() {
+		final String path = (String) arg1.getTag();
+		Log.d("zxh", "path:" + path);
+		operationDialog.setContent(PopupMenuUtil.FILE_POPUP_IAMGES,
+				PopupMenuUtil.FILE_OPUP_TEXT, new OnItemClickListener() {
 
 					@Override
-					public void onClick(View arg0) {
-						operationDialog.dismiss();
+					public void onItemClick(AdapterView<?> arg0, View arg1,
+							int arg2, long arg3) {
+						switch (arg2) {
+						case PopupMenuUtil.MENU_TRANSPORT:
+
+							break;
+						case PopupMenuUtil.MENU_ACTION:
+							Intent intent = new Intent(Intent.ACTION_VIEW);
+							Uri uri = Uri.fromFile(new File(path));
+							intent.setDataAndType(uri, "video/*");
+							startActivity(intent);
+							break;
+						case PopupMenuUtil.MENU_PROPARTY:
+							PopupMenuUtil.showPropertyDialog(getActivity(),
+									path);
+							break;
+						case PopupMenuUtil.MENU_OPERATION:
+
+							break;
+						default:
+							break;
+						}
 					}
 				});
-
 		operationDialog.showAsDropDown(arg1);
 	}
 

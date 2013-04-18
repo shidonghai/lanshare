@@ -7,17 +7,17 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 
-import com.nano.lanshare.R;
-import com.nano.lanshare.components.LongClickListener;
-import com.nano.lanshare.components.operation.FileOperationContentView;
 import com.nano.lanshare.components.operation.OperationDialog;
+import com.nano.lanshare.components.operation.PopupMenuUtil;
 import com.nano.lanshare.file.FileItem;
 import com.nano.lanshare.file.FileList;
 import com.nano.lanshare.file.scan.FileScanListener;
 import com.nano.lanshare.file.scan.FileScanner;
 
 public class FileListFragment extends BasicFileFragment {
+
 	private FileScanner mScanner;
 	private int mLastPosition;
 
@@ -140,45 +140,41 @@ public class FileListFragment extends BasicFileFragment {
 		}
 	}
 
-	private void showDialog(FileItem item, View view) {
+	private void showDialog(final FileItem item, View view) {
 		final OperationDialog operationDialog = new OperationDialog(
 				getActivity());
 
-		FileOperationContentView fileOperationContentView = new FileOperationContentView(
-				OperationDialog.TYPE_FILE, item.file.getAbsolutePath(),
-				operationDialog);
-
-		fileOperationContentView
-				.setActionClickListener(new View.OnClickListener() {
+		operationDialog.setContent(PopupMenuUtil.FILE_POPUP_IAMGES,
+				PopupMenuUtil.FILE_OPUP_TEXT, new OnItemClickListener() {
 
 					@Override
-					public void onClick(View arg0) {
-						operationDialog.dismiss();
+					public void onItemClick(AdapterView<?> arg0, View arg1,
+							int arg2, long arg3) {
+						switch (arg2) {
+						case PopupMenuUtil.MENU_TRANSPORT:
+
+							break;
+						case PopupMenuUtil.MENU_ACTION:
+
+							break;
+						case PopupMenuUtil.MENU_PROPARTY:
+							PopupMenuUtil.showPropertyDialog(getActivity(),
+									item.file.getAbsolutePath());
+							break;
+						case PopupMenuUtil.MENU_OPERATION:
+
+							break;
+						default:
+							break;
+						}
 					}
 				});
-
-		operationDialog.setContentView(fileOperationContentView
-				.createContentView(getActivity()));
 		operationDialog.showAsDropDown(view);
 	}
 
 	@Override
 	public boolean onItemLongClick(AdapterView<?> parent, View view,
 			int position, long id) {
-		int type = parent.getAdapter().getItemViewType(position);
-		switch (type) {
-		case FileListAdapter.FILE_TYPE_FOLDER:
-			// show dialog
-			break;
-		case FileListAdapter.FILE_TYPE_FILE:
-			LongClickListener longClickListener = new LongClickListener(
-					getActivity(), R.id.icon);
-			longClickListener.onItemLongClick(parent, view, position, id);
-			break;
-		case FileListAdapter.FILE_TYPE_BACK:
-			break;
-		}
-
 		// FileItem file = mAdapter.getItem(position);
 		// PopupMenu menu = getPopupMenu(view, getHandler(), file,
 		// mRefreshOperation);
