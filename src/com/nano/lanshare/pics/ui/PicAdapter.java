@@ -111,9 +111,9 @@ public class PicAdapter extends CursorAdapter implements BasicContentStore {
 	@Override
 	public void bindView(View view, Context context, Cursor cursor) {
 		ImageView icon = (ImageView) view.findViewById(R.id.icon);
-		icon.setDrawingCacheEnabled(true);
 		mWorker.loadImage(cursor.getString(mDataIndex), icon,
 				mDefaultImageIcon, mPicLoader);
+		icon.setDrawingCacheEnabled(true);
 	}
 
 	@Override

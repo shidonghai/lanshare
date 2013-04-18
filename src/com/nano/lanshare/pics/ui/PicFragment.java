@@ -8,6 +8,9 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.FrameLayout.LayoutParams;
 import android.widget.GridView;
 
@@ -18,7 +21,7 @@ import com.nano.lanshare.main.LanshareApplication;
 import com.nano.lanshare.thumbnail.util.ImageWorker;
 
 public class PicFragment extends BasicTabFragment implements
-		LoaderManager.LoaderCallbacks<Cursor> {
+		LoaderManager.LoaderCallbacks<Cursor>, OnItemClickListener {
 	GridView mLeftGrid;
 	GridView mRightGrid;
 	PicAdapter mLeftAdapter;
@@ -58,7 +61,8 @@ public class PicFragment extends BasicTabFragment implements
 				getActivity(), R.id.icon);
 		mLeftGrid.setOnItemLongClickListener(mLongClickListener);
 		mRightGrid.setOnItemLongClickListener(mLongClickListener);
-
+		mLeftGrid.setOnItemClickListener(this);
+		mRightGrid.setOnItemClickListener(this);
 		// start loading data
 		notifyStartLoading();
 		getLoaderManager().initLoader(LEFT, null, this);
@@ -118,6 +122,12 @@ public class PicFragment extends BasicTabFragment implements
 		} else {
 			mRightAdapter.setContent(null);
 		}
+	}
+
+	@Override
+	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+		// TODO Auto-generated method stub
+
 	}
 
 }

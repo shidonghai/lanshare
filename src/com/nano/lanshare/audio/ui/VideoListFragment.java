@@ -14,6 +14,7 @@ import android.widget.GridView;
 
 import com.nano.lanshare.R;
 import com.nano.lanshare.components.BasicItemFragment;
+import com.nano.lanshare.components.LongClickListener;
 import com.nano.lanshare.components.operation.FileOperationContentView;
 import com.nano.lanshare.components.operation.OperationDialog;
 
@@ -45,7 +46,8 @@ public class VideoListFragment extends BasicItemFragment implements
 		GridView gridView = (GridView) view.findViewById(R.id.gridview);
 		gridView.setOnItemClickListener(VideoListFragment.this);
 		gridView.setAdapter(mVideoAdapter);
-
+		gridView.setOnItemLongClickListener(new LongClickListener(
+				getActivity(), R.id.video_image));
 		mProgress.setVisibility(View.VISIBLE);
 		mEmptyView.setText(R.string.dm_no_file_prompt_video);
 

@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -16,6 +17,7 @@ import com.nano.lanshare.R;
 
 public abstract class BasicTabFragment extends Fragment implements
 		OnClickListener {
+	private static int count = 0;
 	protected static final int LEFT = 1;
 	protected static final int RIGHT = 2;
 
@@ -64,6 +66,7 @@ public abstract class BasicTabFragment extends Fragment implements
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
+		Log.e("onCreateView", "count" + (++count));
 		View view = inflater.inflate(R.layout.basic_tab_layout, null);
 
 		mProgress = (ProgressBar) view.findViewById(R.id.progress);

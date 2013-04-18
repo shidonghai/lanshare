@@ -8,6 +8,8 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.widget.AdapterView;
 
+import com.nano.lanshare.R;
+import com.nano.lanshare.components.LongClickListener;
 import com.nano.lanshare.components.operation.FileOperationContentView;
 import com.nano.lanshare.components.operation.OperationDialog;
 import com.nano.lanshare.file.FileItem;
@@ -15,7 +17,7 @@ import com.nano.lanshare.file.FileList;
 import com.nano.lanshare.file.scan.FileScanListener;
 import com.nano.lanshare.file.scan.FileScanner;
 
-public class FileListFragment extends BasicFragment {
+public class FileListFragment extends BasicFileFragment {
 	private FileScanner mScanner;
 	private int mLastPosition;
 
@@ -163,6 +165,20 @@ public class FileListFragment extends BasicFragment {
 	@Override
 	public boolean onItemLongClick(AdapterView<?> parent, View view,
 			int position, long id) {
+		int type = parent.getAdapter().getItemViewType(position);
+		switch (type) {
+		case FileListAdapter.FILE_TYPE_FOLDER:
+			// show dialog
+			break;
+		case FileListAdapter.FILE_TYPE_FILE:
+			LongClickListener longClickListener = new LongClickListener(
+					getActivity(), R.id.icon);
+			longClickListener.onItemLongClick(parent, view, position, id);
+			break;
+		case FileListAdapter.FILE_TYPE_BACK:
+			break;
+		}
+
 		// FileItem file = mAdapter.getItem(position);
 		// PopupMenu menu = getPopupMenu(view, getHandler(), file,
 		// mRefreshOperation);

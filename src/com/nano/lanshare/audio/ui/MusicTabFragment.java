@@ -18,6 +18,7 @@ import com.nano.lanshare.R;
 import com.nano.lanshare.audio.logic.IMusicStatusListener;
 import com.nano.lanshare.audio.logic.MusicManger;
 import com.nano.lanshare.components.BasicItemFragment;
+import com.nano.lanshare.components.LongClickListener;
 import com.nano.lanshare.components.operation.FileOperationContentView;
 import com.nano.lanshare.components.operation.OperationDialog;
 
@@ -58,7 +59,8 @@ public class MusicTabFragment extends BasicItemFragment implements
 		ListView listView = (ListView) getView().findViewById(R.id.music_list);
 		listView.setAdapter(adapter);
 		listView.setOnItemClickListener(this);
-
+		listView.setOnItemLongClickListener(new LongClickListener(
+				getActivity(), R.id.music_image));
 		ImageView detail = (ImageView) view.findViewById(R.id.music_detail);
 		ImageView previou = (ImageView) view.findViewById(R.id.music_pre);
 		mPlay = (ImageView) view.findViewById(R.id.music_pause);

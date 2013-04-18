@@ -7,23 +7,18 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 public class MainViewPagerAdapter extends FragmentPagerAdapter {
-	private HashMap<Integer, Fragment> fragments = new HashMap<Integer, Fragment>();
+	// private HashMap<Integer, Fragment> fragments;
 
 	public MainViewPagerAdapter(FragmentManager fm) {
 		super(fm);
+		// fragments = new HashMap<Integer, Fragment>();
 	}
 
 	@Override
 	public Fragment getItem(int position) {
-		if (fragments.containsKey(position)) {
-			return fragments.get(position);
-		} else {
-			Fragment fragment = FragmentTabsFactory.getInstance().getFragment(
-					position);
-			fragments.put(position, fragment);
-			return fragment;
-		}
-
+		Fragment fragment = FragmentTabsFactory.getInstance().getFragment(
+				position);
+		return fragment;
 	}
 
 	@Override

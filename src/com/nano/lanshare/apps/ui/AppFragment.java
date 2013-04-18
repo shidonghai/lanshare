@@ -3,7 +3,11 @@ package com.nano.lanshare.apps.ui;
 import java.util.List;
 
 import android.content.pm.PackageInfo;
+import android.os.Bundle;
 import android.os.Message;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.FrameLayout.LayoutParams;
 import android.widget.GridView;
 
@@ -17,7 +21,8 @@ import com.nano.lanshare.main.LanshareApplication;
 import com.nano.lanshare.thumbnail.util.ImageCache.ImageCacheParams;
 import com.nano.lanshare.thumbnail.util.ImageWorker;
 
-public class AppFragment extends BasicTabFragment {
+public class AppFragment extends BasicTabFragment implements
+		OnItemClickListener {
 	private AppLoader mAppLoader;
 	private AppListener mAppListener = new AppListener() {
 
@@ -92,11 +97,19 @@ public class AppFragment extends BasicTabFragment {
 		mLeftGrid.setOnItemLongClickListener(mLongClickListener);
 		mRightGrid.setOnItemLongClickListener(mLongClickListener);
 
+		mLeftGrid.setOnItemClickListener(this);
+		mRightGrid.setOnItemClickListener(this);
+
 		// start loading data
 		notifyStartLoading();
 		mAppLoader = new AppLoader(getActivity());
 		mAppLoader.setAppListener(mAppListener);
 		mAppLoader.startLoading();
+	}
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
 	}
 
 	@Override
@@ -118,5 +131,11 @@ public class AppFragment extends BasicTabFragment {
 		} else {
 			mRightAdapter.setContent(msg.obj);
 		}
+	}
+
+	@Override
+	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+		// TODO Auto-generated method stub
+
 	}
 }

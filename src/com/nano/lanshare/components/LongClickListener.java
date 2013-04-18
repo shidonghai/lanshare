@@ -24,6 +24,9 @@ public class LongClickListener implements OnItemLongClickListener {
 			int position, long id) {
 		DragView dragView = DragViewFactory.createDragView(mContext,
 				(ImageView) view.findViewById(mId), null);
+		if (dragView == null) {
+			return true;
+		}
 		view.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS,
 				HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING);
 		dragView.show();

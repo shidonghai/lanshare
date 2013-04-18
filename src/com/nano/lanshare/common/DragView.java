@@ -34,8 +34,8 @@ public class DragView extends View {
 		mSrc = new Rect(0, 0, mDrawingCache.getWidth(),
 				mDrawingCache.getHeight());
 		mDest = new Rect(0, 0, 0, 0);
-		widthHalf = mDrawingCache.getWidth() * 3 / 5;
-		heightHalf = mDrawingCache.getHeight() * 3 / 5;
+		widthHalf = mDrawingCache.getWidth() * 3 / 4;
+		heightHalf = mDrawingCache.getHeight() * 3 / 4;
 	}
 
 	@Override
