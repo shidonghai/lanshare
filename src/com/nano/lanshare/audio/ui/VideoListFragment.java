@@ -21,6 +21,8 @@ import com.nano.lanshare.components.BasicItemFragment;
 import com.nano.lanshare.components.LongClickListener;
 import com.nano.lanshare.components.operation.OperationDialog;
 import com.nano.lanshare.components.operation.PopupMenuUtil;
+import com.nano.lanshare.main.LanshareApplication;
+import com.nano.lanshare.thumbnail.util.ImageWorker;
 
 public class VideoListFragment extends BasicItemFragment implements
 		OnItemClickListener {
@@ -54,6 +56,10 @@ public class VideoListFragment extends BasicItemFragment implements
 				getActivity(), R.id.video_image));
 		mProgress.setVisibility(View.VISIBLE);
 		mEmptyView.setText(R.string.dm_no_file_prompt_video);
+
+		ImageWorker worker = ((LanshareApplication) getActivity()
+				.getApplication()).getImageWorker();
+		gridView.setOnScrollListener(worker.getScrollerListener());
 
 		mQueryVideo = new QueryVideo();
 		mQueryVideo.execute();

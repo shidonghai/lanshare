@@ -6,6 +6,7 @@ import java.util.Locale;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.provider.MediaStore.Video.Media;
 import android.provider.MediaStore.Video.Thumbnails;
 import android.view.LayoutInflater;
@@ -16,14 +17,36 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.nano.lanshare.R;
+import com.nano.lanshare.main.LanshareApplication;
+import com.nano.lanshare.thumbnail.util.ImageWorker;
+import com.nano.lanshare.thumbnail.util.ImageWorker.LoadMethod;
 
 public class VideoListAdapter extends CursorAdapter {
 
 	private Context mContext;
 
+	private Bitmap mDefaultImageIcon;
+
+	private ImageWorker mWorker;
+
+	private LoadMethod mVideoLoadMethod = new LoadMethod() {
+
+		@Override
+		public Bitmap processBitmap(Object obj, Context context) {
+			Bitmap bitmap = Thumbnails.getThumbnail(
+					mContext.getContentResolver(), (Long) obj,
+					Thumbnails.MICRO_KIND, null);
+			return bitmap;
+		}
+	};
+
 	public VideoListAdapter(Context context, Cursor c) {
 		super(context, c);
 		mContext = context;
+		mDefaultImageIcon = BitmapFactory.decodeResource(
+				context.getResources(), R.drawable.zapya_data_video_l);
+		mWorker = ((LanshareApplication) context.getApplicationContext())
+				.getImageWorker();
 	}
 
 	@Override
@@ -34,10 +57,13 @@ public class VideoListAdapter extends CursorAdapter {
 
 		ImageView imageView = (ImageView) contentView
 				.findViewById(R.id.video_image);
-		Bitmap bitmap = Thumbnails.getThumbnail(mContext.getContentResolver(),
-				cursor.getLong(cursor.getColumnIndex(Media._ID)),
-				Thumbnails.MICRO_KIND, null);
-		imageView.setImageBitmap(bitmap);
+		// Bitmap bitmap =
+		// Thumbnails.getThumbnail(mContext.getContentResolver(),
+		// cursor.getLong(cursor.getColumnIndex(Media._ID)),
+		// Thumbnails.MICRO_KIND, null);
+		// imageView.setImageBitmap(bitmap);
+		mWorker.loadImage(cursor.getLong(cursor.getColumnIndex(Media._ID)),
+				imageView, mDefaultImageIcon, mVideoLoadMethod);
 		contentView.setTag(cursor.getString(cursor.getColumnIndex(Media.DATA)));
 	}
 

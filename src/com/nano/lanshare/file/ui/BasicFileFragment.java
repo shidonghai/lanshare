@@ -14,6 +14,8 @@ import android.widget.GridView;
 import android.widget.TextView;
 
 import com.nano.lanshare.R;
+import com.nano.lanshare.main.LanshareApplication;
+import com.nano.lanshare.thumbnail.util.ImageWorker;
 
 public abstract class BasicFileFragment extends Fragment implements
 		OnItemClickListener, OnItemLongClickListener {
@@ -67,6 +69,10 @@ public abstract class BasicFileFragment extends Fragment implements
 		mLayoutInflater = inflater;
 		View view = mLayoutInflater.inflate(R.layout.fragment_file_list, null);
 		mList = (GridView) view.findViewById(R.id.gridview);
+
+		ImageWorker worker = ((LanshareApplication) getActivity()
+				.getApplication()).getImageWorker();
+		mList.setOnScrollListener(worker.getScrollerListener());
 		mEmptyView = (TextView) view.findViewById(R.id.emptyview);
 
 		mAdapter = new FileListAdapter(getActivity());

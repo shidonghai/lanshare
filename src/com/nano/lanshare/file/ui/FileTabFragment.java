@@ -1,6 +1,7 @@
 package com.nano.lanshare.file.ui;
 
 import android.os.Message;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.LinearLayout;
 
 import com.nano.lanshare.R;
@@ -16,6 +17,8 @@ public class FileTabFragment extends BasicTabFragment {
 	@Override
 	protected void init() {
 		LinearLayout leftLayout = new LinearLayout(getActivity());
+		leftLayout.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT,
+				LayoutParams.FILL_PARENT));
 		leftLayout.setId(R.id.file_left_tab);
 		getGroup(LEFT).addView(leftLayout);
 

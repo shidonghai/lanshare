@@ -21,6 +21,7 @@ public class FileListFragment extends BasicFileFragment {
 	private FileScanner mScanner;
 	private int mLastPosition;
 
+
 	// private Operations.OperationListener mRefreshOperation = new
 	// Operations.OperationListener() {
 	// public void onOperationDone() {

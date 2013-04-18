@@ -1,25 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
     android:orientation="vertical" >
 
-    <!--
-         <ListView
-        android:id="@+id/listview"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-    -->
-
     <GridView
+        android:layout_marginTop="5dip"
         android:id="@+id/gridview"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:gravity="center"
         android:columnWidth="@dimen/dm_img_list_item_width"
+        android:gravity="center"
         android:horizontalSpacing="5dip"
         android:numColumns="auto_fit"
-        android:verticalSpacing="5dip" />
+        android:stretchMode="columnWidth"
+        android:verticalSpacing="10dip" />
 
     <TextView
         android:id="@+id/emptyview"

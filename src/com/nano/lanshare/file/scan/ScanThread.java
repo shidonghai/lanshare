@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import android.util.Log;
+import android.webkit.MimeTypeMap;
 
 import com.nano.lanshare.file.FileItem;
 import com.nano.lanshare.file.FileList;
@@ -96,6 +97,11 @@ public class ScanThread implements Runnable {
 		if (file.isDirectory()) {
 			return FileListAdapter.FILE_TYPE_FOLDER;
 		} else {
+			String type = getMimeType(file.getAbsolutePath());
+			if (type != null && type.startsWith("image")) {
+				return FileListAdapter.FILE_TYPE_IMAGE;
+			}
+
 			return FileListAdapter.FILE_TYPE_FILE;
 		}
 	}
@@ -119,4 +125,15 @@ public class ScanThread implements Runnable {
 		mThread.interrupt();
 	}
 
+	// url = file path or whatever suitable URL you want.
+	public String getMimeType(String url) {
+		String type = null;
+		String extension = MimeTypeMap.getFileExtensionFromUrl(url);
+		if (extension != null) {
+			MimeTypeMap mime = MimeTypeMap.getSingleton();
+			type = mime.getMimeTypeFromExtension(extension);
+		}
+
+		return type;
+	}
 }
