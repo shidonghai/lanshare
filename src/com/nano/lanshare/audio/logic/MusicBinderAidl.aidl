@@ -9,8 +9,8 @@ interface MusicBinderAidl
     void startPlay();
     void play(int id);
     void playOnLine(in Bundle songInfo);
-    void prev(in Bundle SongInfo);
-    void next(in Bundle SongInfo);
+    void prev();
+    void next();
     void setCurrentInfo(in Bundle mediaInfo);
     String getCurrentContentFilePath();
     

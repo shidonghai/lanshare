@@ -1,5 +1,6 @@
 package com.nano.lanshare.file.ui;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Message;
 import android.util.Log;
@@ -15,12 +16,13 @@ import com.nano.lanshare.file.FileItem;
 import com.nano.lanshare.file.FileList;
 import com.nano.lanshare.file.scan.FileScanListener;
 import com.nano.lanshare.file.scan.FileScanner;
+import com.nano.lanshare.file.scan.FileScanner.ScanMode;
+import com.nano.lanshare.utils.FileUtil;
 
 public class FileListFragment extends BasicFileFragment {
 
-	private FileScanner mScanner;
+	protected FileScanner mScanner;
 	private int mLastPosition;
-
 
 	// private Operations.OperationListener mRefreshOperation = new
 	// Operations.OperationListener() {
@@ -66,7 +68,7 @@ public class FileListFragment extends BasicFileFragment {
 		super.handleMsg(msg);
 	}
 
-	private FileScanListener mListener = new FileScanListener() {
+	protected FileScanListener mListener = new FileScanListener() {
 
 		public void onScanStart() {
 			mLastPosition = mList.getFirstVisiblePosition();
@@ -95,9 +97,8 @@ public class FileListFragment extends BasicFileFragment {
 
 	public void onViewCreated(View view, Bundle bundle) {
 		super.onViewCreated(view, bundle);
-		mScanner = FileScanner.getInstance();
+		mScanner = new FileScanner(ScanMode.FILE);
 		mScanner.startScanning(null, mListener);
-		Log.d("zxh", "FileListFragment onViewCreated");
 	}
 
 	@Override
@@ -146,12 +147,12 @@ public class FileListFragment extends BasicFileFragment {
 				getActivity());
 
 		operationDialog.setContent(PopupMenuUtil.FILE_POPUP_IAMGES,
-				PopupMenuUtil.FILE_OPUP_TEXT, new OnItemClickListener() {
+				PopupMenuUtil.FILE_POPUP_TEXT,
+				new DialogInterface.OnClickListener() {
 
 					@Override
-					public void onItemClick(AdapterView<?> arg0, View arg1,
-							int arg2, long arg3) {
-						switch (arg2) {
+					public void onClick(DialogInterface dialog, int which) {
+						switch (which) {
 						case PopupMenuUtil.MENU_TRANSPORT:
 
 							break;
@@ -159,17 +160,19 @@ public class FileListFragment extends BasicFileFragment {
 
 							break;
 						case PopupMenuUtil.MENU_PROPARTY:
-							PopupMenuUtil.showPropertyDialog(getActivity(),
+							FileUtil.showPropertyDialog(getActivity(),
 									item.file.getAbsolutePath());
 							break;
 						case PopupMenuUtil.MENU_OPERATION:
-
+							FileUtil.showFileOperationDialog(getActivity(),
+									item.file.getAbsolutePath());
 							break;
 						default:
 							break;
 						}
 					}
 				});
+
 		operationDialog.showAsDropDown(view);
 	}
 

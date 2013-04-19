@@ -1,5 +1,7 @@
 package com.nano.lanshare.audio.logic;
 
+import java.util.Random;
+
 import android.app.Service;
 import android.content.Intent;
 import android.media.AudioManager;
@@ -65,7 +67,7 @@ public class MusicPlayService extends Service implements OnPreparedListener,
 		}
 
 		@Override
-		public void prev(Bundle SongInfo) throws RemoteException {
+		public void prev() throws RemoteException {
 			mCureentIndex = mCureentIndex - 1;
 			if (mCureentIndex < 0) {
 				mCureentIndex = mMusicManger.getMusicList().size() - 1;
@@ -90,13 +92,8 @@ public class MusicPlayService extends Service implements OnPreparedListener,
 		}
 
 		@Override
-		public void next(Bundle SongInfo) throws RemoteException {
-			mCureentIndex = mCureentIndex + 1;
-			if (mCureentIndex == mMusicManger.getMusicList().size()) {
-				mCureentIndex = 0;
-			}
-			Log.d("zxh", "mCureentIndex" + mCureentIndex);
-			playMusic(mCureentIndex);
+		public void next() throws RemoteException {
+			playNext();
 		}
 
 		@Override
@@ -147,6 +144,27 @@ public class MusicPlayService extends Service implements OnPreparedListener,
 	@Override
 	public void onCompletion(MediaPlayer mp) {
 		mMusicManger.onComplete();
+
+		switch (mMusicManger.getPlayMode(getApplicationContext())) {
+		case MusicManger.PLAY_MODE_LIST:
+			if (mCureentIndex != mMusicManger.getMusicList().size() - 1) {
+				playNext();
+			}
+			break;
+		case MusicManger.PLAY_MODE_LIST_SINGLECIRCLE:
+			playMusic(mCureentIndex);
+			break;
+		case MusicManger.PLAY_MODE_RANDOM:
+			Random random = new Random();
+			int index = random.nextInt(mMusicManger.getMusicList().size());
+			playMusic(index);
+			break;
+		case MusicManger.PLAY_MODE_LIST_CIRCLE:
+			playNext();
+			break;
+		default:
+			break;
+		}
 	}
 
 	@Override
@@ -160,6 +178,7 @@ public class MusicPlayService extends Service implements OnPreparedListener,
 			isStarted = true;
 			mPlayer.reset();
 			try {
+				mCureentIndex = id;
 				mPlayer.setDataSource(getApplicationContext(), mMusicManger
 						.getMusicList().get(id).uri);
 				mPlayer.setOnCompletionListener(this);
@@ -168,11 +187,19 @@ public class MusicPlayService extends Service implements OnPreparedListener,
 				mPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
 				mPlayer.prepareAsync();
 
-				mCureentIndex = id;
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	private void playNext() {
+		mCureentIndex = mCureentIndex + 1;
+		if (mCureentIndex == mMusicManger.getMusicList().size()) {
+			mCureentIndex = 0;
+		}
+		Log.d("zxh", "mCureentIndex" + mCureentIndex);
+		playMusic(mCureentIndex);
 	}
 
 	@Override

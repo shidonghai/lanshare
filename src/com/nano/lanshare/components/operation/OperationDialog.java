@@ -1,6 +1,7 @@
 package com.nano.lanshare.components.operation;
 
 import android.content.Context;
+import android.content.DialogInterface.OnClickListener;
 import android.graphics.drawable.BitmapDrawable;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -85,7 +86,7 @@ public class OperationDialog extends PopupWindow {
 	}
 
 	public void setContent(int[] ids, int[] name,
-			final OnItemClickListener itemClickListener) {
+			final OnClickListener itemClickListener) {
 		final int length = ids.length;
 		LayoutInflater inflater = LayoutInflater.from(mContext);
 		LinearLayout linearLayout = new LinearLayout(mContext);
@@ -104,7 +105,7 @@ public class OperationDialog extends PopupWindow {
 			@Override
 			public void onClick(View arg0) {
 				dismiss();
-				itemClickListener.onItemClick(null, top, 0, 0);
+				itemClickListener.onClick(null, 0);
 			}
 		});
 		linearLayout.addView(top);
@@ -126,8 +127,7 @@ public class OperationDialog extends PopupWindow {
 					@Override
 					public void onClick(View arg0) {
 						dismiss();
-						itemClickListener.onItemClick(null, center, index,
-								index);
+						itemClickListener.onClick(null, index);
 					}
 				});
 				linearLayout.addView(center);
@@ -146,8 +146,7 @@ public class OperationDialog extends PopupWindow {
 			@Override
 			public void onClick(View arg0) {
 				dismiss();
-				itemClickListener.onItemClick(null, bottom, length - 1,
-						length - 1);
+				itemClickListener.onClick(null, length - 1);
 			}
 		});
 		linearLayout.addView(bottom);

@@ -22,6 +22,9 @@ import com.nano.lanshare.audio.logic.MusicManger;
 
 public class MusicDetailFragment extends Fragment implements OnClickListener,
 		OnSeekBarChangeListener, IMusicStatusListener {
+
+	public final int REWIND_FORWARD_BASE = 5000;
+
 	private TextView mTitle;
 
 	private TextView mCurrentPosition;
@@ -55,6 +58,9 @@ public class MusicDetailFragment extends Fragment implements OnClickListener,
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
+		mMusicManger = MusicManger.getInstance(getActivity());
+		mMusicManger.registerListener(this);
+
 		mTitle = (TextView) view.findViewById(R.id.music_index);
 		mCurrentPosition = (TextView) view
 				.findViewById(R.id.music_current_duration);
@@ -65,6 +71,7 @@ public class MusicDetailFragment extends Fragment implements OnClickListener,
 		ImageView back = (ImageView) view.findViewById(R.id.music_back);
 		ImageView playMode = (ImageView) view
 				.findViewById(R.id.music_play_mode);
+		setPlayMode(mMusicManger.getPlayMode(getActivity()), playMode);
 		ImageView previou = (ImageView) view.findViewById(R.id.music_pre);
 		ImageView rewind = (ImageView) view.findViewById(R.id.music_rewind);
 		mPlay = (ImageView) view.findViewById(R.id.music_pause);
@@ -80,8 +87,6 @@ public class MusicDetailFragment extends Fragment implements OnClickListener,
 
 		mSeekBar = (SeekBar) view.findViewById(R.id.music_seekbar);
 		mSeekBar.setOnSeekBarChangeListener(this);
-		mMusicManger = MusicManger.getInstance(getActivity());
-		mMusicManger.registerListener(this);
 
 		init();
 	}
@@ -128,6 +133,21 @@ public class MusicDetailFragment extends Fragment implements OnClickListener,
 			break;
 		case R.id.music_next:
 			mMusicManger.next();
+			break;
+		case R.id.music_back:
+			getFragmentManager().beginTransaction().remove(this).commit();
+			break;
+		case R.id.music_play_mode:
+			setPlayMode(mMusicManger.changePlayMode(getActivity()),
+					(ImageView) v);
+			break;
+		case R.id.music_rewind:
+			mMusicManger.seek(mMusicManger.getCurrentPosition()
+					- REWIND_FORWARD_BASE);
+			break;
+		case R.id.music_forward:
+			mMusicManger.seek(mMusicManger.getCurrentPosition()
+					+ REWIND_FORWARD_BASE);
 			break;
 		default:
 			break;
@@ -177,6 +197,27 @@ public class MusicDetailFragment extends Fragment implements OnClickListener,
 			mHandler.sendEmptyMessage(0);
 		}
 
+	}
+
+	private void setPlayMode(int mode, ImageView modeView) {
+		int playMode = R.drawable.zapya_data_music_single_list_normal;
+		switch (mode) {
+		case MusicManger.PLAY_MODE_LIST:
+			playMode = R.drawable.zapya_data_music_single_list_normal;
+			break;
+		case MusicManger.PLAY_MODE_LIST_SINGLECIRCLE:
+			playMode = R.drawable.zapya_data_music_single_list_singlecircle_normal;
+			break;
+		case MusicManger.PLAY_MODE_RANDOM:
+			playMode = R.drawable.zapya_data_music_single_random_normal;
+			break;
+		case MusicManger.PLAY_MODE_LIST_CIRCLE:
+			playMode = R.drawable.zapya_data_music_single_listcircle_normal;
+			break;
+		default:
+			break;
+		}
+		modeView.setImageResource(playMode);
 	}
 
 	@Override

@@ -2,6 +2,7 @@ package com.nano.lanshare.audio.ui;
 
 import java.io.File;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -23,6 +24,7 @@ import com.nano.lanshare.components.operation.OperationDialog;
 import com.nano.lanshare.components.operation.PopupMenuUtil;
 import com.nano.lanshare.main.LanshareApplication;
 import com.nano.lanshare.thumbnail.util.ImageWorker;
+import com.nano.lanshare.utils.FileUtil;
 
 public class VideoListFragment extends BasicItemFragment implements
 		OnItemClickListener {
@@ -109,12 +111,12 @@ public class VideoListFragment extends BasicItemFragment implements
 		final String path = (String) arg1.getTag();
 		Log.d("zxh", "path:" + path);
 		operationDialog.setContent(PopupMenuUtil.FILE_POPUP_IAMGES,
-				PopupMenuUtil.FILE_OPUP_TEXT, new OnItemClickListener() {
+				PopupMenuUtil.AUDIO_POPUP_TEXT,
+				new DialogInterface.OnClickListener() {
 
 					@Override
-					public void onItemClick(AdapterView<?> arg0, View arg1,
-							int arg2, long arg3) {
-						switch (arg2) {
+					public void onClick(DialogInterface dialog, int which) {
+						switch (which) {
 						case PopupMenuUtil.MENU_TRANSPORT:
 
 							break;
@@ -125,17 +127,18 @@ public class VideoListFragment extends BasicItemFragment implements
 							startActivity(intent);
 							break;
 						case PopupMenuUtil.MENU_PROPARTY:
-							PopupMenuUtil.showPropertyDialog(getActivity(),
-									path);
+							FileUtil.showPropertyDialog(getActivity(), path);
 							break;
 						case PopupMenuUtil.MENU_OPERATION:
-
+							FileUtil.showFileOperationDialog(getActivity(),
+									path);
 							break;
 						default:
 							break;
 						}
 					}
 				});
+
 		operationDialog.showAsDropDown(arg1);
 	}
 

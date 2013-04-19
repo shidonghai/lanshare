@@ -10,7 +10,9 @@ import android.webkit.MimeTypeMap;
 
 import com.nano.lanshare.file.FileItem;
 import com.nano.lanshare.file.FileList;
+import com.nano.lanshare.file.scan.FileScanner.ScanMode;
 import com.nano.lanshare.file.ui.FileListAdapter;
+import com.nano.lanshare.utils.FileUtil;
 
 public class ScanThread implements Runnable {
 
@@ -77,7 +79,7 @@ public class ScanThread implements Runnable {
 			FileItem item = null;
 
 			// Add back item.
-			if (null != mFolder.getParentFile()) {
+			if (!isInboxRoot() && null != mFolder.getParentFile()) {
 				item = new FileItem();
 				item.type = FileListAdapter.FILE_TYPE_BACK;
 				list.add(item);
@@ -91,6 +93,11 @@ public class ScanThread implements Runnable {
 			}
 		}
 		return list;
+	}
+
+	private boolean isInboxRoot() {
+		return mScanner.getScanMode() == ScanMode.INBOX
+				&& mFolder == FileUtil.INBOX_FILE;
 	}
 
 	private int getFileType(File file) {

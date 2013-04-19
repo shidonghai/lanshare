@@ -8,16 +8,27 @@ import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.provider.MediaStore.Audio;
 import android.provider.MediaStore.Audio.Media;
-import android.util.Log;
 
 import com.nano.lanshare.audio.bean.MusicInfo;
 
 public class MusicManger {
+	public static final int PLAY_MODE_LIST = 0;
+
+	public static final int PLAY_MODE_LIST_SINGLECIRCLE = 1;
+
+	public static final int PLAY_MODE_RANDOM = 2;
+
+	public static final int PLAY_MODE_LIST_CIRCLE = 3;
+
+	public static final String MUSIC_PREFERENCE = "music_preference";
+
+	public static final String MUSIC_PLAY_MODE = "music_play_mode";
 
 	private static MusicManger instance;
 
@@ -93,10 +104,6 @@ public class MusicManger {
 					info.size = cursor
 							.getLong(cursor
 									.getColumnIndex(android.provider.MediaStore.Audio.Media.SIZE));
-					// info.path = cursor
-					// .getString(cursor
-					// .getColumnIndexOrThrow(MediaStore.MediaColumns.DATA));
-					Log.d("zxh", "path:" + info.path);
 					info.uri = ContentUris.withAppendedId(
 							Audio.Media.EXTERNAL_CONTENT_URI, info.id);
 					list.add(info);
@@ -197,7 +204,7 @@ public class MusicManger {
 
 	public void next() {
 		try {
-			mServerAidl.next(null);
+			mServerAidl.next();
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
@@ -205,7 +212,7 @@ public class MusicManger {
 
 	public void previou() {
 		try {
-			mServerAidl.prev(null);
+			mServerAidl.prev();
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
@@ -266,5 +273,25 @@ public class MusicManger {
 		}
 
 		return false;
+	}
+
+	public int getPlayMode(Context context) {
+		SharedPreferences musicPreferences = context.getSharedPreferences(
+				MUSIC_PREFERENCE, Context.MODE_PRIVATE);
+		return musicPreferences.getInt(MUSIC_PLAY_MODE, PLAY_MODE_LIST);
+	}
+
+	public void setPlayMode(Context context, int playMode) {
+		SharedPreferences musicPreferences = context.getSharedPreferences(
+				MUSIC_PREFERENCE, Context.MODE_PRIVATE);
+		musicPreferences.edit().putInt(MUSIC_PLAY_MODE, playMode).commit();
+	}
+
+	public int changePlayMode(Context context) {
+		int currentMode = getPlayMode(context);
+		int playMode = currentMode == PLAY_MODE_LIST_CIRCLE ? PLAY_MODE_LIST
+				: currentMode + 1;
+		setPlayMode(context, playMode);
+		return playMode;
 	}
 }

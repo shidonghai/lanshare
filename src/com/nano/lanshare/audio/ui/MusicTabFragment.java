@@ -1,5 +1,6 @@
 package com.nano.lanshare.audio.ui;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.FragmentTransaction;
@@ -22,6 +23,7 @@ import com.nano.lanshare.components.BasicItemFragment;
 import com.nano.lanshare.components.LongClickListener;
 import com.nano.lanshare.components.operation.OperationDialog;
 import com.nano.lanshare.components.operation.PopupMenuUtil;
+import com.nano.lanshare.utils.FileUtil;
 
 /**
  * Music tab
@@ -40,6 +42,8 @@ public class MusicTabFragment extends BasicItemFragment implements
 	private TextView mCurrentSong;
 
 	private ImageView mPlay;
+
+	private ImageView mPlayMode;
 
 	private Handler mHandler = new Handler() {
 		public void handleMessage(android.os.Message msg) {
@@ -66,12 +70,12 @@ public class MusicTabFragment extends BasicItemFragment implements
 		ImageView previou = (ImageView) view.findViewById(R.id.music_pre);
 		mPlay = (ImageView) view.findViewById(R.id.music_pause);
 		ImageView next = (ImageView) view.findViewById(R.id.music_next);
-		ImageView model = (ImageView) view.findViewById(R.id.music_mode);
+		mPlayMode = (ImageView) view.findViewById(R.id.music_mode);
 		detail.setOnClickListener(this);
 		previou.setOnClickListener(this);
 		mPlay.setOnClickListener(this);
 		next.setOnClickListener(this);
-		model.setOnClickListener(this);
+		mPlayMode.setOnClickListener(this);
 
 		mCurrentSong = (TextView) view.findViewById(R.id.music_name);
 		mSeekBar = (SeekBar) view.findViewById(R.id.music_seekbar);
@@ -86,6 +90,8 @@ public class MusicTabFragment extends BasicItemFragment implements
 	@Override
 	public void onResume() {
 		super.onResume();
+		setPlayMode(mMusicManger.getPlayMode(getActivity()), mPlayMode);
+
 		if (mMusicManger.isStarted()) {
 			mCurrentSong.setText(mMusicManger.getMusicList().get(
 					mMusicManger.getCurrentIndex()).title);
@@ -103,6 +109,27 @@ public class MusicTabFragment extends BasicItemFragment implements
 		}
 	}
 
+	private void setPlayMode(int mode, ImageView modeView) {
+		int playMode = R.drawable.zapya_data_music_random_ist_normal;
+		switch (mode) {
+		case MusicManger.PLAY_MODE_LIST:
+			playMode = R.drawable.zapya_data_music_random_ist_normal;
+			break;
+		case MusicManger.PLAY_MODE_LIST_SINGLECIRCLE:
+			playMode = R.drawable.zapya_data_music_random_circleone_normal;
+			break;
+		case MusicManger.PLAY_MODE_RANDOM:
+			playMode = R.drawable.zapya_data_music_random_normal;
+			break;
+		case MusicManger.PLAY_MODE_LIST_CIRCLE:
+			playMode = R.drawable.zapya_data_music_random_circlelist_normal;
+			break;
+		default:
+			break;
+		}
+		modeView.setImageResource(playMode);
+	}
+
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View view, final int position,
 			long arg3) {
@@ -110,12 +137,12 @@ public class MusicTabFragment extends BasicItemFragment implements
 				getActivity());
 
 		operationDialog.setContent(PopupMenuUtil.FILE_POPUP_IAMGES,
-				PopupMenuUtil.FILE_OPUP_TEXT, new OnItemClickListener() {
+				PopupMenuUtil.AUDIO_POPUP_TEXT,
+				new DialogInterface.OnClickListener() {
 
 					@Override
-					public void onItemClick(AdapterView<?> arg0, View arg1,
-							int arg2, long arg3) {
-						switch (arg2) {
+					public void onClick(DialogInterface dialog, int which) {
+						switch (which) {
 						case PopupMenuUtil.MENU_TRANSPORT:
 
 							break;
@@ -123,20 +150,21 @@ public class MusicTabFragment extends BasicItemFragment implements
 							mMusicManger.play(position);
 							break;
 						case PopupMenuUtil.MENU_PROPARTY:
-							PopupMenuUtil
-									.showPropertyDialog(
-											getActivity(),
-											mMusicManger.getMusicList().get(
-													position).path);
+							FileUtil.showPropertyDialog(
+									getActivity(),
+									mMusicManger.getMusicList().get(position).path);
 							break;
 						case PopupMenuUtil.MENU_OPERATION:
-
+							FileUtil.showFileOperationDialog(
+									getActivity(),
+									mMusicManger.getMusicList().get(position).path);
 							break;
 						default:
 							break;
 						}
 					}
 				});
+
 		operationDialog.showAsDropDown(view);
 
 	}
@@ -174,6 +202,9 @@ public class MusicTabFragment extends BasicItemFragment implements
 			break;
 		case R.id.music_pause:
 			togglePlaying();
+		case R.id.music_mode:
+			setPlayMode(mMusicManger.changePlayMode(getActivity()), mPlayMode);
+			break;
 		default:
 			break;
 		}
