@@ -28,7 +28,7 @@ public class OperationDialog extends PopupWindow {
 
 	public static final int TYPE_FILE = 4;
 
-	private final int Y_OFF_BASE = -20;
+	private final int Y_OFF_BASE = -40;
 
 	private int mScreenH;
 

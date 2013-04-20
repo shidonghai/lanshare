@@ -20,4 +20,7 @@ public class PopupMenuUtil {
 
 	public static int[] AUDIO_POPUP_TEXT = new int[] { R.string.menu_transport,
 			R.string.menu_play, R.string.menu_property, R.string.menu_operation };
+
+	public static int[] IMAGE_POPUP_TEXT = new int[] { R.string.menu_transport,
+		R.string.menu_view, R.string.menu_property, R.string.menu_operation };
 }

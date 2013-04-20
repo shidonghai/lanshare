@@ -2,6 +2,7 @@ package com.nano.lanshare.apps.ui;
 
 import java.util.List;
 
+import android.content.DialogInterface;
 import android.content.pm.PackageInfo;
 import android.os.Bundle;
 import android.os.Message;
@@ -17,6 +18,8 @@ import com.nano.lanshare.apps.AppLoader;
 import com.nano.lanshare.apps.AppLoader.AppInfo;
 import com.nano.lanshare.components.BasicTabFragment;
 import com.nano.lanshare.components.LongClickListener;
+import com.nano.lanshare.components.operation.OperationDialog;
+import com.nano.lanshare.components.operation.PopupMenuUtil;
 import com.nano.lanshare.main.LanshareApplication;
 import com.nano.lanshare.thumbnail.util.ImageCache.ImageCacheParams;
 import com.nano.lanshare.thumbnail.util.ImageWorker;
@@ -135,7 +138,31 @@ public class AppFragment extends BasicTabFragment implements
 
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-		// TODO Auto-generated method stub
+		final OperationDialog operationDialog = new OperationDialog(
+				getActivity());
 
+		operationDialog.setContent(PopupMenuUtil.FILE_POPUP_IAMGES,
+				PopupMenuUtil.FILE_POPUP_TEXT,
+				new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						switch (which) {
+						case PopupMenuUtil.MENU_TRANSPORT:
+
+							break;
+						case PopupMenuUtil.MENU_ACTION:
+							break;
+						case PopupMenuUtil.MENU_PROPARTY:
+							break;
+						case PopupMenuUtil.MENU_OPERATION:
+							break;
+						default:
+							break;
+						}
+					}
+				});
+
+		operationDialog.showAsDropDown(arg1);
 	}
 }
