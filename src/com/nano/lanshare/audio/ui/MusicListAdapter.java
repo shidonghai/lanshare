@@ -31,6 +31,15 @@ public class MusicListAdapter extends BaseAdapter implements
 		mInflater = LayoutInflater.from(context);
 	}
 
+	public MusicListAdapter(Context context) {
+		mInflater = LayoutInflater.from(context);
+	}
+
+	public void setPlaylist(List<MusicInfo> playList) {
+		mPlayList = playList;
+		notifyDataSetChanged();
+	}
+
 	// Change the file size as KB/MB.
 	private String readFileSize(long size) {
 		if (size <= 0)
@@ -48,7 +57,7 @@ public class MusicListAdapter extends BaseAdapter implements
 
 	@Override
 	public int getCount() {
-		return mPlayList.size();
+		return mPlayList == null ? 0 : mPlayList.size();
 	}
 
 	@Override

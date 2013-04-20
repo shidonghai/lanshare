@@ -34,13 +34,12 @@ public class MusicManger {
 
 	private MusicBinderAidl mServerAidl;
 
-	private MusicManger(Context context) {
-		mInfos = queryMusic(context);
+	private MusicManger() {
 	}
 
-	public static MusicManger getInstance(Context context) {
+	public static MusicManger getInstance() {
 		if (null == instance) {
-			instance = new MusicManger(context);
+			instance = new MusicManger();
 		}
 
 		return instance;
@@ -68,7 +67,7 @@ public class MusicManger {
 	 * 
 	 * @return List<MusicInfo>
 	 */
-	public List<MusicInfo> getMusicList() {
+	public synchronized List<MusicInfo> getMusicList() {
 		return mInfos;
 	}
 
@@ -76,8 +75,7 @@ public class MusicManger {
 		return mServerAidl != null;
 	}
 
-	private List<MusicInfo> queryMusic(Context context) {
-
+	public synchronized List<MusicInfo> queryMusic(Context context) {
 		List<MusicInfo> list = new ArrayList<MusicInfo>();
 		String[] projection = new String[] { Media._ID, Media.DISPLAY_NAME,
 				Media.MIME_TYPE, Media.TITLE, Media.ALBUM, Media.ARTIST,
@@ -114,7 +112,7 @@ public class MusicManger {
 				cursor.close();
 			}
 		}
-
+		mInfos = list;
 		return list;
 	}
 

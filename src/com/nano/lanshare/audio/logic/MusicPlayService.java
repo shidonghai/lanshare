@@ -30,7 +30,7 @@ public class MusicPlayService extends Service implements OnPreparedListener,
 		super.onCreate();
 		mPlayer = new MediaPlayer();
 		Log.d("zxh", "MusicPlayService onCreate");
-		mMusicManger = MusicManger.getInstance(getApplicationContext());
+		mMusicManger = MusicManger.getInstance();
 	}
 
 	@Override

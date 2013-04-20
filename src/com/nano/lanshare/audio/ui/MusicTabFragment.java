@@ -1,6 +1,9 @@
 package com.nano.lanshare.audio.ui;
 
+import java.util.List;
+
 import android.content.DialogInterface;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.FragmentTransaction;
@@ -17,6 +20,7 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
 import com.nano.lanshare.R;
+import com.nano.lanshare.audio.bean.MusicInfo;
 import com.nano.lanshare.audio.logic.IMusicStatusListener;
 import com.nano.lanshare.audio.logic.MusicManger;
 import com.nano.lanshare.components.BasicItemFragment;
@@ -45,6 +49,10 @@ public class MusicTabFragment extends BasicItemFragment implements
 
 	private ImageView mPlayMode;
 
+	private MusicListAdapter mAdapter;
+
+	private ScanMusic mScanMusicTask;
+
 	private Handler mHandler = new Handler() {
 		public void handleMessage(android.os.Message msg) {
 			mSeekBar.setProgress(mMusicManger.getCurrentPosition());
@@ -56,35 +64,29 @@ public class MusicTabFragment extends BasicItemFragment implements
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		mMusicManger = MusicManger.getInstance(getActivity());
+		mMusicManger = MusicManger.getInstance();
 		mMusicManger.registerListener(this);
 
-		MusicListAdapter adapter = new MusicListAdapter(getActivity(),
-				mMusicManger.getMusicList());
+		// MusicListAdapter adapter = new MusicListAdapter(getActivity(),
+		// mMusicManger.getMusicList());
+		mAdapter = new MusicListAdapter(getActivity());
 		ListView listView = (ListView) getView().findViewById(R.id.music_list);
-		listView.setAdapter(adapter);
+		listView.setAdapter(mAdapter);
 		listView.setOnItemClickListener(this);
 		listView.setOnItemLongClickListener(new LongClickListener(
 				getActivity(), R.id.music_image));
-		ImageView detail = (ImageView) view.findViewById(R.id.music_detail);
-		ImageView previou = (ImageView) view.findViewById(R.id.music_pre);
+
 		mPlay = (ImageView) view.findViewById(R.id.music_pause);
-		ImageView next = (ImageView) view.findViewById(R.id.music_next);
 		mPlayMode = (ImageView) view.findViewById(R.id.music_mode);
-		detail.setOnClickListener(this);
-		previou.setOnClickListener(this);
-		mPlay.setOnClickListener(this);
-		next.setOnClickListener(this);
 		mPlayMode.setOnClickListener(this);
 
 		mCurrentSong = (TextView) view.findViewById(R.id.music_name);
 		mSeekBar = (SeekBar) view.findViewById(R.id.music_seekbar);
 		mSeekBar.setOnSeekBarChangeListener(this);
+		mProgress.setVisibility(View.VISIBLE);
 
-		mEmptyView.setText(R.string.dm_no_file_prompt_audio);
-		mEmptyView
-				.setVisibility(mMusicManger.getMusicList().size() == 0 ? View.VISIBLE
-						: View.GONE);
+		mScanMusicTask = new ScanMusic(view);
+		mScanMusicTask.execute();
 	}
 
 	@Override
@@ -240,6 +242,11 @@ public class MusicTabFragment extends BasicItemFragment implements
 		super.onStop();
 		mMusicManger.unRegisterListener(this);
 		mHandler.removeMessages(0);
+
+		if (null != mScanMusicTask) {
+			Log.d("zxh", "cancel");
+			mScanMusicTask.cancel(true);
+		}
 	}
 
 	private void togglePlaying() {
@@ -265,5 +272,44 @@ public class MusicTabFragment extends BasicItemFragment implements
 	@Override
 	public View createContentView(LayoutInflater inflater) {
 		return inflater.inflate(R.layout.music_tab, null);
+	}
+
+	private class ScanMusic extends AsyncTask<Void, Void, List<MusicInfo>> {
+		private View mView;
+
+		public ScanMusic(View view) {
+			mView = view;
+		}
+
+		@Override
+		protected List<MusicInfo> doInBackground(Void... params) {
+			if (null == mMusicManger.getMusicList()) {
+				mMusicManger.queryMusic(getActivity());
+			}
+
+			return mMusicManger.getMusicList();
+		}
+
+		@Override
+		protected void onPostExecute(List<MusicInfo> result) {
+			Log.d("zxh", "onPostExecute");
+			mProgress.setVisibility(View.GONE);
+			mAdapter.setPlaylist(result);
+			mAdapter.setPlaylist(mMusicManger.getMusicList());
+			mEmptyView.setText(R.string.dm_no_file_prompt_audio);
+			mEmptyView
+					.setVisibility(mMusicManger.getMusicList().size() == 0 ? View.VISIBLE
+							: View.GONE);
+
+			ImageView previou = (ImageView) mView.findViewById(R.id.music_pre);
+			ImageView next = (ImageView) mView.findViewById(R.id.music_next);
+			ImageView gotoDetail = (ImageView) mView
+					.findViewById(R.id.music_detail);
+			gotoDetail.setOnClickListener(MusicTabFragment.this);
+			previou.setOnClickListener(MusicTabFragment.this);
+			next.setOnClickListener(MusicTabFragment.this);
+			mPlay.setOnClickListener(MusicTabFragment.this);
+		}
+
 	}
 }

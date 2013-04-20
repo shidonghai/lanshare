@@ -58,7 +58,7 @@ public class MusicDetailFragment extends Fragment implements OnClickListener,
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		mMusicManger = MusicManger.getInstance(getActivity());
+		mMusicManger = MusicManger.getInstance();
 		mMusicManger.registerListener(this);
 
 		mTitle = (TextView) view.findViewById(R.id.music_index);

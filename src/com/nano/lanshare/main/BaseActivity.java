@@ -46,7 +46,7 @@ public class BaseActivity extends FragmentActivity implements
 		mDragController = DragController
 				.getInstance((ViewGroup) findViewById(R.id.base_viewgroup));
 
-		MusicManger.getInstance(this).bindServer(this);
+		MusicManger.getInstance().bindServer(this);
 	}
 
 	/**
@@ -112,7 +112,7 @@ public class BaseActivity extends FragmentActivity implements
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		MusicManger.getInstance(this).unBindServer(this);
+		MusicManger.getInstance().unBindServer(this);
 	}
 
 	private void showExitDialog() {
