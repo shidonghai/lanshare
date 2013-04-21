@@ -31,6 +31,7 @@ public class HistoryListAdapter extends BaseAdapter {
     private List<HistoryInfo> mSelectList = new ArrayList<HistoryInfo>();
     private Cursor mCursor;
     private Context mContext;
+    private boolean isCheckMode;
 
     public HistoryListAdapter(Context context, List<HistoryInfo> historyList,
             boolean autoRequery) {
@@ -91,7 +92,6 @@ public class HistoryListAdapter extends BaseAdapter {
             return getHistoryItems(convertView, position);
         }
     }
-    
 
     public View getHistoryItems(View convertView, int position) {
         ViewHolder holder = null;
@@ -107,6 +107,14 @@ public class HistoryListAdapter extends BaseAdapter {
         }
         holder.setData(mHistoryInfoList.get(position));
         return convertView;
+    }
+
+    public void setCheckMode() {
+        isCheckMode = !isCheckMode;
+    }
+
+    public void setAllChecked(boolean flag) {
+
     }
 
     public void setChecked(View item, int position) {
@@ -130,11 +138,15 @@ public class HistoryListAdapter extends BaseAdapter {
         }
 
         public void setData(HistoryInfo info) {
+
+            // setChecked(info);
+        }
+        
+        public void setCheckMode(){
             
-            //setChecked(info);
         }
 
-        private boolean isChecked() {
+        public boolean selectCheck() {
             return fileChecked.getVisibility() == View.VISIBLE;
         }
 
@@ -162,7 +174,7 @@ public class HistoryListAdapter extends BaseAdapter {
         }
 
         public void setChecked(int position) {
-            //setChecked(getItem(position));
+            // setChecked(getItem(position));
         }
     }
 

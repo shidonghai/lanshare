@@ -151,7 +151,7 @@ public class HistoryDBManager extends DBManager {
     public int deleteByID(int id) {
         mDb.beginTransaction();
         try {
-            mDb.delete(HistoryTable.TABLE_NAME, HistoryTable.Clomns.PATH + "=?",
+            mDb.delete(HistoryTable.TABLE_NAME, HistoryTable.Clomns.ID + "=?",
                     new String[] {
                         id + ""
                     });

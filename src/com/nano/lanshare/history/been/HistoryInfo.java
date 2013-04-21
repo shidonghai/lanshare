@@ -15,6 +15,9 @@ public class HistoryInfo {
     public String sender;
     public String reciver;
     public String date;
+    public String receSize;
+    public String costTime;
+    public String status;
 
     public HistoryInfo() {
 
