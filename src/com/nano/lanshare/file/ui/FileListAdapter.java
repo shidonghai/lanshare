@@ -3,9 +3,13 @@ package com.nano.lanshare.file.ui;
 import java.io.File;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.provider.MediaStore.MediaColumns;
+import android.provider.MediaStore.Video;
+import android.provider.MediaStore.Video.Thumbnails;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,8 +38,13 @@ public class FileListAdapter extends BaseAdapter {
 
 	public static final int FILE_TYPE_AUDIO = 4;
 
+	public static final int FILE_TYPE_VIDEO = 5;
+
+	private Context mContext;
+
 	private static final int[] TYPE_COUNT = new int[] { FILE_TYPE_FOLDER,
-			FILE_TYPE_FILE, FILE_TYPE_BACK, FILE_TYPE_IMAGE };
+			FILE_TYPE_FILE, FILE_TYPE_BACK, FILE_TYPE_IMAGE, FILE_TYPE_AUDIO,
+			FILE_TYPE_VIDEO };
 
 	private FileList mList;
 
@@ -62,7 +71,19 @@ public class FileListAdapter extends BaseAdapter {
 
 	};
 
+	private LoadMethod mVideoLoadMethod = new LoadMethod() {
+
+		@Override
+		public Bitmap processBitmap(Object obj, Context context) {
+			Bitmap bitmap = Thumbnails.getThumbnail(
+					context.getContentResolver(), (Long) obj,
+					Thumbnails.MICRO_KIND, null);
+			return bitmap;
+		}
+	};
+
 	public FileListAdapter(Context context) {
+		mContext = context;
 		mInflater = LayoutInflater.from(context);
 		mDefaultImageIcon = BitmapFactory.decodeResource(
 				context.getResources(), R.drawable.photo_default_icon);
@@ -157,8 +178,10 @@ public class FileListAdapter extends BaseAdapter {
 					.get(position).file);
 			break;
 		}
+		case FILE_TYPE_FILE:
 		case FILE_TYPE_IMAGE:
-		case FILE_TYPE_FILE: {
+		case FILE_TYPE_AUDIO:
+		case FILE_TYPE_VIDEO: {
 			convertView = createFileTypeView(convertView, mList.getFileList()
 					.get(position));
 			break;
@@ -237,6 +260,15 @@ public class FileListAdapter extends BaseAdapter {
 			mWorker.loadImage(fileItem.file.getAbsolutePath(), itemView,
 					mDefaultImageIcon, mPicLoader);
 			break;
+		case FileListAdapter.FILE_TYPE_AUDIO:
+			itemView.setImageResource(R.drawable.zapya_data_audio);
+			break;
+		case FileListAdapter.FILE_TYPE_VIDEO:
+			mWorker.loadImage(queryVideoId(fileItem.file.getAbsolutePath()),
+					itemView, BitmapFactory.decodeResource(
+							mContext.getResources(),
+							R.drawable.zapya_data_video_l), mVideoLoadMethod);
+			break;
 		default:
 			itemView.setRectColor(Color.TRANSPARENT);
 			break;
@@ -258,4 +290,21 @@ public class FileListAdapter extends BaseAdapter {
 		TextView size;
 	}
 
+	private long queryVideoId(String path) {
+
+		if (null != path) {
+			Cursor cursor = mContext.getContentResolver().query(
+					Video.Media.EXTERNAL_CONTENT_URI,
+					new String[] { MediaColumns._ID }, Video.Media.DATA + "=?",
+					new String[] { path }, null);
+			if (null != cursor && cursor.moveToFirst()) {
+				long id = cursor
+						.getLong(cursor.getColumnIndex(Video.Media._ID));
+				cursor.close();
+				return id;
+			}
+		}
+
+		return -1;
+	}
 }

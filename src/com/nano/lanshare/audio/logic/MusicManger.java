@@ -122,7 +122,7 @@ public class MusicManger {
 	 * @param listener
 	 */
 	public void registerListener(IMusicStatusListener listener) {
-		if (null != listener) {
+		if (null != listener && !mMusicStatusListener.contains(listener)) {
 			mMusicStatusListener.add(listener);
 		}
 	}

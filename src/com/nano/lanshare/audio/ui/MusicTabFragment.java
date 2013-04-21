@@ -63,10 +63,8 @@ public class MusicTabFragment extends BasicItemFragment implements
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-
+		Log.d("zxh", "onViewCreated");
 		mMusicManger = MusicManger.getInstance();
-		mMusicManger.registerListener(this);
-
 		// MusicListAdapter adapter = new MusicListAdapter(getActivity(),
 		// mMusicManger.getMusicList());
 		mAdapter = new MusicListAdapter(getActivity());
@@ -87,6 +85,12 @@ public class MusicTabFragment extends BasicItemFragment implements
 
 		mScanMusicTask = new ScanMusic(view);
 		mScanMusicTask.execute();
+	}
+
+	@Override
+	public void onStart() {
+		super.onStart();
+		mMusicManger.registerListener(this);
 	}
 
 	@Override
@@ -204,6 +208,7 @@ public class MusicTabFragment extends BasicItemFragment implements
 			break;
 		case R.id.music_pause:
 			togglePlaying();
+			break;
 		case R.id.music_mode:
 			setPlayMode(mMusicManger.changePlayMode(getActivity()), mPlayMode);
 			break;
@@ -240,6 +245,7 @@ public class MusicTabFragment extends BasicItemFragment implements
 	@Override
 	public void onStop() {
 		super.onStop();
+		Log.d("zxh", "onStop");
 		mMusicManger.unRegisterListener(this);
 		mHandler.removeMessages(0);
 

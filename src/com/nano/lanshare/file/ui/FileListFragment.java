@@ -1,17 +1,25 @@
 package com.nano.lanshare.file.ui;
 
+import java.io.File;
+import java.util.List;
+
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Message;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.widget.AdapterView;
 
+import com.nano.lanshare.R;
 import com.nano.lanshare.components.operation.OperationDialog;
 import com.nano.lanshare.components.operation.PopupMenuUtil;
+import com.nano.lanshare.file.Extentions;
 import com.nano.lanshare.file.FileItem;
 import com.nano.lanshare.file.FileList;
+import com.nano.lanshare.file.OpenIntent;
 import com.nano.lanshare.file.scan.FileScanListener;
 import com.nano.lanshare.file.scan.FileScanner;
 import com.nano.lanshare.file.scan.FileScanner.ScanMode;
@@ -19,6 +27,8 @@ import com.nano.lanshare.utils.FileUtil;
 
 public class FileListFragment extends BasicFileFragment {
 
+	private static final int LEFT = 1;
+	private static final int RIGHT = 2;
 	protected FileScanner mScanner;
 	private int mLastPosition;
 
@@ -36,6 +46,11 @@ public class FileListFragment extends BasicFileFragment {
 	// getActivity().invalidateOptionsMenu();
 	// }
 	// };
+	private Handler mHandler;
+
+	public FileListFragment(Handler handler) {
+		mHandler = handler;
+	}
 
 	protected void handleMsg(Message msg) {
 		switch (msg.what) {
@@ -50,12 +65,22 @@ public class FileListFragment extends BasicFileFragment {
 
 			mAdapter.setFiles(list);
 			mList.setSelection(mLastPosition);
-			// if
-			// (ClipBoard.getInstance().needRefresh(mScanner.getCurrentFile()))
-			// {
-			// Log.e("refresh", "position " + mLastPosition);
-			// getHandler().sendEmptyMessage(REFRESH);
-			// }
+
+			if (null != mHandler) {
+				Message message = mHandler.obtainMessage();
+				if (mScanner.getScanMode() == ScanMode.INBOX) {
+					message.arg1 = LEFT;
+					message.obj = String.format(
+							getString(R.string.dm_tab_title_zapya),
+							getFileSize(list.getFileList()));
+				} else {
+					message.arg1 = RIGHT;
+					message.obj = String.format(
+							getString(R.string.dm_tab_title_sdcard),
+							getFileSize(list.getFileList()));
+				}
+				message.sendToTarget();
+			}
 			return;
 		}
 		case REFRESH: {
@@ -64,6 +89,14 @@ public class FileListFragment extends BasicFileFragment {
 		}
 		}
 		super.handleMsg(msg);
+	}
+
+	private int getFileSize(List<FileItem> list) {
+		if (list != null && list.size() > 0) {
+			return FileListAdapter.FILE_TYPE_BACK == list.get(0).type ? list
+					.size() - 1 : list.size();
+		}
+		return 0;
 	}
 
 	protected FileScanListener mListener = new FileScanListener() {
@@ -145,7 +178,7 @@ public class FileListFragment extends BasicFileFragment {
 
 							break;
 						case PopupMenuUtil.MENU_ACTION:
-
+							openAction(item.file);
 							break;
 						case PopupMenuUtil.MENU_PROPARTY:
 							FileUtil.showPropertyDialog(getActivity(),
@@ -164,6 +197,14 @@ public class FileListFragment extends BasicFileFragment {
 		operationDialog.showAsDropDown(view);
 	}
 
+	private void openAction(File file) {
+		String type = Extentions.getIntance(getActivity()).getType(file);
+		String mimetype = Extentions.getIntance(getActivity())
+				.getMimeType(type);
+		Intent intent = OpenIntent.get(type, mimetype, file);
+		getActivity().startActivity(Intent.createChooser(intent, ""));
+	}
+
 	private int[] getDialogItemNames(int type) {
 		int[] names = null;
 		switch (type) {
@@ -171,6 +212,7 @@ public class FileListFragment extends BasicFileFragment {
 			names = PopupMenuUtil.IMAGE_POPUP_TEXT;
 			break;
 		case FileListAdapter.FILE_TYPE_AUDIO:
+		case FileListAdapter.FILE_TYPE_VIDEO:
 			names = PopupMenuUtil.AUDIO_POPUP_TEXT;
 			break;
 		default:
