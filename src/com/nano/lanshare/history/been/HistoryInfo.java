@@ -1,9 +1,11 @@
 
 package com.nano.lanshare.history.been;
 
+import java.io.Serializable;
+
 import android.graphics.Bitmap;
 
-public class HistoryInfo {
+public class HistoryInfo implements Serializable {
     public int id;
     public int historyType;
     public int fileType;

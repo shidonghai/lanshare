@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginLeft="10dip"
+    android:layout_marginRight="10dip"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:paddingLeft="10dip" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dip"
+        android:gravity="center"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dip"
+            android:gravity="center"
+            android:text="@string/sina_weibo"
+            android:textColor="@color/black"
+            android:textSize="15sp" />
+
+        <ImageView
+            android:id="@+id/close_win"
+            android:layout_width="50dip"
+            android:layout_height="50dip"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="10dip"
+            android:gravity="right"
+            android:src="@drawable/zapya_group_x_l_normal" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dip"
+        android:layout_below="@id/close_win"
+        android:background="@color/gray" />
+
+    <LinearLayout
+        android:id="@+id/share_to_sina"
+        android:layout_width="match_parent"
+        android:layout_height="70dip"
+        android:gravity="center"
+        android:orientation="horizontal" >
+
+        <ImageView
+            android:layout_width="50dip"
+            android:layout_height="50dip"
+            android:src="@drawable/share_sina_btn_press" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dip"
+            android:gravity="center_vertical"
+            android:text="@string/sina_weibo"
+            android:textColor="@color/black" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dip"
+        android:background="@color/gray" />
+
+    <LinearLayout
+        android:id="@+id/share_to_tencent"
+        android:layout_width="match_parent"
+        android:layout_height="70dip"
+        android:gravity="center"
+        android:orientation="horizontal" >
+
+        <ImageView
+            android:layout_width="50dip"
+            android:layout_height="50dip"
+            android:src="@drawable/share_tencent_btn_press" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dip"
+            android:gravity="center_vertical"
+            android:text="@string/tengxun_weibo"
+            android:textColor="@color/black" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dip"
+        android:background="@color/gray" />
+
+    <LinearLayout
+        android:id="@+id/share_to_renren"
+        android:layout_width="match_parent"
+        android:layout_height="70dip"
+        android:gravity="center"
+        android:orientation="horizontal" >
+
+        <ImageView
+            android:layout_width="50dip"
+            android:layout_height="50dip"
+            android:src="@drawable/share_renren_btn_press" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dip"
+            android:gravity="center_vertical"
+            android:text="@string/renren_weibo"
+            android:textColor="@color/black" />
+    </LinearLayout>
+
+</LinearLayout>

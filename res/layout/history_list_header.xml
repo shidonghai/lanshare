@@ -40,7 +40,7 @@
             android:layout_width="150dip"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dip"
-            android:text="@string/dm_traffic_statistics"
+            android:text="@string/show_lanshare_msg"
              />
     </LinearLayout>
 

@@ -3,14 +3,13 @@ package com.nano.lanshare.history.fragment;
 
 import java.util.List;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.AsyncTaskLoader;
@@ -32,9 +31,13 @@ import com.nano.lanshare.Model.IDataBaseChange;
 import com.nano.lanshare.components.operation.OperationDialog;
 import com.nano.lanshare.components.operation.PopupMenuUtil;
 import com.nano.lanshare.history.adapter.HistoryListAdapter;
+import com.nano.lanshare.history.adapter.HistoryListAdapter.onDataLoadChange;
 import com.nano.lanshare.history.been.HistoryInfo;
+import com.nano.lanshare.main.LanshareApplication;
+import com.nano.lanshare.thumbnail.util.ImageCache.ImageCacheParams;
+import com.nano.lanshare.thumbnail.util.ImageWorker;
 
-public class HistoryFragment extends Fragment implements OnItemClickListener,
+public class HistoryFragment extends Fragment implements OnItemClickListener, onDataLoadChange,
         OnItemLongClickListener,
         LoaderCallbacks<List<HistoryInfo>>, IDataBaseChange {
     // The space of storage
@@ -49,6 +52,9 @@ public class HistoryFragment extends Fragment implements OnItemClickListener,
     private LoaderManager mLoaderManager;
     private OperationDialog mMenu;
     private HistoryInfo mClickInfo;
+    private static final int LOAD_TYPE_RECODE = 0;
+    private static final int LOAD_TYPE_MSG = 1;
+    private int mLoadDateType = LOAD_TYPE_RECODE;
     public static final int QUERY_LIST = 1;
     public static final int DELET_ITEMS = 2;
 
@@ -71,6 +77,7 @@ public class HistoryFragment extends Fragment implements OnItemClickListener,
         mAdapter = new HistoryListAdapter(getActivity(), null, true);
         mDbManager = new HistoryDBManager(getActivity());
         mDbManager.registerContentObserver(this);
+
     }
 
     @Override
@@ -100,32 +107,65 @@ public class HistoryFragment extends Fragment implements OnItemClickListener,
     private void initView(View view) {
         mMenu = new OperationDialog(getActivity());
 
+        ImageWorker worker = ((LanshareApplication) getActivity()
+                .getApplication()).getImageWorker();
+        worker.addImageCache(getFragmentManager(), new ImageCacheParams(
+                getActivity().getApplicationContext(), "diskcache"));
+
+        mHistoryList.setOnScrollListener(worker.getScrollerListener());
+
         mHistoryList.setAdapter(mAdapter);
         mHistoryList.setOnItemClickListener(this);
+        setCheckedMode();
+    }
+
+    /**
+     * Set the items as check mode
+     */
+    public void setCheckedMode() {
+        mAdapter.setCheckMode();
     }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        final HistoryInfo clickInfo = mAdapter.getItem(position);
-        mMenu.setContent(PopupMenuUtil.HISTORY_OPERATER, PopupMenuUtil.HISTORY_OPERATER_NAME,
-                new OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        doHistoryClick(which, clickInfo);
-                    }
-                });
-        mMenu.showAsDropDown(view);
+        if (mAdapter.isCheckedMode()) {
+            mAdapter.setChecked(view, position);
+        } else {
+            final HistoryInfo clickInfo = mAdapter.getItem(position);
+            mMenu.setContent(PopupMenuUtil.HISTORY_OPERATER, PopupMenuUtil.HISTORY_OPERATER_NAME,
+                    new OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            doHistoryClick(which, clickInfo);
+                        }
+                    });
+            mMenu.showAsDropDown(view);
+        }
     }
 
+    /**
+     * <p>
+     * Click the list item and set the menu
+     * </p>
+     * 
+     * @param which
+     * @param clickInfo
+     */
     private void doHistoryClick(int which, HistoryInfo clickInfo) {
         switch (which) {
             case PopupMenuUtil.FILE_SEND: {
                 return;
             }
             case PopupMenuUtil.FILE_SHARE: {
-                Intent intent = new Intent(Intent.ACTION_SEND);
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                Fragment prev = getFragmentManager().findFragmentByTag("dialog");
+                if (prev != null) {
+                    ft.remove(prev);
+                }
+                ft.addToBackStack(null);
 
-                startActivity(intent);
+                DialogFragment newFragment = ShareDialog.newInstance(clickInfo);
+                newFragment.show(ft, "dialog");
                 return;
             }
             case PopupMenuUtil.FILE_OPEN: {
@@ -216,6 +256,15 @@ public class HistoryFragment extends Fragment implements OnItemClickListener,
     public void onDataChange() {
         Log.d("wyg", "onDataChange--------------->>");
         mLoaderManager.restartLoader(QUERY_LIST, null, this);
+    }
+
+    @Override
+    public void onChange() {
+        if (mLoadDateType == LOAD_TYPE_MSG) {
+            mLoadDateType = LOAD_TYPE_RECODE;
+        } else {
+            mLoadDateType = LOAD_TYPE_MSG;
+        }
     }
 
 }
