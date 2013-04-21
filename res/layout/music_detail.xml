@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:src="@drawable/zapya_data_music_single_golist_normal" />
+            android:src="@drawable/zapya_data_music_single_golist_selector" />
 
         <TextView
             android:id="@+id/music_index"
@@ -130,7 +130,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:src="@drawable/zapya_data_music_single_back_pressed" />
+            android:src="@drawable/zapya_data_music_single_back_selector" />
 
         <ImageView
             android:id="@+id/music_rewind"

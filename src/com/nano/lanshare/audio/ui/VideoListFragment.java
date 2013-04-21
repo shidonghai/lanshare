@@ -109,7 +109,6 @@ public class VideoListFragment extends BasicItemFragment implements
 		final OperationDialog operationDialog = new OperationDialog(
 				getActivity());
 		final String path = (String) arg1.getTag();
-		Log.d("zxh", "path:" + path);
 		operationDialog.setContent(PopupMenuUtil.FILE_POPUP_IAMGES,
 				PopupMenuUtil.AUDIO_POPUP_TEXT,
 				new DialogInterface.OnClickListener() {

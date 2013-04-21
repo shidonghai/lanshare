@@ -3,20 +3,28 @@ package com.nano.lanshare.file.ui;
 import java.io.File;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.provider.MediaStore.MediaColumns;
+import android.provider.MediaStore.Video;
+import android.provider.MediaStore.Video.Thumbnails;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.nano.lanshare.R;
 import com.nano.lanshare.components.RectImageView;
 import com.nano.lanshare.file.FileItem;
 import com.nano.lanshare.file.FileList;
+import com.nano.lanshare.file.scan.FileScanner;
+import com.nano.lanshare.file.scan.FileScanner.ScanMode;
+import com.nano.lanshare.history.adapter.HistoryListAdapter.ViewHolder;
 import com.nano.lanshare.main.LanshareApplication;
 import com.nano.lanshare.thumbnail.util.ImageWorker;
 import com.nano.lanshare.thumbnail.util.ImageWorker.LoadMethod;
@@ -34,8 +42,22 @@ public class FileListAdapter extends BaseAdapter {
 
 	public static final int FILE_TYPE_AUDIO = 4;
 
+	public static final int FILE_TYPE_VIDEO = 5;
+
+	private final String APP = "app";
+	private final String BACKUP = "backup";
+	private final String DOODLE = "doodle";
+	private final String FOLDER = "folder";
+	private final String MISC = "misc";
+	private final String MUSIC = "music";
+	private final String PHOTO = "photo";
+	private final String VIDEO = "video";
+
+	private Context mContext;
+
 	private static final int[] TYPE_COUNT = new int[] { FILE_TYPE_FOLDER,
-			FILE_TYPE_FILE, FILE_TYPE_BACK, FILE_TYPE_IMAGE };
+			FILE_TYPE_FILE, FILE_TYPE_BACK, FILE_TYPE_IMAGE, FILE_TYPE_AUDIO,
+			FILE_TYPE_VIDEO };
 
 	private FileList mList;
 
@@ -43,6 +65,9 @@ public class FileListAdapter extends BaseAdapter {
 
 	private Bitmap mDefaultImageIcon;
 	private ImageWorker mWorker;
+
+	private ScanMode mScanMode;
+
 	private LoadMethod mPicLoader = new LoadMethod() {
 		@Override
 		public Bitmap processBitmap(Object obj, Context context) {
@@ -62,7 +87,19 @@ public class FileListAdapter extends BaseAdapter {
 
 	};
 
+	private LoadMethod mVideoLoadMethod = new LoadMethod() {
+
+		@Override
+		public Bitmap processBitmap(Object obj, Context context) {
+			Bitmap bitmap = Thumbnails.getThumbnail(
+					context.getContentResolver(), (Long) obj,
+					Thumbnails.MICRO_KIND, null);
+			return bitmap;
+		}
+	};
+
 	public FileListAdapter(Context context) {
+		mContext = context;
 		mInflater = LayoutInflater.from(context);
 		mDefaultImageIcon = BitmapFactory.decodeResource(
 				context.getResources(), R.drawable.photo_default_icon);
@@ -157,8 +194,10 @@ public class FileListAdapter extends BaseAdapter {
 					.get(position).file);
 			break;
 		}
+		case FILE_TYPE_FILE:
 		case FILE_TYPE_IMAGE:
-		case FILE_TYPE_FILE: {
+		case FILE_TYPE_AUDIO:
+		case FILE_TYPE_VIDEO: {
 			convertView = createFileTypeView(convertView, mList.getFileList()
 					.get(position));
 			break;
@@ -189,6 +228,7 @@ public class FileListAdapter extends BaseAdapter {
 			convertView = mInflater.inflate(R.layout.file_folder, null);
 
 			viewHolder = new FolderViewHolder();
+			viewHolder.icon = (ImageView) convertView.findViewById(R.id.icon);
 			viewHolder.name = (TextView) convertView
 					.findViewById(R.id.folder_name);
 			convertView.setTag(viewHolder);
@@ -196,8 +236,52 @@ public class FileListAdapter extends BaseAdapter {
 			viewHolder = (FolderViewHolder) convertView.getTag();
 		}
 
-		viewHolder.name.setText(file.getName());
+		if (ScanMode.INBOX == mScanMode) {
+			modifyInboxFoler(file, viewHolder);
+		} else {
+			viewHolder.name.setText(file.getName());
+		}
+
 		return convertView;
+	}
+
+	private void modifyInboxFoler(File file, FolderViewHolder holder) {
+		String fileName = file.getName();
+		if (APP.equals(fileName)) {
+			holder.icon
+					.setImageResource(R.drawable.zapya_data_folder_inbox_app);
+			holder.name.setText(R.string.dm_zapya_app_name);
+		} else if (BACKUP.equals(fileName)) {
+			holder.icon
+					.setImageResource(R.drawable.zapya_data_folder_inbox_backup);
+			holder.name.setText(R.string.dm_zapya_backup_name);
+		} else if (DOODLE.equals(fileName)) {
+			holder.icon
+					.setImageResource(R.drawable.zapya_data_folder_inbox_throw);
+			holder.name.setText(R.string.dm_zapya_doodle_name);
+		} else if (FOLDER.equals(fileName)) {
+			holder.icon
+					.setImageResource(R.drawable.zapya_data_folder_inbox_folder);
+			holder.name.setText(R.string.dm_zapya_folder_name);
+		} else if (MISC.equals(fileName)) {
+			holder.icon
+					.setImageResource(R.drawable.zapya_data_folder_inbox_other);
+			holder.name.setText(R.string.dm_zapya_misc_name);
+		} else if (MUSIC.equals(fileName)) {
+			holder.icon
+					.setImageResource(R.drawable.zapya_data_folder_inbox_music);
+			holder.name.setText(R.string.dm_zapya_music_name);
+		} else if (PHOTO.equals(fileName)) {
+			holder.icon
+					.setImageResource(R.drawable.zapya_data_folder_inbox_photo);
+			holder.name.setText(R.string.dm_zapya_photo_name);
+		} else if (VIDEO.equals(fileName)) {
+			holder.icon
+					.setImageResource(R.drawable.zapya_data_folder_inbox_video);
+			holder.name.setText(R.string.dm_zapya_video_name);
+		} else {
+			holder.name.setText(file.getName());
+		}
 	}
 
 	private View createFileTypeView(View convertView, FileItem fileItem) {
@@ -237,6 +321,15 @@ public class FileListAdapter extends BaseAdapter {
 			mWorker.loadImage(fileItem.file.getAbsolutePath(), itemView,
 					mDefaultImageIcon, mPicLoader);
 			break;
+		case FileListAdapter.FILE_TYPE_AUDIO:
+			itemView.setImageResource(R.drawable.zapya_data_audio);
+			break;
+		case FileListAdapter.FILE_TYPE_VIDEO:
+			mWorker.loadImage(queryVideoId(fileItem.file.getAbsolutePath()),
+					itemView, BitmapFactory.decodeResource(
+							mContext.getResources(),
+							R.drawable.zapya_data_video_l), mVideoLoadMethod);
+			break;
 		default:
 			itemView.setRectColor(Color.TRANSPARENT);
 			break;
@@ -249,6 +342,7 @@ public class FileListAdapter extends BaseAdapter {
 	}
 
 	private class FolderViewHolder {
+		ImageView icon;
 		TextView name;
 	}
 
@@ -258,4 +352,25 @@ public class FileListAdapter extends BaseAdapter {
 		TextView size;
 	}
 
+	private long queryVideoId(String path) {
+
+		if (null != path) {
+			Cursor cursor = mContext.getContentResolver().query(
+					Video.Media.EXTERNAL_CONTENT_URI,
+					new String[] { MediaColumns._ID }, Video.Media.DATA + "=?",
+					new String[] { path }, null);
+			if (null != cursor && cursor.moveToFirst()) {
+				long id = cursor
+						.getLong(cursor.getColumnIndex(Video.Media._ID));
+				cursor.close();
+				return id;
+			}
+		}
+
+		return -1;
+	}
+
+	public void setScanMode(ScanMode scanMode) {
+		mScanMode = scanMode;
+	}
 }

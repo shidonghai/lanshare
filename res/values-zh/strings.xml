@@ -591,7 +591,9 @@ All Rights Resevered"</string>
     <string name="dm_no_frend_sns">未查找到好友</string>
     <string name="dm_zapya_app_name">应用程序</string>
     <string name="dm_zapya_backup_name">备份</string>
+     <string name="dm_zapya_folder_name">文件夹</string>
     <string name="dm_zapya_misc_name">其他</string>
+    <string name="dm_zapya_doodle_name">纸团</string>
     <string name="dm_zapya_music_name">音乐</string>
     <string name="dm_zapya_photo_name">照片</string>
     <string name="dm_zapya_video_name">视频</string>
@@ -608,7 +610,7 @@ All Rights Resevered"</string>
     <string name="pull_to_refresh_release_label">松开刷新</string>
     <string name="pull_to_refresh_pull_label">下拉刷新</string>
     <string name="pull_to_refresh_refreshing_label">正在刷新</string>
-    <string name="music_title_index">%1$d/%1$d</string>
+    <string name="music_title_index">%1$d/%2$d</string>
     <string name="count">(%1$d)</string>
     <string name="wifi_conn">WIFI连接(%1$d)</string>
     <string name="hot_spot">热点连接(%1$d)</string>
