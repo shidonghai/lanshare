@@ -5,6 +5,7 @@ import java.io.File;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.nano.lanshare.R;
+import com.nano.lanshare.components.RectImageView;
 import com.nano.lanshare.file.FileItem;
 import com.nano.lanshare.file.FileList;
 import com.nano.lanshare.main.LanshareApplication;
@@ -30,6 +32,8 @@ public class FileListAdapter extends BaseAdapter {
 	public static final int FILE_TYPE_BACK = 2;
 
 	public static final int FILE_TYPE_IMAGE = 3;
+
+	public static final int FILE_TYPE_AUDIO = 4;
 
 	private static final int[] TYPE_COUNT = new int[] { FILE_TYPE_FOLDER,
 			FILE_TYPE_FILE, FILE_TYPE_BACK, FILE_TYPE_IMAGE };
@@ -203,7 +207,8 @@ public class FileListAdapter extends BaseAdapter {
 			convertView = mInflater.inflate(R.layout.file_layout, null);
 
 			viewHolder = new FileViewHolder();
-			viewHolder.icon = (ImageView) convertView.findViewById(R.id.icon);
+			viewHolder.icon = (RectImageView) convertView
+					.findViewById(R.id.icon);
 			viewHolder.name = (TextView) convertView
 					.findViewById(R.id.file_name);
 			viewHolder.size = (TextView) convertView
@@ -217,13 +222,26 @@ public class FileListAdapter extends BaseAdapter {
 		viewHolder.size.setText(FileSizeUtil.formatFromByte(fileItem.file
 				.length()));
 
-		if (fileItem.type == FileListAdapter.FILE_TYPE_IMAGE) {
-			Log.d("zxh", "FileListAdapter.FILE_TYPE_IMAGE");
-			mWorker.loadImage(fileItem.file.getAbsolutePath(), viewHolder.icon,
-					mDefaultImageIcon, mPicLoader);
-		}
+		// if (fileItem.type == FileListAdapter.FILE_TYPE_IMAGE) {
+		// Log.d("zxh", "FileListAdapter.FILE_TYPE_IMAGE");
+		// mWorker.loadImage(fileItem.file.getAbsolutePath(), viewHolder.icon,
+		// mDefaultImageIcon, mPicLoader);
+		// }
+		switchItem(fileItem, viewHolder.icon);
 		return convertView;
 
+	}
+
+	private void switchItem(FileItem fileItem, RectImageView itemView) {
+		switch (fileItem.type) {
+		case FileListAdapter.FILE_TYPE_IMAGE:
+			mWorker.loadImage(fileItem.file.getAbsolutePath(), itemView,
+					mDefaultImageIcon, mPicLoader);
+			break;
+		default:
+			itemView.setRectColor(Color.TRANSPARENT);
+			break;
+		}
 	}
 
 	public void setFiles(FileList list) {
@@ -236,7 +254,7 @@ public class FileListAdapter extends BaseAdapter {
 	}
 
 	private class FileViewHolder {
-		ImageView icon;
+		RectImageView icon;
 		TextView name;
 		TextView size;
 	}

@@ -10,12 +10,15 @@ import android.util.AttributeSet;
 import com.nano.lanshare.thumbnail.util.RecyclingImageView;
 
 /**
- * Custom IamgeView with rect.
+ * Custom IamgeView with rect. Default rect color is white.
  * 
  * @author Xiaohu
  * 
  */
 public class RectImageView extends RecyclingImageView {
+	public static final int DEFAULT_COLOR = Color.WHITE;
+
+	private int mRectColor = DEFAULT_COLOR;
 
 	public RectImageView(Context context) {
 		super(context);
@@ -31,10 +34,20 @@ public class RectImageView extends RecyclingImageView {
 
 		Rect rect = canvas.getClipBounds();
 		Paint paint = new Paint();
-		paint.setColor(Color.WHITE);
+		paint.setColor(mRectColor);
 		paint.setStyle(Paint.Style.STROKE);
 		paint.setStrokeWidth(2);
 		canvas.drawRect(rect, paint);
+	}
+
+	/**
+	 * Set the rect color, default is white.
+	 *
+	 * @param color
+	 *            rect color.
+	 */
+	public void setRectColor(int color) {
+		mRectColor = color;
 	}
 
 }
