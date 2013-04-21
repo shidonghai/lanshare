@@ -17,5 +17,6 @@ public class InboxFileFragment extends FileListFragment {
 		super.onViewCreated(view, bundle);
 		mScanner = new FileScanner(ScanMode.INBOX);
 		mScanner.startScanning(null, mListener);
+		mAdapter.setScanMode(ScanMode.INBOX);
 	}
 }

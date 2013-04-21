@@ -591,7 +591,9 @@ All Rights Resevered"</string>
     <string name="dm_no_frend_sns">未查找到好友</string>
     <string name="dm_zapya_app_name">应用程序</string>
     <string name="dm_zapya_backup_name">备份</string>
+     <string name="dm_zapya_folder_name">文件夹</string>
     <string name="dm_zapya_misc_name">其他</string>
+    <string name="dm_zapya_doodle_name">纸团</string>
     <string name="dm_zapya_music_name">音乐</string>
     <string name="dm_zapya_photo_name">照片</string>
     <string name="dm_zapya_video_name">视频</string>

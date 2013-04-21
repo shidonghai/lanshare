@@ -15,12 +15,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.nano.lanshare.R;
 import com.nano.lanshare.components.RectImageView;
 import com.nano.lanshare.file.FileItem;
 import com.nano.lanshare.file.FileList;
+import com.nano.lanshare.file.scan.FileScanner;
+import com.nano.lanshare.file.scan.FileScanner.ScanMode;
+import com.nano.lanshare.history.adapter.HistoryListAdapter.ViewHolder;
 import com.nano.lanshare.main.LanshareApplication;
 import com.nano.lanshare.thumbnail.util.ImageWorker;
 import com.nano.lanshare.thumbnail.util.ImageWorker.LoadMethod;
@@ -40,6 +44,15 @@ public class FileListAdapter extends BaseAdapter {
 
 	public static final int FILE_TYPE_VIDEO = 5;
 
+	private final String APP = "app";
+	private final String BACKUP = "backup";
+	private final String DOODLE = "doodle";
+	private final String FOLDER = "folder";
+	private final String MISC = "misc";
+	private final String MUSIC = "music";
+	private final String PHOTO = "photo";
+	private final String VIDEO = "video";
+
 	private Context mContext;
 
 	private static final int[] TYPE_COUNT = new int[] { FILE_TYPE_FOLDER,
@@ -52,6 +65,9 @@ public class FileListAdapter extends BaseAdapter {
 
 	private Bitmap mDefaultImageIcon;
 	private ImageWorker mWorker;
+
+	private ScanMode mScanMode;
+
 	private LoadMethod mPicLoader = new LoadMethod() {
 		@Override
 		public Bitmap processBitmap(Object obj, Context context) {
@@ -212,6 +228,7 @@ public class FileListAdapter extends BaseAdapter {
 			convertView = mInflater.inflate(R.layout.file_folder, null);
 
 			viewHolder = new FolderViewHolder();
+			viewHolder.icon = (ImageView) convertView.findViewById(R.id.icon);
 			viewHolder.name = (TextView) convertView
 					.findViewById(R.id.folder_name);
 			convertView.setTag(viewHolder);
@@ -219,8 +236,52 @@ public class FileListAdapter extends BaseAdapter {
 			viewHolder = (FolderViewHolder) convertView.getTag();
 		}
 
-		viewHolder.name.setText(file.getName());
+		if (ScanMode.INBOX == mScanMode) {
+			modifyInboxFoler(file, viewHolder);
+		} else {
+			viewHolder.name.setText(file.getName());
+		}
+
 		return convertView;
+	}
+
+	private void modifyInboxFoler(File file, FolderViewHolder holder) {
+		String fileName = file.getName();
+		if (APP.equals(fileName)) {
+			holder.icon
+					.setImageResource(R.drawable.zapya_data_folder_inbox_app);
+			holder.name.setText(R.string.dm_zapya_app_name);
+		} else if (BACKUP.equals(fileName)) {
+			holder.icon
+					.setImageResource(R.drawable.zapya_data_folder_inbox_backup);
+			holder.name.setText(R.string.dm_zapya_backup_name);
+		} else if (DOODLE.equals(fileName)) {
+			holder.icon
+					.setImageResource(R.drawable.zapya_data_folder_inbox_throw);
+			holder.name.setText(R.string.dm_zapya_doodle_name);
+		} else if (FOLDER.equals(fileName)) {
+			holder.icon
+					.setImageResource(R.drawable.zapya_data_folder_inbox_folder);
+			holder.name.setText(R.string.dm_zapya_folder_name);
+		} else if (MISC.equals(fileName)) {
+			holder.icon
+					.setImageResource(R.drawable.zapya_data_folder_inbox_other);
+			holder.name.setText(R.string.dm_zapya_misc_name);
+		} else if (MUSIC.equals(fileName)) {
+			holder.icon
+					.setImageResource(R.drawable.zapya_data_folder_inbox_music);
+			holder.name.setText(R.string.dm_zapya_music_name);
+		} else if (PHOTO.equals(fileName)) {
+			holder.icon
+					.setImageResource(R.drawable.zapya_data_folder_inbox_photo);
+			holder.name.setText(R.string.dm_zapya_photo_name);
+		} else if (VIDEO.equals(fileName)) {
+			holder.icon
+					.setImageResource(R.drawable.zapya_data_folder_inbox_video);
+			holder.name.setText(R.string.dm_zapya_video_name);
+		} else {
+			holder.name.setText(file.getName());
+		}
 	}
 
 	private View createFileTypeView(View convertView, FileItem fileItem) {
@@ -281,6 +342,7 @@ public class FileListAdapter extends BaseAdapter {
 	}
 
 	private class FolderViewHolder {
+		ImageView icon;
 		TextView name;
 	}
 
@@ -306,5 +368,9 @@ public class FileListAdapter extends BaseAdapter {
 		}
 
 		return -1;
+	}
+
+	public void setScanMode(ScanMode scanMode) {
+		mScanMode = scanMode;
 	}
 }

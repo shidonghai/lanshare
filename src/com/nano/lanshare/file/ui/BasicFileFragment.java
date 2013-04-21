@@ -26,7 +26,7 @@ public abstract class BasicFileFragment extends Fragment implements
 	public static final int EXIT_QUERY = 5;
 
 	LayoutInflater mLayoutInflater;
-	FileListAdapter mAdapter;
+	protected FileListAdapter mAdapter;
 	GridView mList;
 	View mEmptyView;
 	Thread mQueryThread;
