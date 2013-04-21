@@ -22,6 +22,10 @@ public class FileTabFragment extends BasicTabFragment {
 
 	@Override
 	protected void init() {
+		setTitle(LEFT, String.format(getString(R.string.dm_tab_title_zapya), 0));
+		setTitle(RIGHT,
+				String.format(getString(R.string.dm_tab_title_sdcard), 0));
+
 		LinearLayout leftLayout = new LinearLayout(getActivity());
 		leftLayout.setId(R.id.file_left_tab);
 		getGroup(LEFT).addView(leftLayout);
@@ -36,5 +40,4 @@ public class FileTabFragment extends BasicTabFragment {
 				.add(R.id.file_right_tab, new FileListFragment(mHandler))
 				.commit();
 	}
-
 }

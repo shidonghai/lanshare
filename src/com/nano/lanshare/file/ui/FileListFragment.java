@@ -186,7 +186,11 @@ public class FileListFragment extends BasicFileFragment {
 							break;
 						case PopupMenuUtil.MENU_OPERATION:
 							FileUtil.showFileOperationDialog(getActivity(),
-									item.file.getAbsolutePath());
+									item.file.getAbsolutePath(), new Handler() {
+										public void handleMessage(Message msg) {
+											refresh();
+										};
+									});
 							break;
 						default:
 							break;
