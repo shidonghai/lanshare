@@ -6,7 +6,8 @@
 
     <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:background="@color/dm_common_bg_color" >
 
         <LinearLayout
             android:id="@+id/up"
@@ -21,7 +22,8 @@
                 android:layout_weight="1"
                 android:clickable="true"
                 android:gravity="center"
-                android:text="AAA" />
+                android:text="AAA"
+                android:textColor="@color/textview_tab_selector" />
 
             <TextView
                 android:id="@+id/right_tab"
@@ -30,7 +32,8 @@
                 android:layout_weight="1"
                 android:clickable="true"
                 android:gravity="center"
-                android:text="BBB" />
+                android:text="BBB"
+                android:textColor="@color/textview_tab_selector" />
         </LinearLayout>
 
         <LinearLayout
@@ -48,15 +51,15 @@
                 <View
                     android:id="@+id/scroller"
                     android:layout_width="0dip"
-                    android:layout_height="4dip"
+                    android:layout_height="3dip"
                     android:layout_weight="1"
-                    android:background="#805CACEE" />
+                    android:background="@color/white" />
             </LinearLayout>
 
             <View
                 android:layout_width="fill_parent"
-                android:layout_height="2dip"
-                android:background="#805CACEE" />
+                android:layout_height="1dip"
+                android:background="@color/white" />
         </LinearLayout>
     </RelativeLayout>
 

@@ -17,6 +17,7 @@ import com.nano.lanshare.R;
 
 public abstract class BasicTabFragment extends Fragment implements
 		OnClickListener {
+	private static final String TAG = "BasicTabFragment";
 	private static int count = 0;
 	protected static final int LEFT = 1;
 	protected static final int RIGHT = 2;
@@ -61,6 +62,14 @@ public abstract class BasicTabFragment extends Fragment implements
 			}
 		}
 
+	};
+
+	public void onResume() {
+		super.onResume();
+	}
+
+	public void onViewStateRestored(Bundle savedInstanceState) {
+		super.onViewStateRestored(savedInstanceState);
 	};
 
 	@Override

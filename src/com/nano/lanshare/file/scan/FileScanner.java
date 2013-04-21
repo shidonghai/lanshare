@@ -114,16 +114,12 @@ public class FileScanner {
 			return 0;
 		}
 		int p = list.getPosition();
-		Log.e("file scanner",
-				"restore position: " + p + " size: " + mStack.size());
 		return p;
 	}
 
 	public void saveLastPosition(int p) {
 		if (!mStack.isEmpty()) {
 			mStack.peek().setPosition(p);
-			Log.e("file scanner",
-					"save position: " + p + " size: " + mStack.size());
 		}
 	}
 

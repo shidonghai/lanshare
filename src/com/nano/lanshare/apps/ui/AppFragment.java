@@ -144,12 +144,10 @@ public class AppFragment extends BasicTabFragment implements
 		operationDialog.setContent(PopupMenuUtil.FILE_POPUP_IAMGES,
 				PopupMenuUtil.FILE_POPUP_TEXT,
 				new DialogInterface.OnClickListener() {
-
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						switch (which) {
 						case PopupMenuUtil.MENU_TRANSPORT:
-
 							break;
 						case PopupMenuUtil.MENU_ACTION:
 							break;

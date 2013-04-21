@@ -4,8 +4,6 @@ import java.io.File;
 import java.io.FileFilter;
 import java.util.Comparator;
 
-import android.util.Log;
-
 public class ScanOption {
 
 	private boolean mIncludeHidden = false;
@@ -24,15 +22,15 @@ public class ScanOption {
 		filter = new FileFilter() {
 			public boolean accept(File file) {
 				if (!mIncludeHidden && file.isHidden()) {
-					Log.e("filter", "hidden " + file.getAbsolutePath());
+					// Log.e("filter", "hidden " + file.getAbsolutePath());
 					return false;
 				}
 				if (!mIncludeCantRead && !file.canRead()) {
-					Log.e("filter", "cant read " + file.getAbsolutePath());
+					// Log.e("filter", "cant read " + file.getAbsolutePath());
 					return false;
 				}
 				if (!mIncludeCantWrite && !file.canWrite()) {
-					Log.e("filter", "cant write " + file.getAbsolutePath());
+					// Log.e("filter", "cant write " + file.getAbsolutePath());
 					return false;
 				}
 				return true;
