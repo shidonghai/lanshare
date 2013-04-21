@@ -5,10 +5,11 @@
     android:gravity="center_horizontal"
     android:orientation="vertical" >
 
-    <ImageView
+    <com.nano.lanshare.components.RectImageView
         android:id="@+id/icon"
         android:layout_width="50dip"
         android:layout_height="50dip"
+        android:scaleType="fitXY"
         android:src="@drawable/zapya_data_folder_doc" />
 
     <TextView

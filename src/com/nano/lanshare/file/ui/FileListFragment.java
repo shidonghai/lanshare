@@ -3,12 +3,10 @@ package com.nano.lanshare.file.ui;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Message;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 
 import com.nano.lanshare.components.operation.OperationDialog;
 import com.nano.lanshare.components.operation.PopupMenuUtil;
@@ -111,16 +109,6 @@ public class FileListFragment extends BasicFileFragment {
 		mScanner.startScanning(mScanner.getCurrentFile(), mListener);
 	}
 
-	// private List<File> getSelectedFiles() {
-	// List<File> list = mAdapter.getFiles().getFileList();
-	// List<File> selectedFiles = new ArrayList<File>();
-	// for (int index : mAdapter.getSelected()) {
-	// selectedFiles.add(list.get(index));
-	// }
-	// mAdapter.getSelected().clear();
-	// return selectedFiles;
-	// }
-
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
@@ -147,7 +135,7 @@ public class FileListFragment extends BasicFileFragment {
 				getActivity());
 
 		operationDialog.setContent(PopupMenuUtil.FILE_POPUP_IAMGES,
-				PopupMenuUtil.FILE_POPUP_TEXT,
+				getDialogItemNames(item.type),
 				new DialogInterface.OnClickListener() {
 
 					@Override
@@ -176,16 +164,26 @@ public class FileListFragment extends BasicFileFragment {
 		operationDialog.showAsDropDown(view);
 	}
 
+	private int[] getDialogItemNames(int type) {
+		int[] names = null;
+		switch (type) {
+		case FileListAdapter.FILE_TYPE_IMAGE:
+			names = PopupMenuUtil.IMAGE_POPUP_TEXT;
+			break;
+		case FileListAdapter.FILE_TYPE_AUDIO:
+			names = PopupMenuUtil.AUDIO_POPUP_TEXT;
+			break;
+		default:
+			names = PopupMenuUtil.FILE_POPUP_TEXT;
+			break;
+		}
+
+		return names;
+	}
+
 	@Override
 	public boolean onItemLongClick(AdapterView<?> parent, View view,
 			int position, long id) {
-		// FileItem file = mAdapter.getItem(position);
-		// PopupMenu menu = getPopupMenu(view, getHandler(), file,
-		// mRefreshOperation);
-		// menu.getMenu().findItem(R.id.menu_remove_favourite).setVisible(false);
-		// menu.getMenu().findItem(R.id.menu_share).setVisible(file.isFile() &
-		// file.canRead());
-		// menu.show();
 		return true;
 	}
 
