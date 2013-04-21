@@ -42,9 +42,6 @@ public class SocketController {
 		mMsgCenter = MessageCenter.getInstance();
 		mConnMgr = ConnectionManager.getInstance();
 
-		mMsgCenter = MessageCenter.getInstance();
-		mMsgCenter.init();
-
 		// register to listen incoming message
 		MessageListener discoverListener = new MessageListener() {
 			@Override
@@ -101,8 +98,6 @@ public class SocketController {
 
 		statusListener.addFilterType(MessageListener.MSG_USER_STATUS_UPDATE);
 		mMsgCenter.addMessageListener(statusListener);
-
-		mConnMgr = ConnectionManager.getInstance();
 
 	}
 
