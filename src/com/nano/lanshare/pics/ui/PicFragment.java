@@ -54,7 +54,9 @@ public class PicFragment extends BasicTabFragment implements
 				getLayoutInflater(null));
 		getGroup(RIGHT).addView(mRightGrid);
 		mRightGrid.setAdapter(mRightAdapter);
-
+		// set title
+		setTitle(LEFT, getString(R.string.dm_tab_title_camera, 0));
+		setTitle(RIGHT, getString(R.string.dm_tab_title_photos, 0));
 		// set listeners
 		ImageWorker worker = ((LanshareApplication) getActivity()
 				.getApplication()).getImageWorker();
@@ -112,8 +114,12 @@ public class PicFragment extends BasicTabFragment implements
 		Log.e("finish loading", "" + cursor.getCount());
 		if (loader.getId() == LEFT) {
 			mLeftAdapter.setContent(cursor);
+			setTitle(LEFT,
+					getString(R.string.dm_tab_title_camera, cursor.getCount()));
 		} else {
 			mRightAdapter.setContent(cursor);
+			setTitle(RIGHT,
+					getString(R.string.dm_tab_title_photos, cursor.getCount()));
 		}
 		notifyFinishLoading();
 	}
@@ -122,8 +128,10 @@ public class PicFragment extends BasicTabFragment implements
 	public void onLoaderReset(Loader<Cursor> loader) {
 		if (loader.getId() == LEFT) {
 			mLeftAdapter.setContent(null);
+			setTitle(LEFT, getString(R.string.dm_tab_title_camera, 0));
 		} else {
 			mRightAdapter.setContent(null);
+			setTitle(RIGHT, getString(R.string.dm_tab_title_photos, 0));
 		}
 	}
 

@@ -132,7 +132,7 @@ public abstract class BasicTabFragment extends Fragment implements
 			mLeftTab.setText(title);
 			break;
 		case RIGHT:
-			mLeftTab.setText(title);
+			mRightTab.setText(title);
 			break;
 		}
 	}

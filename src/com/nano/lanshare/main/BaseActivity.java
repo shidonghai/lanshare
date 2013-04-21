@@ -9,11 +9,11 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
-import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -34,6 +34,8 @@ public class BaseActivity extends FragmentActivity implements
 	private TextView mMediaTab;
 	private TextView mFileTab;
 	private TextView mHistoryTab;
+
+	private View mSelected;
 	private ImageView mTabIndexMarker;
 
 	private View mConnectFriends;
@@ -77,8 +79,8 @@ public class BaseActivity extends FragmentActivity implements
 
 		mConnectFriends = findViewById(R.id.connect_friends);
 		mConnectFriends.setOnClickListener(this);
-		
-		mTabIndexMarker=(ImageView) findViewById(R.id.tab_background);
+
+		mTabIndexMarker = (ImageView) findViewById(R.id.tab_background);
 
 		mViewPager = (ViewPager) findViewById(R.id.viewpager);
 		mPagerAdapter = new MainViewPagerAdapter(getSupportFragmentManager());
@@ -97,6 +99,12 @@ public class BaseActivity extends FragmentActivity implements
 		for (View tv : mTabs) {
 			if (tab == tv) {
 				tv.setSelected(true);
+				if (mSelected != null) {
+					doScroll(mSelected, tab, mTabIndexMarker, 400);
+				} else {
+					doScroll(mMediaTab, mAppTab, mTabIndexMarker, 400);
+				}
+				mSelected = tab;
 			} else {
 				tv.setSelected(false);
 			}
@@ -133,12 +141,12 @@ public class BaseActivity extends FragmentActivity implements
 	}
 
 	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (getSupportFragmentManager().findFragmentByTag("music") == null
-				&& KeyEvent.KEYCODE_BACK == keyCode) {
+	public void onBackPressed() {
+		if (getSupportFragmentManager().findFragmentByTag("music") == null) {
 			showExitDialog();
+			return;
 		}
-		return super.onKeyDown(keyCode, event);
+		super.onBackPressed();
 	}
 
 	@Override
@@ -165,6 +173,18 @@ public class BaseActivity extends FragmentActivity implements
 			mViewPager.setCurrentItem(mTabs.indexOf(v), false);
 		}
 
+	}
+
+	private void doScroll(View view1, View view2, View viewToScroll,
+			int duration) {
+		TranslateAnimation ta = new TranslateAnimation(
+				(view1.getLeft() + view1.getRight() - mMediaTab.getLeft() - mMediaTab
+						.getRight()) / 2, (view2.getLeft() + view2.getRight()
+						- mMediaTab.getLeft() - mMediaTab.getRight()) / 2,
+				viewToScroll.getTop(), viewToScroll.getTop());
+		ta.setFillAfter(true);
+		ta.setDuration(duration);
+		viewToScroll.startAnimation(ta);
 	}
 
 	@Override

@@ -3,9 +3,11 @@ package com.nano.lanshare.apps.ui;
 import java.util.List;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.os.Bundle;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -26,6 +28,7 @@ import com.nano.lanshare.thumbnail.util.ImageWorker;
 
 public class AppFragment extends BasicTabFragment implements
 		OnItemClickListener {
+	protected static final String TAG = "AppFragment";
 	private AppLoader mAppLoader;
 	private AppListener mAppListener = new AppListener() {
 
@@ -103,11 +106,15 @@ public class AppFragment extends BasicTabFragment implements
 		mLeftGrid.setOnItemClickListener(this);
 		mRightGrid.setOnItemClickListener(this);
 
+		// set title
+		setTitle(LEFT, getString(R.string.tab_game, 0));
+		setTitle(RIGHT, getString(R.string.tab_app, 0));
 		// start loading data
 		notifyStartLoading();
 		mAppLoader = new AppLoader(getActivity());
 		mAppLoader.setAppListener(mAppListener);
 		mAppLoader.startLoading();
+
 	}
 
 	@Override
@@ -131,16 +138,21 @@ public class AppFragment extends BasicTabFragment implements
 	protected void onUpdateData(Message msg) {
 		if (msg.arg1 == LEFT) {
 			mLeftAdapter.setContent(msg.obj);
+			setTitle(LEFT,
+					getString(R.string.tab_game, ((List) msg.obj).size()));
 		} else {
 			mRightAdapter.setContent(msg.obj);
+			setTitle(RIGHT,
+					getString(R.string.tab_app, ((List) msg.obj).size()));
 		}
 	}
 
 	@Override
-	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+	public void onItemClick(AdapterView<?> adapter, View view, int position,
+			long arg3) {
 		final OperationDialog operationDialog = new OperationDialog(
 				getActivity());
-
+		final AppInfo info = (AppInfo) adapter.getItemAtPosition(position);
 		operationDialog.setContent(PopupMenuUtil.FILE_POPUP_IAMGES,
 				PopupMenuUtil.FILE_POPUP_TEXT,
 				new DialogInterface.OnClickListener() {
@@ -150,6 +162,15 @@ public class AppFragment extends BasicTabFragment implements
 						case PopupMenuUtil.MENU_TRANSPORT:
 							break;
 						case PopupMenuUtil.MENU_ACTION:
+							try {
+								Intent intent = getActivity()
+										.getPackageManager()
+										.getLaunchIntentForPackage(
+												info.info.packageName);
+								startActivity(intent);
+							} catch (Exception e) {
+								Log.e(TAG, e.getMessage());
+							}
 							break;
 						case PopupMenuUtil.MENU_PROPARTY:
 							break;
@@ -161,6 +182,6 @@ public class AppFragment extends BasicTabFragment implements
 					}
 				});
 
-		operationDialog.showAsDropDown(arg1);
+		operationDialog.showAsDropDown(view);
 	}
 }
