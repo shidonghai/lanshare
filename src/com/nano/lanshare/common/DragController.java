@@ -2,7 +2,6 @@ package com.nano.lanshare.common;
 
 import java.util.ArrayList;
 
-import android.view.View;
 import android.view.ViewGroup;
 
 public class DragController {

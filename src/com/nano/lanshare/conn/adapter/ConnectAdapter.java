@@ -3,11 +3,11 @@ package com.nano.lanshare.conn.adapter;
 
 import java.util.List;
 
-import com.nano.lanshare.conn.been.UserBean;
-
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+
+import com.nano.lanshare.conn.been.UserBean;
 
 public class ConnectAdapter extends BaseAdapter {
     private List<UserBean> mUserList;

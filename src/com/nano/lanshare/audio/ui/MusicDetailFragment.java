@@ -93,7 +93,7 @@ public class MusicDetailFragment extends Fragment implements OnClickListener,
 
 	private void init() {
 		int index = mMusicManger.getCurrentIndex();
-		mTitle.setText(String.format(getString(R.string.musci_title_index),
+		mTitle.setText(String.format(getString(R.string.music_title_index),
 				index + 1, mMusicManger.getMusicList().size()));
 
 		MusicInfo info = mMusicManger.getMusicList().get(index);

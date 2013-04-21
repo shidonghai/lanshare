@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.Stack;
 
 import android.os.Environment;
-import android.util.Log;
 
 import com.nano.lanshare.file.FileList;
 import com.nano.lanshare.file.scan.ScanThread.ScanState;

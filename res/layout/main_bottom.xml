@@ -15,7 +15,6 @@
         android:layout_width="fill_parent"
         android:layout_height="60dip"
         android:layout_gravity="bottom"
-        android:background="@color/dm_common_bg_color"
         android:gravity="bottom"
         android:orientation="horizontal" >
 
@@ -64,7 +63,7 @@
 
     <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="@dimen/dm_tab_hist_indicator_height"
+        android:layout_height="60dip"
         android:layout_gravity="bottom"
         android:clickable="true"
         android:focusableInTouchMode="true"

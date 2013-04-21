@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="age_feed">
-        <item>90s</item>
-        <item>80s</item>
-        <item>70s</item>
-        <item>70ago</item>
-    </string-array>
+
     <string-array name="viewmodename">
         <item>@string/dm_viewmode_default</item>
         <item>@string/dm_viewmode_list</item>
@@ -62,4 +57,5 @@
         <item>photo</item>
         <item>video</item>
     </string-array>
+
 </resources>

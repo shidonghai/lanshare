@@ -1,7 +1,5 @@
 package com.nano.lanshare.pics.ui;
 
-import java.util.List;
-
 import android.content.DialogInterface;
 import android.database.Cursor;
 import android.os.Bundle;
