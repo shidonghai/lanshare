@@ -46,6 +46,11 @@ public class ConnectionFragment extends BasicTabFragment implements
 		@Override
 		public void handleMessage(android.os.Message msg) {
 			switch (msg.what) {
+			case 1000: {
+				mController.discover(1000);
+				mHandler.sendEmptyMessageDelayed(1000, 5000);
+				break;
+			}
 			case SMessage.MSG_DISCOVER: {
 				DiscoveryMessage discoverMsg = (DiscoveryMessage) msg.obj;
 
@@ -134,7 +139,7 @@ public class ConnectionFragment extends BasicTabFragment implements
 		mController = ((LanshareApplication) getActivity().getApplication())
 				.getSocketController();
 		mController.setHandler(mHandler);
-		mController.discover(1000);
+		mHandler.sendEmptyMessage(1000);
 	}
 
 	private void initLeftView() {
