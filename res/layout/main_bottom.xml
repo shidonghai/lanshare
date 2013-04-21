@@ -3,10 +3,11 @@
 
     <ImageView
         android:id="@id/tab_background"
-        android:layout_width="match_parent"
+        android:layout_width="800dip"
         android:layout_height="match_parent"
-        android:gravity="bottom|center"
+        android:layout_gravity="center_horizontal"
         android:background="@drawable/zapya_common_tab_bg"
+        android:gravity="bottom|center"
         android:scaleType="matrix" />
 
     <LinearLayout
@@ -46,7 +47,7 @@
             android:drawableTop="@drawable/zapya_common_browse"
             android:text="@string/title_browser"
             android:textColor="@color/tab_browser_text_color" />
-        
+
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="@dimen/dm_tab_hist_indicator_height"
@@ -66,23 +67,21 @@
         android:layout_height="@dimen/dm_tab_hist_indicator_height"
         android:layout_gravity="bottom"
         android:clickable="true"
-        android:visibility="gone"
         android:focusableInTouchMode="true"
-        android:orientation="horizontal" >
+        android:orientation="horizontal"
+        android:visibility="gone" >
 
         <View
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_weight="1.0"
-            android:clickable="true"
-             />
+            android:clickable="true" />
 
         <View
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_weight="1.0" 
-            android:clickable="true"
-            />
+            android:layout_weight="1.0"
+            android:clickable="true" />
 
         <View
             android:layout_width="fill_parent"
