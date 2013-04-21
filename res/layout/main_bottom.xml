@@ -13,7 +13,7 @@
     <LinearLayout
         android:id="@id/tabbarleftsub"
         android:layout_width="fill_parent"
-        android:layout_height="60dip"
+        android:layout_height="66dip"
         android:layout_gravity="bottom"
         android:gravity="bottom"
         android:orientation="horizontal" >

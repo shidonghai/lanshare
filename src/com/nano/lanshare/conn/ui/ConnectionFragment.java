@@ -48,7 +48,7 @@ public class ConnectionFragment extends BasicTabFragment implements
 			switch (msg.what) {
 			case 1000: {
 				mController.discover(1000);
-				mHandler.sendEmptyMessageDelayed(1000, 5000);
+				//mHandler.sendEmptyMessageDelayed(1000, 5000);
 				break;
 			}
 			case SMessage.MSG_DISCOVER: {
@@ -61,8 +61,8 @@ public class ConnectionFragment extends BasicTabFragment implements
 				stranger.setUserIp(discoverMsg.getRemoteAddress());
 				stranger.setUserPhoto(discoverMsg.getPhoto());
 
-				mAdapter.addUser(stranger);
-				mAdapter.notifyDataSetChanged();
+				//mAdapter.addUser(stranger);
+				//mAdapter.notifyDataSetChanged();
 
 				Toast.makeText(getActivity(), "find one", 1000).show();
 				if (discoverMsg.getMsgDirection() == SMessage.REQ) {
