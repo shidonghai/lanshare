@@ -1,14 +1,16 @@
 
 package com.nano.lanshare.conn.ui;
 
-import java.lang.reflect.Method;
-
-import com.nano.lanshare.R;
-
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -17,6 +19,10 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import com.nano.lanshare.R;
+import com.nano.lanshare.conn.adapter.ConnectAdapter;
+import com.nano.lanshare.utils.WifiManagerUtils;
 
 public class HotspotsView implements OnClickListener {
     private Context mContext;
@@ -28,6 +34,37 @@ public class HotspotsView implements OnClickListener {
     private TextView mCreateHotspots;
     private WifiManager mWifiManager;
     private ProgressBar mProgressBar;
+    private ConnectAdapter mAdapter;
+    private boolean isWifiApEnabel = false;
+    private static final int SEARCH_TIMEOUT = 3000;
+    public static final int START_WIFI_AP = 1;
+    public static final int SEARCH_WIFI_AP = 2;
+    private Handler mHandler = new Handler() {
+        public void handleMessage(Message msg) {
+            if (msg.what == START_WIFI_AP) {
+
+            } else if (msg.what == SEARCH_WIFI_AP) {
+
+            }
+        };
+    };
+
+    private BroadcastReceiver mWifiStatusChangeReciver = new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Log.d("wyg", "onReceive-------->>" + mWifiManager.getScanResults());
+            showProgressBar(false);
+        }
+    };
+
+    public BroadcastReceiver getWifiStatusChangeReciver() {
+        return mWifiStatusChangeReciver;
+    }
+
+    public void updateView(Bundle bundle) {
+
+    }
 
     public HotspotsView(Context context) {
         mContext = context;
@@ -50,9 +87,31 @@ public class HotspotsView implements OnClickListener {
     @Override
     public void onClick(View v) {
         if (v == mSearchHotspots) {
+            mHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    showProgressBar(true);
+                    mWifiManager.startScan();
 
+                }
+            });
         } else if (v == mCreateHotspots) {
-            new StartHotspotsTask().execute(Boolean.TRUE);
+            // new StartHotspotsTask().execute(Boolean.TRUE);
+            showProgressBar(true);
+            new Thread() {
+                public void run() {
+                    if (!isWifiApEnabel) {
+                        setWifiApEnabled(!isWifiApEnabel);
+                        isWifiApEnabel = true;
+                        mHandler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                showProgressBar(false);
+                            }
+                        }, SEARCH_TIMEOUT);
+                    }
+                }
+            }.start();
         }
     }
 
@@ -64,9 +123,7 @@ public class HotspotsView implements OnClickListener {
             WifiConfiguration cfg = new WifiConfiguration();
             cfg.SSID = "lanshare1";
             cfg.preSharedKey = "";
-            Method method = mWifiManager.getClass().getMethod("setWifiApEnabled",
-                    WifiConfiguration.class, Boolean.TYPE);
-            Boolean enable = (Boolean) method.invoke(mWifiManager, cfg, flag);
+            Boolean enable = WifiManagerUtils.setWifiApEnabled(mWifiManager, cfg, flag);
             if (!flag) {
                 mWifiManager.setWifiEnabled(true);
             }
@@ -78,6 +135,9 @@ public class HotspotsView implements OnClickListener {
     }
 
     private void showProgressBar(boolean flag) {
+        if (mProgressBar == null) {
+            return;
+        }
         if (flag) {
             mProgressBar.setVisibility(View.VISIBLE);
             // mListView.setVisibility(View.GONE);
@@ -87,6 +147,10 @@ public class HotspotsView implements OnClickListener {
             // mListView.setVisibility(View.VISIBLE);
             mEmptyHotspots.setVisibility(View.VISIBLE);
         }
+    }
+
+    public interface onWifiApStatusChange {
+        void onStatusChange();
     }
 
     private class SearchHotspotsTask extends AsyncTask<Void, Void, String> {
@@ -123,14 +187,9 @@ public class HotspotsView implements OnClickListener {
         @Override
         protected Boolean doInBackground(Boolean... params) {
             publishProgress(0);
-            return setWifiApEnabled(params[0]);
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            showProgressBar(false);
-
+            boolean a = setWifiApEnabled(params[0]);
+            Log.d("wyg", "StartHotspotsTask.doInBackground---->>");
+            return a;
         }
 
         @Override
@@ -141,6 +200,7 @@ public class HotspotsView implements OnClickListener {
 
         @Override
         protected void onPostExecute(Boolean result) {
+            Log.d("wyg", "StartHotspotsTask.onPostExecute---->>");
             super.onPostExecute(result);
             showProgressBar(false);
         }
@@ -150,4 +210,5 @@ public class HotspotsView implements OnClickListener {
             showProgressBar(true);
         }
     }
+
 }

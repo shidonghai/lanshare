@@ -14,6 +14,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.nano.lanshare.R;
@@ -33,6 +34,7 @@ public class BaseActivity extends FragmentActivity implements
 	private TextView mMediaTab;
 	private TextView mFileTab;
 	private TextView mHistoryTab;
+	private ImageView mTabIndexMarker;
 
 	private View mConnectFriends;
 
@@ -75,6 +77,8 @@ public class BaseActivity extends FragmentActivity implements
 
 		mConnectFriends = findViewById(R.id.connect_friends);
 		mConnectFriends.setOnClickListener(this);
+		
+		mTabIndexMarker=(ImageView) findViewById(R.id.tab_background);
 
 		mViewPager = (ViewPager) findViewById(R.id.viewpager);
 		mPagerAdapter = new MainViewPagerAdapter(getSupportFragmentManager());

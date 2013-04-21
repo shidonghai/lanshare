@@ -3,16 +3,18 @@
 
     <ImageView
         android:id="@id/tab_background"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:gravity="bottom|center"
+        android:background="@drawable/zapya_common_tab_bg"
         android:scaleType="matrix" />
 
     <LinearLayout
         android:id="@id/tabbarleftsub"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="60dip"
         android:layout_gravity="bottom"
+        android:background="@color/dm_common_bg_color"
         android:gravity="bottom"
         android:orientation="horizontal" >
 

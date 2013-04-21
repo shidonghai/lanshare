@@ -6,6 +6,7 @@ import java.util.List;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
@@ -20,11 +21,12 @@ import android.widget.TextView;
 
 import com.nano.lanshare.R;
 import com.nano.lanshare.Model.HistoryDBManager;
+import com.nano.lanshare.Model.IDataBaseChange;
 import com.nano.lanshare.history.adapter.HistoryListAdapter;
 import com.nano.lanshare.history.been.HistoryInfo;
 
 public class HistoryFragment extends Fragment implements OnItemClickListener,
-        LoaderCallbacks<List<HistoryInfo>> {
+        LoaderCallbacks<List<HistoryInfo>>, IDataBaseChange {
     // The space of storage
     private TextView mStorageSpace;
     // The net flow info
@@ -34,6 +36,7 @@ public class HistoryFragment extends Fragment implements OnItemClickListener,
     private ListView mHistoryList;
     private HistoryListAdapter mAdapter;
     private HistoryDBManager mDbManager;
+    private LoaderManager mLoaderManager;
     public static final int QUERY_LIST = 1;
     public static final int DELET_ITEMS = 2;
 
@@ -44,7 +47,8 @@ public class HistoryFragment extends Fragment implements OnItemClickListener,
         // null);
         mHistoryList = (ListView) view.findViewById(R.id.history_list);
         initView(view);
-        getLoaderManager().initLoader(0, null, this);
+        mLoaderManager = getLoaderManager();
+        mLoaderManager.initLoader(QUERY_LIST, null, this);
         return view;
     }
 
@@ -53,6 +57,7 @@ public class HistoryFragment extends Fragment implements OnItemClickListener,
         super.onCreate(savedInstanceState);
         mAdapter = new HistoryListAdapter(getActivity(), null, true);
         mDbManager = new HistoryDBManager(getActivity());
+        mDbManager.registerContentObserver(this);
     }
 
     @Override
@@ -75,6 +80,7 @@ public class HistoryFragment extends Fragment implements OnItemClickListener,
         super.onDestroy();
         if (mDbManager != null) {
             mDbManager.closeDB();
+            mDbManager.registerContentObserver(this);
         }
     }
 
@@ -85,6 +91,14 @@ public class HistoryFragment extends Fragment implements OnItemClickListener,
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+    }
+
+    public void setChecked(View view,int position) {
+        mAdapter.setChecked(view,position);
+    }
+
+    public void deteleItems() {
 
     }
 
@@ -99,15 +113,13 @@ public class HistoryFragment extends Fragment implements OnItemClickListener,
         @Override
         public List<HistoryInfo> loadInBackground() {
             // just test date
-          /*  for (int i = 0; i < 20; i++) {
-                HistoryInfo info = new HistoryInfo();
-                info.filePath = "1" + i;
-                info.date = System.currentTimeMillis() + "";
-                info.reciver = (i + 33) + "";
-                info.sender = (i + 222) + "";
-                info.historyType = i % 2;
-                dbManager.insert(info);
-            }*/
+            /*
+             * for (int i = 0; i < 20; i++) { HistoryInfo info = new
+             * HistoryInfo(); info.filePath = "1" + i; info.date =
+             * System.currentTimeMillis() + ""; info.reciver = (i + 33) + "";
+             * info.sender = (i + 222) + ""; info.historyType = i % 2;
+             * dbManager.insert(info); }
+             */
             return dbManager.listAll();
         }
 
@@ -132,6 +144,13 @@ public class HistoryFragment extends Fragment implements OnItemClickListener,
     @Override
     public void onLoaderReset(Loader<List<HistoryInfo>> arg0) {
         mAdapter.setDate(null);
+    }
+
+    @Override
+    public void onDataChange() {
+        if (mLoaderManager.hasRunningLoaders()) {
+            mLoaderManager.restartLoader(QUERY_LIST, null, this);
+        }
     }
 
 }

@@ -26,6 +26,7 @@ public class HistoryDBManager extends DBManager {
                         });
             }
             mDb.setTransactionSuccessful();
+            notifyChange();
         } finally {
             mDb.endTransaction();
         }
@@ -43,6 +44,7 @@ public class HistoryDBManager extends DBManager {
             cv.put(HistoryTable.Clomns.TYPE, hisInfo.historyType);
             mDb.insert(HistoryTable.TABLE_NAME, null, cv);
             mDb.setTransactionSuccessful();
+            notifyChange();
         } finally {
             mDb.endTransaction();
         }
@@ -63,6 +65,7 @@ public class HistoryDBManager extends DBManager {
                         hisInfo.id + ""
                     });
             mDb.setTransactionSuccessful();
+            notifyChange();
         } finally {
             mDb.endTransaction();
         }
@@ -141,7 +144,7 @@ public class HistoryDBManager extends DBManager {
         return infos;
     }
 
-    public List<HistoryInfo> listLimite(int form, int to) {
+    public List<HistoryInfo> listByLimit(int form, int to) {
         return null;
     }
 
@@ -153,6 +156,7 @@ public class HistoryDBManager extends DBManager {
                         id + ""
                     });
             mDb.setTransactionSuccessful();
+            notifyChange();
         } finally {
             mDb.endTransaction();
         }
