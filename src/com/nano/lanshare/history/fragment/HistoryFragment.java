@@ -6,6 +6,7 @@ import java.util.List;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -16,6 +17,8 @@ import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -33,11 +36,14 @@ import com.nano.lanshare.components.operation.PopupMenuUtil;
 import com.nano.lanshare.history.adapter.HistoryListAdapter;
 import com.nano.lanshare.history.adapter.HistoryListAdapter.onDataLoadChange;
 import com.nano.lanshare.history.been.HistoryInfo;
+import com.nano.lanshare.history.logic.IHistoryDelete;
+import com.nano.lanshare.main.BaseActivity;
 import com.nano.lanshare.main.LanshareApplication;
 import com.nano.lanshare.thumbnail.util.ImageCache.ImageCacheParams;
 import com.nano.lanshare.thumbnail.util.ImageWorker;
 
 public class HistoryFragment extends Fragment implements OnItemClickListener, onDataLoadChange,
+        IHistoryDelete,
         OnItemLongClickListener,
         LoaderCallbacks<List<HistoryInfo>>, IDataBaseChange {
     // The space of storage
@@ -77,7 +83,8 @@ public class HistoryFragment extends Fragment implements OnItemClickListener, on
         mAdapter = new HistoryListAdapter(getActivity(), null, true);
         mDbManager = new HistoryDBManager(getActivity());
         mDbManager.registerContentObserver(this);
-
+        registeHistoryDeleteListener();
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -116,14 +123,13 @@ public class HistoryFragment extends Fragment implements OnItemClickListener, on
 
         mHistoryList.setAdapter(mAdapter);
         mHistoryList.setOnItemClickListener(this);
-        setCheckedMode();
     }
 
     /**
      * Set the items as check mode
      */
-    public void setCheckedMode() {
-        mAdapter.setCheckMode();
+    public void setCheckedMode(boolean flag) {
+        mAdapter.setCheckMode(flag);
     }
 
     @Override
@@ -194,6 +200,23 @@ public class HistoryFragment extends Fragment implements OnItemClickListener, on
         }
     }
 
+    public void registeHistoryDeleteListener() {
+        ((BaseActivity) getActivity()).setDeleteListener(this);
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.menu_del) {
+            // setCheckedMode(true);
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
         return false;
@@ -252,9 +275,28 @@ public class HistoryFragment extends Fragment implements OnItemClickListener, on
         mAdapter.setDate(null);
     }
 
+    private class DeleteTask extends AsyncTask<List<HistoryInfo>, Integer, Boolean> {
+
+        @Override
+        protected Boolean doInBackground(List<HistoryInfo>... list) {
+            mDbManager.delete(list[0]);
+            return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            super.onProgressUpdate(values);
+        }
+
+        @Override
+        protected void onPostExecute(Boolean result) {
+            super.onPostExecute(result);
+        }
+
+    }
+
     @Override
     public void onDataChange() {
-        Log.d("wyg", "onDataChange--------------->>");
         mLoaderManager.restartLoader(QUERY_LIST, null, this);
     }
 
@@ -265,6 +307,39 @@ public class HistoryFragment extends Fragment implements OnItemClickListener, on
         } else {
             mLoadDateType = LOAD_TYPE_MSG;
         }
+    }
+
+    @Override
+    public void prepareDelete() {
+        setCheckedMode(true);
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public void startDelete() {
+        List<HistoryInfo> list = mAdapter.getSelectedList();
+        if (list.isEmpty()) {
+            return;
+        } else {
+            new DeleteTask().execute(list);
+        }
+    }
+
+    @Override
+    public void deleting() {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void cancelDelete() {
+        setCheckedMode(false);
+    }
+
+    @Override
+    public void finishDeleted() {
+        // TODO Auto-generated method stub
+
     }
 
 }

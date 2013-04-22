@@ -145,8 +145,8 @@ public class HistoryListAdapter extends BaseAdapter {
         return convertView;
     }
 
-    public void setCheckMode() {
-        isCheckMode = !isCheckMode;
+    public void setCheckMode(boolean flag) {
+        isCheckMode = flag;
         if (!isCheckMode) {
             mSelectList.clear();
         }
@@ -179,6 +179,10 @@ public class HistoryListAdapter extends BaseAdapter {
             mSelectList.add(info);
         }
         notifyDataSetChanged();
+    }
+
+    public List<HistoryInfo> getSelectedList() {
+        return mSelectList;
     }
 
     public final class ViewHolder {
@@ -271,7 +275,6 @@ public class HistoryListAdapter extends BaseAdapter {
         msgBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                setCheckMode();
                 // mDataLoadChange.onChange();
             }
         });

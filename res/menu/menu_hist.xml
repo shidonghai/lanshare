@@ -6,6 +6,7 @@
     <item android:icon="@drawable/menu_delete" android:id="@id/menu_del" android:title="@string/menu_delete_record" />
     <item android:icon="@drawable/menu_user_profile" android:id="@id/menu_user_profile" android:title="@string/menu_user_profile" />
     <item android:icon="@drawable/menu_registration" android:id="@id/menu_register" android:title="@string/menu_login" />
+    
     <item android:icon="@drawable/menu_account_management" android:id="@id/menu_account" android:title="@string/menu_accountmgr" />
     <item android:icon="@drawable/menu_quit" android:id="@id/menu_exit" android:title="@string/menu_exit" />
 </menu>
