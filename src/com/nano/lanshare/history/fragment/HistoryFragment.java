@@ -206,6 +206,10 @@ public class HistoryFragment extends Fragment implements OnItemClickListener, on
 
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
+        if (mAdapter.isCheckedMode()) {
+            menu.clear();
+            getActivity().getMenuInflater().inflate(R.menu.menu_edit, menu);
+        }
         super.onPrepareOptionsMenu(menu);
     }
 
@@ -213,6 +217,10 @@ public class HistoryFragment extends Fragment implements OnItemClickListener, on
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.menu_del) {
             // setCheckedMode(true);
+        } else if (item.getItemId() == R.id.menu_select) {
+            mAdapter.setAllChecked(true);
+        } else if (item.getItemId() == R.id.menu_unselect) {
+            mAdapter.setAllChecked(false);
         }
         return super.onOptionsItemSelected(item);
     }

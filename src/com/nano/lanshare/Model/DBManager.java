@@ -17,7 +17,7 @@ public abstract class DBManager {
         mDb = mDbHelper.getWritableDatabase();
     }
 
-    public boolean closeDB() {
+    public synchronized boolean closeDB() {
         if (mDb != null && mDb.isOpen()) {
             mDb.close();
         }

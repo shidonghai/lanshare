@@ -20,7 +20,7 @@ public class HistoryDBManager extends DBManager {
         mDb.beginTransaction();
         try {
             for (HistoryInfo info : hisList) {
-                mDb.delete(HistoryTable.TABLE_NAME, HistoryTable.Clomns.ID + "=?",
+                mDb.delete(HistoryTable.TABLE_NAME, HistoryTable.Columns.ID + "=?",
                         new String[] {
                             info.id + ""
                         });
@@ -37,11 +37,11 @@ public class HistoryDBManager extends DBManager {
         mDb.beginTransaction();
         try {
             ContentValues cv = new ContentValues();
-            cv.put(HistoryTable.Clomns.PATH, hisInfo.filePath);
-            cv.put(HistoryTable.Clomns.DATE, hisInfo.date);
-            cv.put(HistoryTable.Clomns.SENDER, hisInfo.sender);
-            cv.put(HistoryTable.Clomns.RECIVER, hisInfo.reciver);
-            cv.put(HistoryTable.Clomns.TYPE, hisInfo.historyType);
+            cv.put(HistoryTable.Columns.PATH, hisInfo.filePath);
+            cv.put(HistoryTable.Columns.DATE, hisInfo.date);
+            cv.put(HistoryTable.Columns.SENDER, hisInfo.sender);
+            cv.put(HistoryTable.Columns.RECIVER, hisInfo.reciver);
+            cv.put(HistoryTable.Columns.TYPE, hisInfo.historyType);
             mDb.insert(HistoryTable.TABLE_NAME, null, cv);
             mDb.setTransactionSuccessful();
             notifyChange();
@@ -55,13 +55,13 @@ public class HistoryDBManager extends DBManager {
         mDb.beginTransaction();
         try {
             ContentValues cv = new ContentValues();
-            cv.put(HistoryTable.Clomns.PATH, hisInfo.filePath);
-            cv.put(HistoryTable.Clomns.DATE, hisInfo.date);
-            cv.put(HistoryTable.Clomns.SENDER, hisInfo.sender);
-            cv.put(HistoryTable.Clomns.RECIVER, hisInfo.reciver);
-            cv.put(HistoryTable.Clomns.TYPE, hisInfo.historyType);
+            cv.put(HistoryTable.Columns.PATH, hisInfo.filePath);
+            cv.put(HistoryTable.Columns.DATE, hisInfo.date);
+            cv.put(HistoryTable.Columns.SENDER, hisInfo.sender);
+            cv.put(HistoryTable.Columns.RECIVER, hisInfo.reciver);
+            cv.put(HistoryTable.Columns.TYPE, hisInfo.historyType);
             mDb.update(HistoryTable.TABLE_NAME, cv,
-                    HistoryTable.Clomns.ID + "=?", new String[] {
+                    HistoryTable.Columns.ID + "=?", new String[] {
                         hisInfo.id + ""
                     });
             mDb.setTransactionSuccessful();
@@ -73,11 +73,11 @@ public class HistoryDBManager extends DBManager {
     }
 
     public HistoryInfo queryByID(int id) {
-        Cursor cursor = mDb.query(HistoryTable.TABLE_NAME, null, HistoryTable.Clomns.ID + "=?",
+        Cursor cursor = mDb.query(HistoryTable.TABLE_NAME, null, HistoryTable.Columns.ID + "=?",
                 new String[] {
                     id + ""
                 }, null, null,
-                HistoryTable.Clomns.DATE);
+                HistoryTable.Columns.DATE);
         if (cursor != null && cursor.moveToFirst()) {
             HistoryInfo info = new HistoryInfo();
             info.id = cursor.getInt(0);
@@ -92,11 +92,11 @@ public class HistoryDBManager extends DBManager {
     }
 
     public HistoryInfo queryByPath(String path) {
-        Cursor cursor = mDb.query(HistoryTable.TABLE_NAME, null, HistoryTable.Clomns.PATH + "=?",
+        Cursor cursor = mDb.query(HistoryTable.TABLE_NAME, null, HistoryTable.Columns.PATH + "=?",
                 new String[] {
                     path
                 }, null, null,
-                HistoryTable.Clomns.DATE);
+                HistoryTable.Columns.DATE);
         try {
             if (cursor != null && cursor.moveToFirst()) {
                 HistoryInfo info = new HistoryInfo();
@@ -120,7 +120,7 @@ public class HistoryDBManager extends DBManager {
     public List<HistoryInfo> listAll() {
         Cursor cursor = mDb.query(HistoryTable.TABLE_NAME, null, null,
                 null, null, null,
-                HistoryTable.Clomns.DATE);
+                HistoryTable.Columns.DATE);
         List<HistoryInfo> infos = new ArrayList<HistoryInfo>();
         try {
             if (cursor != null && cursor.moveToFirst()) {
@@ -151,7 +151,7 @@ public class HistoryDBManager extends DBManager {
     public int deleteByID(int id) {
         mDb.beginTransaction();
         try {
-            mDb.delete(HistoryTable.TABLE_NAME, HistoryTable.Clomns.ID + "=?",
+            mDb.delete(HistoryTable.TABLE_NAME, HistoryTable.Columns.ID + "=?",
                     new String[] {
                         id + ""
                     });

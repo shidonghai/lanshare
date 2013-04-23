@@ -2,6 +2,7 @@
 package com.nano.lanshare.history.adapter;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import android.content.Context;
@@ -158,7 +159,13 @@ public class HistoryListAdapter extends BaseAdapter {
     }
 
     public void setAllChecked(boolean flag) {
-
+        if (flag) {
+            mSelectList.clear();
+            mSelectList.addAll(mHistoryInfoList);
+        } else {
+            mSelectList.clear();
+        }
+        notifyDataSetChanged();
     }
 
     public void setonDateLoadChangeListener(onDataLoadChange listener) {
