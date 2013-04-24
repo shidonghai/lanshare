@@ -1,3 +1,4 @@
+
 package com.nano.lanshare.conn.ui;
 
 import java.util.List;
@@ -9,6 +10,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -19,6 +21,7 @@ import android.widget.Toast;
 
 import com.nano.lanshare.R;
 import com.nano.lanshare.components.BasicTabFragment;
+import com.nano.lanshare.conn.logic.UserManager;
 import com.nano.lanshare.conn.ui.PullToRefreshListView.OnRefreshListener;
 import com.nano.lanshare.main.LanshareApplication;
 import com.nano.lanshare.socket.logic.SocketController;
@@ -28,185 +31,199 @@ import com.nano.lanshare.socket.moudle.SMessage;
 import com.nano.lanshare.socket.moudle.Stranger;
 
 public class ConnectionFragment extends BasicTabFragment implements
-		OnClickListener {
+        OnClickListener {
 
-	private ListView mListView;
-	private LayoutInflater mInflater;
-	private Button mSearchHotspots;
-	private ViewGroup mEmptyHotspots;
-	private ListView mHotspotsList;
-	private HotspotsView mHotspotsView;
-	private List<ScanResult> mWifiList;
+    private ListView mListView;
+    private LayoutInflater mInflater;
+    private Button mSearchHotspots;
+    private ViewGroup mEmptyHotspots;
+    private ListView mHotspotsList;
+    private HotspotsView mHotspotsView;
+    private List<ScanResult> mWifiList;
 
-	private SocketController mController;
+    private SocketController mController;
+    private UserManager mUserManager;
 
-	private UserAdapter mAdapter;
+    private UserAdapter mAdapter;
 
-	private Handler mHandler = new Handler() {
-		@Override
-		public void handleMessage(android.os.Message msg) {
-			switch (msg.what) {
-			case 1000: {
-				mController.discover(1000);
-				//mHandler.sendEmptyMessageDelayed(1000, 5000);
-				break;
-			}
-			case SMessage.MSG_DISCOVER: {
-				DiscoveryMessage discoverMsg = (DiscoveryMessage) msg.obj;
+    private Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(android.os.Message msg) {
+            switch (msg.what) {
+                case 1000: {
+                    Log.d("wyg", "discover------------>>");
+                    mController.discover(1000);
+                    // mHandler.sendEmptyMessageDelayed(1000, 5000);
+                    break;
+                }
+                case SMessage.MSG_DISCOVER: {
+                    DiscoveryMessage discoverMsg = (DiscoveryMessage) msg.obj;
+                    for (int i = 0; i < 20; i++) {
+                        
+                  
+                    // add this user to the user list
+                    Stranger stranger = new Stranger();
+                    stranger.setName(discoverMsg.getName());
+                    stranger.setUserIdentifier(discoverMsg.getMACAddress());
+                    stranger.setUserIp(discoverMsg.getRemoteAddress());
+                    stranger.setUserPhoto(discoverMsg.getPhoto());
+                    Log.d("wyg", "MSG_DISCOVER------------>>" + stranger);
+                    if (mListView.getVisibility() != View.VISIBLE) {
+                        mListView.setVisibility(View.VISIBLE);
+                    }
+                    mUserManager.addUser(stranger);
+                    }
+                    mAdapter.addUsers(mUserManager.getUserList());
+                    mAdapter.notifyDataSetChanged();
 
-				// add this user to the user list
-				Stranger stranger = new Stranger();
-				stranger.setName(discoverMsg.getName());
-				stranger.setUserIdentifier(discoverMsg.getMACAddress());
-				stranger.setUserIp(discoverMsg.getRemoteAddress());
-				stranger.setUserPhoto(discoverMsg.getPhoto());
+                    Toast.makeText(getActivity(), "find one", 1000).show();
+                    if (discoverMsg.getMsgDirection() == SMessage.REQ) {
+                        // response to Discovery
+                        mController.responseForDiscover(discoverMsg);
+                    }
 
-				//mAdapter.addUser(stranger);
-				//mAdapter.notifyDataSetChanged();
+                    break;
+                }
+                case SMessage.MSG_FILE_TRANSFER: {
+                    // read this message, and response for it
+                    FileTransferMessage transferMessage = (FileTransferMessage) msg.obj;
 
-				Toast.makeText(getActivity(), "find one", 1000).show();
-				if (discoverMsg.getMsgDirection() == SMessage.REQ) {
-					// response to Discovery
-					mController.responseForDiscover(discoverMsg);
-				}
+                    // otherwise, let UserChatAcitivity to handle
 
-				break;
-			}
-			case SMessage.MSG_FILE_TRANSFER: {
-				// read this message, and response for it
-				FileTransferMessage transferMessage = (FileTransferMessage) msg.obj;
+                    break;
+                }
+                case SMessage.MSG_STATUS_UPDATE: {
+                    break;
+                }
+                default:
+                    break;
+            }
+            super.handleMessage(msg);
+        }
+    };
 
-				// otherwise, let UserChatAcitivity to handle
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mUserManager = UserManager.getInstance();
+        mAdapter = new UserAdapter(getActivity());
+    }
 
-				break;
-			}
-			case SMessage.MSG_STATUS_UPDATE: {
-				break;
-			}
-			default:
-				break;
-			}
-			super.handleMessage(msg);
-		}
-	};
+    private void registerReceiver() {
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION);
+        getActivity().registerReceiver(
+                mHotspotsView.getWifiStatusChangeReciver(), intentFilter);
+    }
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-	}
+    private void unregisterReceiver() {
+        getActivity().unregisterReceiver(
+                mHotspotsView.getWifiStatusChangeReciver());
+    }
 
-	private void registerReceiver() {
-		IntentFilter intentFilter = new IntentFilter();
-		intentFilter.addAction(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION);
-		getActivity().registerReceiver(
-				mHotspotsView.getWifiStatusChangeReciver(), intentFilter);
-	}
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+            Bundle savedInstanceState) {
+        mInflater = inflater;
+        return super.onCreateView(inflater, container, savedInstanceState);
+    }
 
-	private void unregisterReceiver() {
-		getActivity().unregisterReceiver(
-				mHotspotsView.getWifiStatusChangeReciver());
-	}
+    @Override
+    public void onPause() {
+        super.onPause();
+        unregisterReceiver();
+    }
 
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		mInflater = inflater;
-		return super.onCreateView(inflater, container, savedInstanceState);
-	}
+    @Override
+    public void onResume() {
+        super.onResume();
+        registerReceiver();
+    }
 
-	@Override
-	public void onPause() {
-		super.onPause();
-		unregisterReceiver();
-	}
+    @Override
+    protected void onUpdateData(Message msg) {
 
-	@Override
-	public void onResume() {
-		super.onResume();
-		registerReceiver();
-	}
+    }
 
-	@Override
-	protected void onUpdateData(Message msg) {
+    @Override
+    protected void init() {
+        initLeftView();
+        initRightView();
 
-	}
+        mController = ((LanshareApplication) getActivity().getApplication())
+                .getSocketController();
+        mController.setHandler(mHandler);
+        mHandler.sendEmptyMessage(1000);
+    }
 
-	@Override
-	protected void init() {
-		initLeftView();
-		initRightView();
+    private void initLeftView() {
+        setTitle(LEFT, getString(R.string.wifi_conn, 0));
+        View friendsContent = mInflater.inflate(R.layout.connect_people_list,
+                null);
+        getGroup(LEFT).addView(friendsContent);
+        mListView = (ListView) friendsContent.findViewById(R.id.friends_list);
+        mListView.setAdapter(mAdapter);
+        ((PullToRefreshListView) mListView)
+                .setOnRefreshListener(new OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+                        new GetDataTask().execute();
+                    }
+                });
+    }
 
-		mController = ((LanshareApplication) getActivity().getApplication())
-				.getSocketController();
-		mController.setHandler(mHandler);
-		mHandler.sendEmptyMessage(1000);
-	}
+    private void initRightView() {
+        setTitle(RIGHT, getString(R.string.hot_spot, 0));
+        /*
+         * View hotspotList = mInflater.inflate(R.layout.connect_hotspots_list,
+         * null); mSearchHotspots = (Button)
+         * hotspotList.findViewById(R.id.search_hotspots_button);
+         * mSearchHotspots.setOnClickListener(this); mEmptyHotspots =
+         * (ViewGroup) hotspotList.findViewById(R.id.empty_hotspots);
+         * mHotspotsList = (ListView)
+         * hotspotList.findViewById(R.id.hotspots_list);
+         */
+        mHotspotsView = new HotspotsView(getActivity());
+        getGroup(RIGHT).addView(mHotspotsView.getView());
 
-	private void initLeftView() {
-		setTitle(LEFT, getString(R.string.wifi_conn, 0));
-		View friendsContent = mInflater.inflate(R.layout.connect_people_list,
-				null);
-		getGroup(LEFT).addView(friendsContent);
-		mListView = (ListView) friendsContent.findViewById(R.id.friends_list);
-		((PullToRefreshListView) mListView)
-				.setOnRefreshListener(new OnRefreshListener() {
-					@Override
-					public void onRefresh() {
-						new GetDataTask().execute();
-					}
-				});
-	}
+    }
 
-	private void initRightView() {
-		setTitle(RIGHT, getString(R.string.hot_spot, 0));
-		/*
-		 * View hotspotList = mInflater.inflate(R.layout.connect_hotspots_list,
-		 * null); mSearchHotspots = (Button)
-		 * hotspotList.findViewById(R.id.search_hotspots_button);
-		 * mSearchHotspots.setOnClickListener(this); mEmptyHotspots =
-		 * (ViewGroup) hotspotList.findViewById(R.id.empty_hotspots);
-		 * mHotspotsList = (ListView)
-		 * hotspotList.findViewById(R.id.hotspots_list);
-		 */
-		mHotspotsView = new HotspotsView(getActivity());
-		getGroup(RIGHT).addView(mHotspotsView.getView());
+    @Override
+    public void onClick(View v) {
+        super.onClick(v);
+        if (v == mSearchHotspots) {
+            // new SearchHotspotsTask().execute();
+        }
+    }
 
-	}
+    private void showHotspotsLoading(boolean show) {
+        if (show) {
 
-	@Override
-	public void onClick(View v) {
-		super.onClick(v);
-		if (v == mSearchHotspots) {
-			// new SearchHotspotsTask().execute();
-		}
-	}
+        }
+    }
 
-	private void showHotspotsLoading(boolean show) {
-		if (show) {
+    private class GetDataTask extends AsyncTask<Void, Void, String[]> {
 
-		}
-	}
+        @Override
+        protected String[] doInBackground(Void... params) {
+            // Simulates a background job.
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                ;
+            }
+            return new String[] {
+                    "aa"
+            };
+        }
 
-	private class GetDataTask extends AsyncTask<Void, Void, String[]> {
+        @Override
+        protected void onPostExecute(String[] result) {
 
-		@Override
-		protected String[] doInBackground(Void... params) {
-			// Simulates a background job.
-			try {
-				Thread.sleep(2000);
-			} catch (InterruptedException e) {
-				;
-			}
-			return new String[] { "aa" };
-		}
+            // Call onRefreshComplete when the list has been refreshed.
+            ((PullToRefreshListView) mListView).onRefreshComplete();
 
-		@Override
-		protected void onPostExecute(String[] result) {
-
-			// Call onRefreshComplete when the list has been refreshed.
-			((PullToRefreshListView) mListView).onRefreshComplete();
-
-			super.onPostExecute(result);
-		}
-	}
+            super.onPostExecute(result);
+        }
+    }
 }
