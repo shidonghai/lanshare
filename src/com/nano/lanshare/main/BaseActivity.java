@@ -7,12 +7,9 @@ import java.util.List;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.NotificationCompat.Action;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -28,8 +25,8 @@ import com.nano.lanshare.R;
 import com.nano.lanshare.audio.logic.MusicManger;
 import com.nano.lanshare.common.DragController;
 import com.nano.lanshare.conn.ui.ConnectActivity;
-import com.nano.lanshare.history.fragment.HistoryFragment;
 import com.nano.lanshare.history.logic.IHistoryDelete;
+import com.nano.lanshare.invitation.ui.InviteFriendsActivity;
 import com.nano.lanshare.main.adapter.FragmentTabsFactory;
 import com.nano.lanshare.main.adapter.MainViewPagerAdapter;
 import com.nano.lanshare.main.ui.ExitDialog;
@@ -112,6 +109,9 @@ public class BaseActivity extends FragmentActivity implements
         mViewPager.setAdapter(mPagerAdapter); // 设置第一个tab为默认为选中状态
         mViewPager.setCurrentItem(0);
         setTabSelected(mAppTab);
+        
+        View inviteView = findViewById(R.id.right);
+        inviteView.setOnClickListener(this);
     }
 
     /**
@@ -250,6 +250,9 @@ public class BaseActivity extends FragmentActivity implements
                 mDeleteListener.startDelete();
                 //showHistoryDeleteMode(false);
                 break;
+            case R.id.right:
+            	startActivity(new Intent(this, InviteFriendsActivity.class));
+            	break;
             default:
                 break;
         }

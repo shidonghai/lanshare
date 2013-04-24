@@ -6,7 +6,7 @@
     <LinearLayout
         android:id="@+id/invite_top"
         android:layout_width="fill_parent"
-        android:layout_height="80dip"
+        android:layout_height="wrap_content"
         android:background="@drawable/zapya_common_connect_bg" >
 
         <Button
@@ -30,16 +30,18 @@
     </LinearLayout>
 
     <LinearLayout
+        android:layout_below="@id/invite_top"
+        android:id="@+id/content"
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
     </LinearLayout>
 
     <RelativeLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@id/tencent_login_btn"
         android:layout_width="fill_parent"
         android:layout_height="50.0dip"
         android:layout_below="@id/invite_top"
+        android:visibility="gone"
         android:background="@drawable/button_gray"
         android:clickable="true" >
 
