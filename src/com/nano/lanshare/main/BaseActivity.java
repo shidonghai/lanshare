@@ -1,3 +1,4 @@
+
 package com.nano.lanshare.main;
 
 import java.util.ArrayList;
@@ -9,6 +10,9 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -21,199 +25,272 @@ import com.nano.lanshare.R;
 import com.nano.lanshare.audio.logic.MusicManger;
 import com.nano.lanshare.common.DragController;
 import com.nano.lanshare.conn.ui.ConnectActivity;
+import com.nano.lanshare.history.logic.IHistoryDelete;
 import com.nano.lanshare.invitation.ui.InviteFriendsActivity;
+import com.nano.lanshare.main.adapter.FragmentTabsFactory;
 import com.nano.lanshare.main.adapter.MainViewPagerAdapter;
 import com.nano.lanshare.main.ui.ExitDialog;
 
 public class BaseActivity extends FragmentActivity implements
-		OnPageChangeListener, OnClickListener {
-	private ViewPager mViewPager;
-	private List<TextView> mTabs = new ArrayList<TextView>();
-	private MainViewPagerAdapter mPagerAdapter;
-	private TextView mAppTab;
-	private TextView mPhotoTab;
-	private TextView mMediaTab;
-	private TextView mFileTab;
-	private TextView mHistoryTab;
+        OnPageChangeListener, OnClickListener {
+    private ViewPager mViewPager;
+    private List<TextView> mTabs = new ArrayList<TextView>();
+    private MainViewPagerAdapter mPagerAdapter;
+    private TextView mAppTab;
+    private TextView mPhotoTab;
+    private TextView mMediaTab;
+    private TextView mFileTab;
+    private TextView mHistoryTab;
+    private ViewGroup mDeleteView;
+    private ViewGroup mTabsContainer;
+    private TextView mDelCancel;
+    private TextView mDelConfrim;
+    private IHistoryDelete mDeleteListener;
 
-	private View mSelected;
-	private ImageView mTabIndexMarker;
+    private View mSelected;
+    private ImageView mTabIndexMarker;
 
-	private View mConnectFriends;
-	private View mInviteFriends;
+    private View mConnectFriends;
 
-	private DragController mDragController;
+    private DragController mDragController;
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.main_base);
-		initView();
-		mDragController = DragController
-				.getInstance((ViewGroup) findViewById(R.id.base_viewgroup));
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.main_base);
+        initView();
+        mDragController = DragController
+                .getInstance((ViewGroup) findViewById(R.id.base_viewgroup));
 
-		MusicManger.getInstance().bindServer(this);
-	}
+        MusicManger.getInstance().bindServer(this);
+    }
 
-	/**
-	 * 初始化，包括添加view到viewpager中
-	 */
-	private void initView() {
-		mAppTab = (TextView) findViewById(R.id.leftTab1);
-		mAppTab.setOnClickListener(this);
-		mTabs.add(mAppTab);
+    /**
+     * 初始化，包括添加view到viewpager中
+     */
+    private void initView() {
+        mAppTab = (TextView) findViewById(R.id.leftTab1);
+        mAppTab.setOnClickListener(this);
+        mTabs.add(mAppTab);
 
-		mPhotoTab = (TextView) findViewById(R.id.leftTab2);
-		mPhotoTab.setOnClickListener(this);
-		mTabs.add(mPhotoTab);
+        mPhotoTab = (TextView) findViewById(R.id.leftTab2);
+        mPhotoTab.setOnClickListener(this);
+        mTabs.add(mPhotoTab);
 
-		mMediaTab = (TextView) findViewById(R.id.leftTab3);
-		mMediaTab.setOnClickListener(this);
-		mTabs.add(mMediaTab);
+        mMediaTab = (TextView) findViewById(R.id.leftTab3);
+        mMediaTab.setOnClickListener(this);
+        mTabs.add(mMediaTab);
 
-		mFileTab = (TextView) findViewById(R.id.leftTab4);
-		mFileTab.setOnClickListener(this);
-		mTabs.add(mFileTab);
+        mFileTab = (TextView) findViewById(R.id.leftTab4);
+        mFileTab.setOnClickListener(this);
+        mTabs.add(mFileTab);
 
-		mHistoryTab = (TextView) findViewById(R.id.leftTab5);
-		mHistoryTab.setOnClickListener(this);
-		mTabs.add(mHistoryTab);
+        mHistoryTab = (TextView) findViewById(R.id.leftTab5);
+        mHistoryTab.setOnClickListener(this);
+        mTabs.add(mHistoryTab);
 
-		mInviteFriends = findViewById(R.id.right);
-		mInviteFriends.setOnClickListener(this);
+        mDeleteView = (ViewGroup) findViewById(R.id.delete_view);
+        mTabsContainer = (ViewGroup) findViewById(R.id.tabs_container);
 
-		mConnectFriends = findViewById(R.id.connect_friends);
-		mConnectFriends.setOnClickListener(this);
+        mDelCancel = (TextView) findViewById(R.id.del_cancel);
+        mDelCancel.setOnClickListener(this);
 
-		mTabIndexMarker = (ImageView) findViewById(R.id.tab_background);
+        mDelConfrim = (TextView) findViewById(R.id.del_confrim);
+        mDelConfrim.setOnClickListener(this);
 
-		mViewPager = (ViewPager) findViewById(R.id.viewpager);
-		mPagerAdapter = new MainViewPagerAdapter(getSupportFragmentManager());
-		mViewPager.setOnPageChangeListener(this);
-		mViewPager.setAdapter(mPagerAdapter); // 设置第一个tab为默认为选中状态
-		mViewPager.setCurrentItem(0);
-		setTabSelected(mAppTab);
-	}
+        mConnectFriends = findViewById(R.id.connect_friends);
+        mConnectFriends.setOnClickListener(this);
 
-	/**
-	 * 设置当前选中的tab
-	 * 
-	 * @param tab
-	 */
-	private void setTabSelected(View tab) {
-		for (View tv : mTabs) {
-			if (tab == tv) {
-				tv.setSelected(true);
-				if (mSelected != null) {
-					doScroll(mSelected, tab, mTabIndexMarker, 400);
-				} else {
-					doScroll(mMediaTab, mAppTab, mTabIndexMarker, 400);
-				}
-				mSelected = tab;
-			} else {
-				tv.setSelected(false);
-			}
-		}
-	}
+        mTabIndexMarker = (ImageView) findViewById(R.id.tab_background);
 
-	@Override
-	protected void onPause() {
-		super.onPause();
-	}
+        mViewPager = (ViewPager) findViewById(R.id.viewpager);
+        mPagerAdapter = new MainViewPagerAdapter(getSupportFragmentManager());
+        mViewPager.setOnPageChangeListener(this);
+        mViewPager.setAdapter(mPagerAdapter); // 设置第一个tab为默认为选中状态
+        mViewPager.setCurrentItem(0);
+        setTabSelected(mAppTab);
+        
+        View inviteView = findViewById(R.id.right);
+        inviteView.setOnClickListener(this);
+    }
 
-	@Override
-	protected void onResume() {
-		super.onResume();
-	}
+    /**
+     * 设置当前选中的tab
+     * 
+     * @param tab
+     */
+    private void setTabSelected(View tab) {
+        for (View tv : mTabs) {
+            if (tab == tv) {
+                tv.setSelected(true);
+                if (mSelected != null) {
+                    doScroll(mSelected, tab, mTabIndexMarker, 400);
+                } else {
+                    doScroll(mMediaTab, mAppTab, mTabIndexMarker, 400);
+                }
+                mSelected = tab;
+            } else {
+                tv.setSelected(false);
+            }
+        }
+    }
 
-	@Override
-	protected void onDestroy() {
-		super.onDestroy();
-		MusicManger.getInstance().unBindServer(this);
-	}
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
 
-	private void showExitDialog() {
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
 
-		DialogFragment exitDialog = ExitDialog.newInstance();
-		exitDialog.show(getSupportFragmentManager(), "");
-	}
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        MusicManger.getInstance().unBindServer(this);
+    }
 
-	public void doPositiveClick() {
-		finish();
-	}
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_hist, menu);
+        return true;
+    }
 
-	public void doNegativeClick() {
-	}
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        return super.onPrepareOptionsMenu(menu);
+    }
 
-	@Override
-	public void onBackPressed() {
-		if (getSupportFragmentManager().findFragmentByTag("music") == null) {
-			showExitDialog();
-			return;
-		}
-		super.onBackPressed();
-	}
+    public int getCurrentTabIndex() {
+        return mViewPager.getCurrentItem();
+    }
 
-	@Override
-	public void onPageScrollStateChanged(int position) {
+    public void setDeleteListener(IHistoryDelete l) {
+        mDeleteListener = l;
+    }
 
-	}
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (FragmentTabsFactory.TABS_HISTORY == getCurrentTabIndex()
+                && item.getItemId() == R.id.menu_del) {
+            showHistoryDeleteMode(true);
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
-	@Override
-	public void onPageScrolled(int position, float arg1, int arg2) {
-		setTabSelected(mTabs.get(position));
-	}
+    private void showHistoryDeleteMode(boolean flag) {
+        if (flag) {
+            mDeleteView.setVisibility(View.VISIBLE);
+            mTabsContainer.setVisibility(View.GONE);
+            mDeleteListener.prepareDelete();
+        } else {
+            mDeleteView.setVisibility(View.GONE);
+            mTabsContainer.setVisibility(View.VISIBLE);
+            mDeleteListener.cancelDelete();
+        }
+    }
 
-	@Override
-	public void onPageSelected(int arg0) {
+    private void showExitDialog() {
 
-	}
+        DialogFragment exitDialog = ExitDialog.newInstance();
+        exitDialog.show(getSupportFragmentManager(), "");
+    }
 
-	@Override
-	public void onClick(View v) {
-		if (v == mConnectFriends) {
-			startActivity(new Intent(this, ConnectActivity.class));
-		} else if (v == mInviteFriends) {
-			startActivity(new Intent(this, InviteFriendsActivity.class));
-		} else {
-			setTabSelected(v);
-			mViewPager.setCurrentItem(mTabs.indexOf(v), false);
-		}
+    public void doPositiveClick() {
+        finish();
+    }
 
-	}
+    public void doNegativeClick() {
+    }
 
-	private void doScroll(View view1, View view2, View viewToScroll,
-			int duration) {
-		TranslateAnimation ta = new TranslateAnimation(
-				(view1.getLeft() + view1.getRight() - mMediaTab.getLeft() - mMediaTab
-						.getRight()) / 2, (view2.getLeft() + view2.getRight()
-						- mMediaTab.getLeft() - mMediaTab.getRight()) / 2,
-				viewToScroll.getTop(), viewToScroll.getTop());
-		ta.setFillAfter(true);
-		ta.setDuration(duration);
-		viewToScroll.startAnimation(ta);
-	}
+    @Override
+    public void onBackPressed() {
+        if (getSupportFragmentManager().findFragmentByTag("music") == null) {
+            showExitDialog();
+            return;
+        }
+        super.onBackPressed();
+    }
 
-	@Override
-	public boolean dispatchTouchEvent(MotionEvent event) {
-		if (event.getAction() == MotionEvent.ACTION_DOWN) {
-			int x = (int) event.getX();
-			int y = (int) event.getY();
-			mDragController.update(x, y);
-		}
-		if (!mDragController.isDragMode()) {
-			return super.dispatchTouchEvent(event);
-		}
-		switch (event.getAction()) {
-		case MotionEvent.ACTION_UP:
-			mDragController.dragModeEnd();
-			break;
-		case MotionEvent.ACTION_MOVE:
-			int x = (int) event.getX();
-			int y = (int) event.getY();
-			mDragController.update(x, y);
-			break;
-		}
-		return true;
-	}
+    @Override
+    public void onPageScrollStateChanged(int position) {
+
+    }
+
+    @Override
+    public void onPageScrolled(int position, float arg1, int arg2) {
+        setTabSelected(mTabs.get(position));
+    }
+
+    @Override
+    public void onPageSelected(int arg0) {
+
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.connect_friends:
+                startActivity(new Intent(this, ConnectActivity.class));
+                break;
+            case R.id.leftTab1:
+            case R.id.leftTab2:
+            case R.id.leftTab3:
+            case R.id.leftTab4:
+            case R.id.leftTab5:
+                setTabSelected(v);
+                mViewPager.setCurrentItem(mTabs.indexOf(v), false);
+                break;
+            case R.id.del_cancel:
+                showHistoryDeleteMode(false);
+                break;
+            case R.id.del_confrim:
+                mDeleteListener.startDelete();
+                //showHistoryDeleteMode(false);
+                break;
+            case R.id.right:
+            	startActivity(new Intent(this, InviteFriendsActivity.class));
+            	break;
+            default:
+                break;
+        }
+
+    }
+
+    private void doScroll(View view1, View view2, View viewToScroll,
+            int duration) {
+        TranslateAnimation ta = new TranslateAnimation(
+                (view1.getLeft() + view1.getRight() - mMediaTab.getLeft() - mMediaTab
+                        .getRight()) / 2, (view2.getLeft() + view2.getRight()
+                        - mMediaTab.getLeft() - mMediaTab.getRight()) / 2,
+                viewToScroll.getTop(), viewToScroll.getTop());
+        ta.setFillAfter(true);
+        ta.setDuration(duration);
+        viewToScroll.startAnimation(ta);
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            int x = (int) event.getX();
+            int y = (int) event.getY();
+            mDragController.update(x, y);
+        }
+        if (!mDragController.isDragMode()) {
+            return super.dispatchTouchEvent(event);
+        }
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_UP:
+                mDragController.dragModeEnd();
+                break;
+            case MotionEvent.ACTION_MOVE:
+                int x = (int) event.getX();
+                int y = (int) event.getY();
+                mDragController.update(x, y);
+                break;
+        }
+        return true;
+    }
 }

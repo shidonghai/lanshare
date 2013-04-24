@@ -44,6 +44,12 @@
 
         <service android:name="com.nano.lanshare.audio.logic.MusicPlayService" >
         </service>
+
+        <receiver android:name="com.nano.lanshare.history.logic.HistoryReceiver">
+            <intent-filter >
+                <action android:name="com.nano.lanshare.TRAFFIC_UPDATE_ACIONT"/>
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>
