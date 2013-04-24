@@ -21,6 +21,7 @@ import com.nano.lanshare.R;
 import com.nano.lanshare.audio.logic.MusicManger;
 import com.nano.lanshare.common.DragController;
 import com.nano.lanshare.conn.ui.ConnectActivity;
+import com.nano.lanshare.invitation.ui.InviteFriendsActivity;
 import com.nano.lanshare.main.adapter.MainViewPagerAdapter;
 import com.nano.lanshare.main.ui.ExitDialog;
 
@@ -39,6 +40,7 @@ public class BaseActivity extends FragmentActivity implements
 	private ImageView mTabIndexMarker;
 
 	private View mConnectFriends;
+	private View mInviteFriends;
 
 	private DragController mDragController;
 
@@ -76,6 +78,9 @@ public class BaseActivity extends FragmentActivity implements
 		mHistoryTab = (TextView) findViewById(R.id.leftTab5);
 		mHistoryTab.setOnClickListener(this);
 		mTabs.add(mHistoryTab);
+
+		mInviteFriends = findViewById(R.id.right);
+		mInviteFriends.setOnClickListener(this);
 
 		mConnectFriends = findViewById(R.id.connect_friends);
 		mConnectFriends.setOnClickListener(this);
@@ -168,6 +173,8 @@ public class BaseActivity extends FragmentActivity implements
 	public void onClick(View v) {
 		if (v == mConnectFriends) {
 			startActivity(new Intent(this, ConnectActivity.class));
+		} else if (v == mInviteFriends) {
+			startActivity(new Intent(this, InviteFriendsActivity.class));
 		} else {
 			setTabSelected(v);
 			mViewPager.setCurrentItem(mTabs.indexOf(v), false);

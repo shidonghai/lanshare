@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/white" >
+
+    <LinearLayout
+        android:id="@+id/fl_parent"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@+id/fl_a2z" />
+
+    <ImageView
+        android:id="@+id/fl_a2z"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_alignParentRight="true"
+        android:scaleType="fitXY"
+        android:src="@drawable/zapya_group_search_default" />
+
+    <RelativeLayout
+        android:id="@+id/fl_fastkey_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="30dip"
+        android:layout_toLeftOf="@id/fl_a2z"
+        android:background="@drawable/zapya_common_connect_friend_cover_pressed"
+        android:visibility="invisible" >
+
+        <TextView
+            android:id="@+id/fl_fastkey_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:paddingTop="2dip"
+            android:singleLine="true"
+            android:textColor="@color/grpslt_title_text_color"
+            android:textSize="36sp" >
+        </TextView>
+    </RelativeLayout>
+
+</RelativeLayout>
