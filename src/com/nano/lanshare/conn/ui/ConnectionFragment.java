@@ -40,67 +40,11 @@ public class ConnectionFragment extends BasicTabFragment implements
 	private HotspotsView mHotspotsView;
 	private List<ScanResult> mWifiList;
 
-	private SocketController mController;
 	private UserManager mUserManager;
 
 	private UserAdapter mAdapter;
 
 	private SocketBroadcastReceiver mReceiver;
-
-	private Handler mHandler = new Handler() {
-		@Override
-		public void handleMessage(android.os.Message msg) {
-			switch (msg.what) {
-			case 1000: {
-				Log.d("wyg", "discover------------>>");
-				mController.discover(1000);
-				// mHandler.sendEmptyMessageDelayed(1000, 5000);
-				break;
-			}
-			case SMessage.MSG_DISCOVER: {
-				DiscoveryMessage discoverMsg = (DiscoveryMessage) msg.obj;
-				for (int i = 0; i < 20; i++) {
-
-					// add this user to the user list
-					Stranger stranger = new Stranger();
-					stranger.setName(discoverMsg.getName());
-					stranger.setUserIdentifier(discoverMsg.getMACAddress());
-					stranger.setUserIp(discoverMsg.getRemoteAddress());
-					stranger.setUserPhoto(discoverMsg.getPhoto());
-					Log.d("wyg", "MSG_DISCOVER------------>>" + stranger);
-					if (mListView.getVisibility() != View.VISIBLE) {
-						mListView.setVisibility(View.VISIBLE);
-					}
-					mUserManager.addUser(stranger);
-				}
-				mAdapter.addUsers(mUserManager.getUserList());
-				mAdapter.notifyDataSetChanged();
-
-				Toast.makeText(getActivity(), "find one", 1000).show();
-				if (discoverMsg.getMsgDirection() == SMessage.REQ) {
-					// response to Discovery
-					mController.responseForDiscover(discoverMsg);
-				}
-
-				break;
-			}
-			case SMessage.MSG_FILE_TRANSFER: {
-				// read this message, and response for it
-				FileTransferMessage transferMessage = (FileTransferMessage) msg.obj;
-
-				// otherwise, let UserChatAcitivity to handle
-
-				break;
-			}
-			case SMessage.MSG_STATUS_UPDATE: {
-				break;
-			}
-			default:
-				break;
-			}
-			super.handleMessage(msg);
-		}
-	};
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -153,11 +97,6 @@ public class ConnectionFragment extends BasicTabFragment implements
 	protected void init() {
 		initLeftView();
 		initRightView();
-
-		mController = ((LanshareApplication) getActivity().getApplication())
-				.getSocketController();
-		mController.setHandler(mHandler);
-		mHandler.sendEmptyMessage(1000);
 	}
 
 	private void initLeftView() {

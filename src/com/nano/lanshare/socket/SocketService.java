@@ -8,6 +8,7 @@ import android.os.IBinder;
 import com.nano.lanshare.main.LanshareApplication;
 import com.nano.lanshare.socket.logic.SocketController;
 import com.nano.lanshare.socket.moudle.DiscoveryMessage;
+import com.nano.lanshare.socket.moudle.FileTransferMessage;
 import com.nano.lanshare.socket.moudle.SMessage;
 import com.nano.lanshare.socket.moudle.Stranger;
 
@@ -61,13 +62,26 @@ public class SocketService extends Service {
 
 				break;
 			}
+			case SMessage.MSG_FILE_TRANSFER: {
+				// read this message, and response for it
+				FileTransferMessage transferMessage = (FileTransferMessage) msg.obj;
+
+				// otherwise, let UserChatAcitivity to handle
+
+				break;
+			}
+			case SMessage.MSG_STATUS_UPDATE: {
+				break;
+			}
+			default:
+				break;
 			}
 		};
 	};
 
 	public SocketService() {
 		LanshareApplication app = (LanshareApplication) getApplication();
-		mController = app.getSocketController();
+		mController = new SocketController(this);
 		mController.setHandler(mHandler);
 	}
 
