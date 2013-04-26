@@ -1,9 +1,13 @@
 
 package com.nano.lanshare.conn.ui;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.net.wifi.ScanResult;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
@@ -15,6 +19,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -22,9 +28,10 @@ import android.widget.TextView;
 
 import com.nano.lanshare.R;
 import com.nano.lanshare.conn.adapter.ConnectAdapter;
+import com.nano.lanshare.socket.moudle.Stranger;
 import com.nano.lanshare.utils.WifiManagerUtils;
 
-public class HotspotsView implements OnClickListener {
+public class HotspotsView implements OnClickListener, OnItemClickListener {
     private Context mContext;
     private ListView mListView;
     private LayoutInflater mInflater;
@@ -53,10 +60,33 @@ public class HotspotsView implements OnClickListener {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            Log.d("wyg", "onReceive-------->>" + mWifiManager.getScanResults());
-            showProgressBar(false);
+            addWifiAp2List();
         }
     };
+
+    private void addWifiAp2List() {
+        List<ScanResult> res = mWifiManager.getScanResults();
+        List<Stranger> wifiAps = new ArrayList<Stranger>();
+        for (ScanResult scanResult : res) {
+            if ("[ESS]".equals(scanResult.capabilities) && !wifiAps.contains(scanResult.SSID)) {
+                Stranger user = new Stranger();
+                user.setName(scanResult.SSID);
+                user.setUserIdentifier(scanResult.BSSID);
+                wifiAps.add(user);
+            }
+        }
+        if (!wifiAps.isEmpty() && mHotspotsList != null
+                && mHotspotsList.getVisibility() != View.VISIBLE) {
+            mHotspotsList.setVisibility(View.VISIBLE);
+            if (mEmptyHotspots != null && mEmptyHotspots.getVisibility() == View.VISIBLE) {
+                mEmptyHotspots.setVisibility(View.GONE);
+            }
+            Log.d("wyg", "mEmptyHotspots------------>>" + mEmptyHotspots.getVisibility());
+            mAdapter.addUsers(wifiAps);
+            mAdapter.notifyDataSetChanged();
+        }
+        showProgressBar(false);
+    }
 
     public BroadcastReceiver getWifiStatusChangeReciver() {
         return mWifiStatusChangeReciver;
@@ -78,10 +108,18 @@ public class HotspotsView implements OnClickListener {
         mSearchHotspots.setOnClickListener(this);
         mEmptyHotspots = (ViewGroup) hotspotList.findViewById(R.id.empty_hotspots);
         mHotspotsList = (ListView) hotspotList.findViewById(R.id.hotspots_list);
+        mAdapter = new ConnectAdapter(mContext);
+        mHotspotsList.setAdapter(mAdapter);
+        mHotspotsList.setOnItemClickListener(this);
+
         mCreateHotspots = (TextView) hotspotList.findViewById(R.id.create_connect);
         mProgressBar = (ProgressBar) hotspotList.findViewById(R.id.search_hotspots_progress);
         mCreateHotspots.setOnClickListener(this);
         return hotspotList;
+    }
+
+    private void connect2WifiAp(String ssid) {
+        WifiManagerUtils.connect2WifiAp(mWifiManager, ssid);
     }
 
     @Override
@@ -145,7 +183,9 @@ public class HotspotsView implements OnClickListener {
         } else {
             mProgressBar.setVisibility(View.GONE);
             // mListView.setVisibility(View.VISIBLE);
-            mEmptyHotspots.setVisibility(View.VISIBLE);
+            if (mAdapter.isEmpty()) {
+                mEmptyHotspots.setVisibility(View.VISIBLE);
+            }
         }
     }
 
@@ -209,6 +249,12 @@ public class HotspotsView implements OnClickListener {
         protected void onProgressUpdate(Integer... values) {
             showProgressBar(true);
         }
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Stranger user = mAdapter.getItem(position-1);
+        connect2WifiAp(user.getName());
     }
 
 }

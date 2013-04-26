@@ -36,4 +36,20 @@ public class WifiManagerUtils {
         return null;
     }
 
+    public static boolean connect2WifiAp(WifiManager wifiManager, String ssid) {
+        WifiConfiguration apConfig = new WifiConfiguration();
+        apConfig.SSID = "\"" + ssid + "\"";
+        apConfig.hiddenSSID = true;
+        apConfig.status = WifiConfiguration.Status.ENABLED;
+        apConfig.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.TKIP);
+        apConfig.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.CCMP);
+        apConfig.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.WPA_PSK);
+        apConfig.allowedPairwiseCiphers.set(WifiConfiguration.PairwiseCipher.TKIP);
+        apConfig.allowedPairwiseCiphers.set(WifiConfiguration.PairwiseCipher.CCMP);
+        apConfig.allowedProtocols.set(WifiConfiguration.Protocol.RSN);
+        int wcgID = wifiManager.addNetwork(apConfig);
+        boolean flag = wifiManager.enableNetwork(wcgID, true);
+        return flag;
+    }
+
 }
