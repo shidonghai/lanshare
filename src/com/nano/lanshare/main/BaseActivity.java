@@ -78,6 +78,7 @@ public class BaseActivity extends FragmentActivity implements
 	private void startSocketService() {
 		Intent intent = new Intent();
 		intent.setClass(BaseActivity.this, SocketService.class);
+		intent.putExtra(SocketService.CMD_CODE, SocketService.CMD_DISCOVER);
 		startService(intent);
 	}
 
