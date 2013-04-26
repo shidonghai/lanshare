@@ -9,6 +9,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -19,6 +20,7 @@ import android.widget.Toast;
 
 import com.nano.lanshare.R;
 import com.nano.lanshare.components.BasicTabFragment;
+import com.nano.lanshare.conn.logic.UserManager;
 import com.nano.lanshare.conn.ui.PullToRefreshListView.OnRefreshListener;
 import com.nano.lanshare.main.LanshareApplication;
 import com.nano.lanshare.socket.logic.SocketController;
@@ -29,7 +31,6 @@ import com.nano.lanshare.socket.moudle.Stranger;
 
 public class ConnectionFragment extends BasicTabFragment implements
 		OnClickListener {
-
 	private ListView mListView;
 	private LayoutInflater mInflater;
 	private Button mSearchHotspots;
@@ -39,6 +40,7 @@ public class ConnectionFragment extends BasicTabFragment implements
 	private List<ScanResult> mWifiList;
 
 	private SocketController mController;
+	private UserManager mUserManager;
 
 	private UserAdapter mAdapter;
 
@@ -47,19 +49,29 @@ public class ConnectionFragment extends BasicTabFragment implements
 		public void handleMessage(android.os.Message msg) {
 			switch (msg.what) {
 			case 1000: {
+				Log.d("wyg", "discover------------>>");
 				mController.discover(1000);
-//				mHandler.sendEmptyMessageDelayed(1000, 5000);
+				// mHandler.sendEmptyMessageDelayed(1000, 5000);
 				break;
 			}
 			case SMessage.MSG_DISCOVER: {
 				DiscoveryMessage discoverMsg = (DiscoveryMessage) msg.obj;
+				for (int i = 0; i < 20; i++) {
 
-				// add this user to the user list
-				Stranger stranger = new Stranger();
-				stranger.setName(discoverMsg.getName());
-				stranger.setUserIdentifier(discoverMsg.getMACAddress());
-				stranger.setUserIp(discoverMsg.getRemoteAddress());
-				stranger.setUserPhoto(discoverMsg.getPhoto());
+					// add this user to the user list
+					Stranger stranger = new Stranger();
+					stranger.setName(discoverMsg.getName());
+					stranger.setUserIdentifier(discoverMsg.getMACAddress());
+					stranger.setUserIp(discoverMsg.getRemoteAddress());
+					stranger.setUserPhoto(discoverMsg.getPhoto());
+					Log.d("wyg", "MSG_DISCOVER------------>>" + stranger);
+					if (mListView.getVisibility() != View.VISIBLE) {
+						mListView.setVisibility(View.VISIBLE);
+					}
+					mUserManager.addUser(stranger);
+				}
+				mAdapter.addUsers(mUserManager.getUserList());
+				mAdapter.notifyDataSetChanged();
 
 				Toast.makeText(getActivity(), "find one", 1000).show();
 				if (discoverMsg.getMsgDirection() == SMessage.REQ) {
@@ -90,6 +102,8 @@ public class ConnectionFragment extends BasicTabFragment implements
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		mUserManager = UserManager.getInstance();
+		mAdapter = new UserAdapter(getActivity());
 	}
 
 	private void registerReceiver() {
@@ -145,6 +159,7 @@ public class ConnectionFragment extends BasicTabFragment implements
 				null);
 		getGroup(LEFT).addView(friendsContent);
 		mListView = (ListView) friendsContent.findViewById(R.id.friends_list);
+		mListView.setAdapter(mAdapter);
 		((PullToRefreshListView) mListView)
 				.setOnRefreshListener(new OnRefreshListener() {
 					@Override

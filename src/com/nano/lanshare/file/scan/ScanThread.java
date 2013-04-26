@@ -1,10 +1,14 @@
 package com.nano.lanshare.file.scan;
 
 import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import android.R.integer;
 import android.util.Log;
 import android.webkit.MimeTypeMap;
 
@@ -84,12 +88,14 @@ public class ScanThread implements Runnable {
 				item.type = FileListAdapter.FILE_TYPE_BACK;
 				list.add(item);
 			}
-
-			for (int i = 0; i < files.length; i++) {
-				item = new FileItem();
-				item.file = files[i];
-				item.type = getFileType(files[i]);
-				list.add(item);
+			int length = files.length;
+			for (int i = 0; i < length; i++) {
+				if (files[i].length() > 0) {
+					item = new FileItem();
+					item.file = files[i];
+					item.type = getFileType(files[i]);
+					list.add(item);
+				}
 			}
 		}
 		return list;
@@ -101,16 +107,27 @@ public class ScanThread implements Runnable {
 	}
 
 	private int getFileType(File file) {
+		int fileType = 0;
 		if (file.isDirectory()) {
-			return FileListAdapter.FILE_TYPE_FOLDER;
+			fileType = FileListAdapter.FILE_TYPE_FOLDER;
 		} else {
 			String type = getMimeType(file.getAbsolutePath());
-			if (type != null && type.startsWith("image")) {
-				return FileListAdapter.FILE_TYPE_IMAGE;
+			if (null != type) {
+				if (type.startsWith("image")) {
+					fileType = FileListAdapter.FILE_TYPE_IMAGE;
+				} else if (type.startsWith("audio")) {
+					fileType = FileListAdapter.FILE_TYPE_AUDIO;
+				} else if (type.startsWith("video")) {
+					fileType = FileListAdapter.FILE_TYPE_VIDEO;
+				} else {
+					fileType = FileListAdapter.FILE_TYPE_FILE;
+				}
+			} else {
+				fileType = FileListAdapter.FILE_TYPE_FILE;
 			}
-
-			return FileListAdapter.FILE_TYPE_FILE;
 		}
+
+		return fileType;
 	}
 
 	public void startScanning(FileScanListener listener,
@@ -134,11 +151,19 @@ public class ScanThread implements Runnable {
 
 	// url = file path or whatever suitable URL you want.
 	public String getMimeType(String url) {
+		if (null == url) {
+			return null;
+		}
+
 		String type = null;
-		String extension = MimeTypeMap.getFileExtensionFromUrl(url);
-		if (extension != null) {
-			MimeTypeMap mime = MimeTypeMap.getSingleton();
-			type = mime.getMimeTypeFromExtension(extension);
+		int index = url.lastIndexOf(".");
+		if (index > 0) {
+			String extension = url.substring(index + 1);
+			if (extension != null) {
+				MimeTypeMap mime = MimeTypeMap.getSingleton();
+				type = mime.getMimeTypeFromExtension(extension.toLowerCase());
+			}
+
 		}
 
 		return type;

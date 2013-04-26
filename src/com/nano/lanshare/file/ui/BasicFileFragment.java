@@ -14,6 +14,7 @@ import android.widget.GridView;
 import android.widget.TextView;
 
 import com.nano.lanshare.R;
+import com.nano.lanshare.components.LongClickListener;
 import com.nano.lanshare.main.LanshareApplication;
 import com.nano.lanshare.thumbnail.util.ImageWorker;
 
@@ -26,7 +27,7 @@ public abstract class BasicFileFragment extends Fragment implements
 	public static final int EXIT_QUERY = 5;
 
 	LayoutInflater mLayoutInflater;
-	FileListAdapter mAdapter;
+	protected FileListAdapter mAdapter;
 	GridView mList;
 	View mEmptyView;
 	Thread mQueryThread;
@@ -78,7 +79,8 @@ public abstract class BasicFileFragment extends Fragment implements
 		mAdapter = new FileListAdapter(getActivity());
 		mList.setAdapter(mAdapter);
 		mList.setOnItemClickListener(this);
-		mList.setOnItemLongClickListener(this);
+		mList.setOnItemLongClickListener(new LongClickListener(getActivity(),
+				R.id.icon));
 
 		return view;
 	}

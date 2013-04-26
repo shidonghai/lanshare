@@ -5,11 +5,13 @@ import java.util.List;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -22,6 +24,9 @@ import com.nano.lanshare.R;
 import com.nano.lanshare.audio.logic.MusicManger;
 import com.nano.lanshare.common.DragController;
 import com.nano.lanshare.conn.ui.ConnectActivity;
+import com.nano.lanshare.history.logic.IHistoryDelete;
+import com.nano.lanshare.invitation.ui.InviteFriendsActivity;
+import com.nano.lanshare.main.adapter.FragmentTabsFactory;
 import com.nano.lanshare.main.adapter.MainViewPagerAdapter;
 import com.nano.lanshare.main.ui.ExitDialog;
 
@@ -35,6 +40,11 @@ public class BaseActivity extends FragmentActivity implements
 	private TextView mMediaTab;
 	private TextView mFileTab;
 	private TextView mHistoryTab;
+	private ViewGroup mDeleteView;
+	private ViewGroup mTabsContainer;
+	private TextView mDelCancel;
+	private TextView mDelConfrim;
+	private IHistoryDelete mDeleteListener;
 
 	private View mSelected;
 	private ImageView mTabIndexMarker;
@@ -78,6 +88,15 @@ public class BaseActivity extends FragmentActivity implements
 		mHistoryTab.setOnClickListener(this);
 		mTabs.add(mHistoryTab);
 
+		mDeleteView = (ViewGroup) findViewById(R.id.delete_view);
+		mTabsContainer = (ViewGroup) findViewById(R.id.tabs_container);
+
+		mDelCancel = (TextView) findViewById(R.id.del_cancel);
+		mDelCancel.setOnClickListener(this);
+
+		mDelConfrim = (TextView) findViewById(R.id.del_confrim);
+		mDelConfrim.setOnClickListener(this);
+
 		mConnectFriends = findViewById(R.id.connect_friends);
 		mConnectFriends.setOnClickListener(this);
 
@@ -88,6 +107,10 @@ public class BaseActivity extends FragmentActivity implements
 		mViewPager.setOnPageChangeListener(this);
 		mViewPager.setAdapter(mPagerAdapter); // 设置第一个tab为默认为选中状态
 		mViewPager.setCurrentItem(0);
+		setTabSelected(mAppTab);
+
+		View inviteView = findViewById(R.id.right);
+		inviteView.setOnClickListener(this);
 	}
 
 	/**
@@ -102,7 +125,7 @@ public class BaseActivity extends FragmentActivity implements
 				if (mSelected != null) {
 					doScroll(mSelected, tab, mTabIndexMarker, 400);
 				} else {
-					doScroll(mMediaTab, mAppTab, mTabIndexMarker, 0);
+					doScroll(mMediaTab, mAppTab, mTabIndexMarker, 400);
 				}
 				mSelected = tab;
 			} else {
@@ -119,18 +142,53 @@ public class BaseActivity extends FragmentActivity implements
 	@Override
 	protected void onResume() {
 		super.onResume();
-		Handler handler = new Handler();
-		handler.postDelayed(new Runnable() {
-			public void run() {
-				setTabSelected(mAppTab);
-			}
-		}, 500);
 	}
 
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
 		MusicManger.getInstance().unBindServer(this);
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.menu_hist, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		return super.onPrepareOptionsMenu(menu);
+	}
+
+	public int getCurrentTabIndex() {
+		return mViewPager.getCurrentItem();
+	}
+
+	public void setDeleteListener(IHistoryDelete l) {
+		mDeleteListener = l;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if (FragmentTabsFactory.TABS_HISTORY == getCurrentTabIndex()
+				&& item.getItemId() == R.id.menu_del) {
+			showHistoryDeleteMode(true);
+		}
+		return super.onOptionsItemSelected(item);
+	}
+
+	private void showHistoryDeleteMode(boolean flag) {
+		if (flag) {
+			mDeleteView.setVisibility(View.VISIBLE);
+			mTabsContainer.setVisibility(View.GONE);
+			mDeleteListener.prepareDelete();
+		} else {
+			mDeleteView.setVisibility(View.GONE);
+			mTabsContainer.setVisibility(View.VISIBLE);
+			mDeleteListener.cancelDelete();
+		}
 	}
 
 	private void showExitDialog() {
@@ -172,11 +230,30 @@ public class BaseActivity extends FragmentActivity implements
 
 	@Override
 	public void onClick(View v) {
-		if (v == mConnectFriends) {
+		switch (v.getId()) {
+		case R.id.connect_friends:
 			startActivity(new Intent(this, ConnectActivity.class));
-		} else {
+			break;
+		case R.id.leftTab1:
+		case R.id.leftTab2:
+		case R.id.leftTab3:
+		case R.id.leftTab4:
+		case R.id.leftTab5:
 			setTabSelected(v);
 			mViewPager.setCurrentItem(mTabs.indexOf(v), false);
+			break;
+		case R.id.del_cancel:
+			showHistoryDeleteMode(false);
+			break;
+		case R.id.del_confrim:
+			mDeleteListener.startDelete();
+			// showHistoryDeleteMode(false);
+			break;
+		case R.id.right:
+			startActivity(new Intent(this, InviteFriendsActivity.class));
+			break;
+		default:
+			break;
 		}
 
 	}

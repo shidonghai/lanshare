@@ -122,7 +122,7 @@ public class MusicManger {
 	 * @param listener
 	 */
 	public void registerListener(IMusicStatusListener listener) {
-		if (null != listener) {
+		if (null != listener && !mMusicStatusListener.contains(listener)) {
 			mMusicStatusListener.add(listener);
 		}
 	}
@@ -172,7 +172,9 @@ public class MusicManger {
 
 	public void start() {
 		try {
-			mServerAidl.startPlay();
+			if (null != mServerAidl) {
+				mServerAidl.startPlay();
+			}
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
@@ -186,7 +188,9 @@ public class MusicManger {
 	 */
 	public void play(int id) {
 		try {
-			mServerAidl.play(id);
+			if (null != mServerAidl) {
+				mServerAidl.play(id);
+			}
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
@@ -194,7 +198,9 @@ public class MusicManger {
 
 	public void pause() {
 		try {
-			mServerAidl.pause();
+			if (null != mServerAidl) {
+				mServerAidl.pause();
+			}
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
@@ -202,7 +208,9 @@ public class MusicManger {
 
 	public void next() {
 		try {
-			mServerAidl.next();
+			if (null != mServerAidl) {
+				mServerAidl.next();
+			}
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
@@ -210,7 +218,9 @@ public class MusicManger {
 
 	public void previou() {
 		try {
-			mServerAidl.prev();
+			if (null != mServerAidl) {
+				mServerAidl.prev();
+			}
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
@@ -218,7 +228,9 @@ public class MusicManger {
 
 	public int getDuration() {
 		try {
-			return mServerAidl.getDuration();
+			if (null != mServerAidl) {
+				return mServerAidl.getDuration();
+			}
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
@@ -227,7 +239,9 @@ public class MusicManger {
 
 	public void seek(int msec) {
 		try {
-			mServerAidl.seek(msec);
+			if (null != mServerAidl) {
+				mServerAidl.seek(msec);
+			}
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
@@ -235,7 +249,9 @@ public class MusicManger {
 
 	public int getCurrentPosition() {
 		try {
-			return mServerAidl.getCurrentPosion();
+			if (null != mServerAidl) {
+				return mServerAidl.getCurrentPosion();
+			}
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
@@ -245,7 +261,9 @@ public class MusicManger {
 
 	public int getCurrentIndex() {
 		try {
-			return mServerAidl.getMusicIndex();
+			if (null != mServerAidl) {
+				return mServerAidl.getMusicIndex();
+			}
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
@@ -255,7 +273,9 @@ public class MusicManger {
 
 	public boolean isStarted() {
 		try {
-			return mServerAidl.isStarted();
+			if (null != mServerAidl) {
+				return mServerAidl.isStarted();
+			}
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
@@ -265,7 +285,9 @@ public class MusicManger {
 
 	public boolean isPlaying() {
 		try {
-			return mServerAidl.isPlaying();
+			if (null != mServerAidl) {
+				return mServerAidl.isPlaying();
+			}
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}

@@ -2,11 +2,15 @@
 package com.nano.lanshare.history.adapter;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -19,6 +23,9 @@ import android.widget.TextView;
 import com.nano.lanshare.R;
 import com.nano.lanshare.history.been.HistoryInfo;
 import com.nano.lanshare.history.fragment.TrafficInformationFragment;
+import com.nano.lanshare.main.LanshareApplication;
+import com.nano.lanshare.thumbnail.util.ImageWorker;
+import com.nano.lanshare.thumbnail.util.ImageWorker.LoadMethod;
 import com.nano.lanshare.utils.StorageManager;
 
 public class HistoryListAdapter extends BaseAdapter {
@@ -29,12 +36,34 @@ public class HistoryListAdapter extends BaseAdapter {
     private List<HistoryInfo> mSelectList = new ArrayList<HistoryInfo>();
     private Cursor mCursor;
     private Context mContext;
+    private boolean isCheckMode;
+    private ImageWorker mWorker;
+    private Bitmap mDefaultIcon;
+    private onDataLoadChange mDataLoadChange;
+
+    private LoadMethod mFileIconMethod = new LoadMethod() {
+
+        @Override
+        public Bitmap processBitmap(Object obj, Context context) {
+
+            return BitmapFactory.decodeResource(mContext.getResources(),
+                    R.drawable.zapya_history_person_hot);
+        }
+    };
+
+    public interface onDataLoadChange {
+        void onChange();
+    }
 
     public HistoryListAdapter(Context context, List<HistoryInfo> historyList,
             boolean autoRequery) {
         mInflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mContext = context;
+        mWorker = ((LanshareApplication) context.getApplicationContext())
+                .getImageWorker();
+        mDefaultIcon = BitmapFactory.decodeResource(mContext.getResources(),
+                R.drawable.zapya_history_person_hot);
         setDate(historyList);
     }
 
@@ -89,28 +118,78 @@ public class HistoryListAdapter extends BaseAdapter {
             return getHistoryItems(convertView, position);
         }
     }
-    
 
     public View getHistoryItems(View convertView, int position) {
         ViewHolder holder = null;
+
+        int type = getItemViewType(getItem(position));
+        int typeLayout = HISTORY_RECV == type ? R.layout.history_item_recv
+                : R.layout.history_item_send;
+
         if (convertView == null) {
-            int type = getItemViewType(getItem(position));
-            int typeLayout = HISTORY_RECV == type ? R.layout.history_item_recv
-                    : R.layout.history_item_send;
             convertView = mInflater.inflate(typeLayout, null);
             holder = new ViewHolder(convertView);
-            convertView.setTag(holder);
+            // convertView.setTag(holder);
+            convertView.setTag(typeLayout, holder);
         } else {
-            holder = (ViewHolder) convertView.getTag();
+            holder = (ViewHolder) convertView.getTag(typeLayout);
+            // If we don't do this the sender and receiver maybe incorrect.
+            if (holder == null) {
+                convertView = mInflater.inflate(typeLayout, null);
+                holder = new ViewHolder(convertView);
+                convertView.setTag(typeLayout, holder);
+            }
         }
-        holder.setData(mHistoryInfoList.get(position));
+        holder.setData(getItem(position));
+        mWorker.loadImage(getItem(position),
+                holder.fileIcon, mDefaultIcon, mFileIconMethod);
         return convertView;
     }
 
-    public void setChecked(View item, int position) {
-        ViewHolder holder = (ViewHolder) item.getTag();
-        holder.setChecked(position);
+    public void setCheckMode(boolean flag) {
+        isCheckMode = flag;
+        if (!isCheckMode) {
+            mSelectList.clear();
+        }
         notifyDataSetChanged();
+    }
+
+    public boolean isCheckedMode() {
+        return isCheckMode;
+    }
+
+    public void setAllChecked(boolean flag) {
+        if (flag) {
+            mSelectList.clear();
+            mSelectList.addAll(mHistoryInfoList);
+        } else {
+            mSelectList.clear();
+        }
+        notifyDataSetChanged();
+    }
+
+    public void setonDateLoadChangeListener(onDataLoadChange listener) {
+        mDataLoadChange = listener;
+    }
+
+    /**
+     * When we click the item, we set the item checked or not.
+     * 
+     * @param item
+     * @param position
+     */
+    public void setChecked(View item, int position) {
+        HistoryInfo info = getItem(position);
+        if (mSelectList.contains(info)) {
+            mSelectList.remove(info);
+        } else {
+            mSelectList.add(info);
+        }
+        notifyDataSetChanged();
+    }
+
+    public List<HistoryInfo> getSelectedList() {
+        return mSelectList;
     }
 
     public final class ViewHolder {
@@ -125,15 +204,42 @@ public class HistoryListAdapter extends BaseAdapter {
         public ImageView fileUncheck;
 
         public ViewHolder(View view) {
+            avater = (ImageView) view.findViewById(R.id.item_thumb);
+            name = (TextView) view.findViewById(R.id.item_name);
+            fileType = (ImageView) view.findViewById(R.id.file_type);
+            fileIcon = (ImageView) view.findViewById(R.id.file_icon);
+            fileName = (TextView) view.findViewById(R.id.file_name);
+            fileSize = (TextView) view.findViewById(R.id.file_size);
+            fileOpeate = (TextView) view.findViewById(R.id.file_opeart);
+            fileChecked = (ImageView) view.findViewById(R.id.file_checked);
+            fileUncheck = (ImageView) view.findViewById(R.id.file_uncheck);
         }
 
         public void setData(HistoryInfo info) {
-            
-            //setChecked(info);
+            setCheckMode();
+            // If is check mode then we show the checkbox or not.
+            if (isCheckMode) {
+                if (mSelectList.contains(info)) {
+                    setChecked(true);
+                } else {
+                    setChecked(false);
+                }
+            }
         }
 
-        private boolean isChecked() {
-            return fileChecked.getVisibility() == View.VISIBLE;
+        /**
+         * If is check mode we should hide the file type icon.
+         */
+        public void setCheckMode() {
+            if (isCheckMode) {
+                fileUncheck.setVisibility(View.VISIBLE);
+                fileChecked.setVisibility(View.GONE);
+                fileType.setVisibility(View.GONE);
+            } else {
+                fileChecked.setVisibility(View.GONE);
+                fileUncheck.setVisibility(View.GONE);
+                fileType.setVisibility(View.VISIBLE);
+            }
         }
 
         private void setChecked(boolean falg) {
@@ -146,24 +252,14 @@ public class HistoryListAdapter extends BaseAdapter {
             }
         }
 
-        private void setChecked(HistoryInfo info) {
-            if (info == null) {
-                return;
-            }
-            if (mSelectList.contains(info)) {
-                setChecked(false);
-                mSelectList.remove(info);
-            } else {
-                setChecked(true);
-                mSelectList.add(info);
-            }
-        }
-
-        public void setChecked(int position) {
-            //setChecked(getItem(position));
-        }
     }
 
+    /**
+     * Get the header view
+     * 
+     * @param convertView
+     * @return
+     */
     private View getHeaderView(View convertView) {
         if (convertView == null) {
             convertView = mInflater.inflate(R.layout.history_list_header, null);
@@ -176,11 +272,17 @@ public class HistoryListAdapter extends BaseAdapter {
 
         Button flowBtn = (Button) convertView.findViewById(R.id.show_flow);
         flowBtn.setOnClickListener(new OnClickListener() {
-
             @Override
             public void onClick(View v) {
                 mContext.startActivity(new Intent(mContext,
                         TrafficInformationFragment.class));
+            }
+        });
+        Button msgBtn = (Button) convertView.findViewById(R.id.show_message);
+        msgBtn.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // mDataLoadChange.onChange();
             }
         });
         return convertView;

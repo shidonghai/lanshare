@@ -3,6 +3,7 @@ package com.nano.lanshare.main;
 import android.app.Application;
 
 import com.nano.lanshare.socket.logic.SocketController;
+import com.nano.lanshare.file.Extentions;
 import com.nano.lanshare.thumbnail.util.ImageWorker;
 import com.nano.lanshare.utils.FileUtil;
 
@@ -22,6 +23,8 @@ public class LanshareApplication extends Application {
 				FileUtil.createInbox(getApplicationContext());
 			};
 		}.start();
+
+		Extentions.getIntance(this).init();
 	}
 
 	public ImageWorker getImageWorker() {

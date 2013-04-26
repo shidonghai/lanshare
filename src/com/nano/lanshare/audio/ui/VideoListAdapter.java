@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.provider.MediaStore.Video.Media;
 import android.provider.MediaStore.Video.Thumbnails;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -87,4 +88,12 @@ public class VideoListAdapter extends CursorAdapter {
 		return mFormatter.format("%02d:%02d", minutes, seconds).toString();
 
 	}
+
+	@Override
+	protected void onContentChanged() {
+		super.onContentChanged();
+		Log.d("zxh", "onContentChanged");
+		notifyDataSetChanged();
+	}
+
 }

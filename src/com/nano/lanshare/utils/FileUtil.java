@@ -13,6 +13,9 @@ import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.net.Uri;
 import android.os.Environment;
+import android.os.Handler;
+import android.text.TextUtils;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.nano.lanshare.R;
@@ -20,6 +23,12 @@ import com.nano.lanshare.R;
 public class FileUtil {
 
 	public static final String INBOX_ROOT_PATH = "/lanshare";
+
+	public static final int REFRESH_UI = 0;
+
+	public static final int DIALOG_DELETE = 0;
+
+	public static final int DIALOG_RENAME = 1;
 
 	public static final File INBOX_FILE = new File(Environment
 			.getExternalStorageDirectory().getAbsolutePath() + INBOX_ROOT_PATH);
@@ -67,6 +76,9 @@ public class FileUtil {
 			builder.setMessage(builder2.toString());
 			builder.setPositiveButton(R.string.dm_dialog_ok, null);
 			builder.create().show();
+		} else {
+			Toast.makeText(context, R.string.dm_data_delete_non_exists,
+					Toast.LENGTH_SHORT).show();
 		}
 	}
 
@@ -109,14 +121,19 @@ public class FileUtil {
 					});
 			builder.create().show();
 		}
+	}
 
+	public static final void showFileOperationDialog(Context context,
+			String filePath) {
+		showFileOperationDialog(context, filePath, null);
 	}
 
 	public static void showFileOperationDialog(final Context context,
-			final String filePath) {
+			final String filePath, final Handler handler) {
 		if (null == filePath) {
 			return;
 		}
+
 		File file = new File(filePath);
 		if (file.exists()) {
 			AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -129,20 +146,26 @@ public class FileUtil {
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
 							switch (which) {
-							case 0:
-								showDeleteDialog(context, filePath);
+							case DIALOG_DELETE:
+								showDeleteDialog(context, filePath, handler);
 								break;
-
+							case DIALOG_RENAME:
+								showRenameDialog(context, filePath, handler);
+								break;
 							default:
 								break;
 							}
 						}
 					});
 			builder.create().show();
+		} else {
+			Toast.makeText(context, R.string.dm_data_delete_non_exists,
+					Toast.LENGTH_SHORT).show();
 		}
 	}
 
-	public static void showDeleteDialog(final Context context, String filePath) {
+	public static void showDeleteDialog(final Context context, String filePath,
+			final Handler handler) {
 		if (null == filePath) {
 			return;
 		}
@@ -157,6 +180,10 @@ public class FileUtil {
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
 							if (file.delete()) {
+								if (null != handler) {
+									handler.sendEmptyMessage(REFRESH_UI);
+								}
+								scanFileAsync(context, file);
 								Toast.makeText(
 										context,
 										String.format(
@@ -169,5 +196,62 @@ public class FileUtil {
 			builder.setNegativeButton(R.string.dm_dialog_cancel, null);
 			builder.create().show();
 		}
+	}
+
+	public static void showRenameDialog(final Context context,
+			final String filePath, final Handler handler) {
+		if (null == filePath) {
+			return;
+		}
+
+		AlertDialog.Builder builder = new AlertDialog.Builder(context);
+		builder.setTitle(R.string.dm_dialog_input);
+		final EditText editText = new EditText(context);
+		editText.setSingleLine(true);
+		editText.setMaxWidth(100);
+		builder.setView(editText);
+
+		final File file = new File(filePath);
+		String name = file.getName();
+		editText.setText(name);
+		editText.setSelection(0, name.length());
+		builder.setPositiveButton(R.string.dm_dialog_ok, new OnClickListener() {
+
+			@Override
+			public void onClick(DialogInterface arg0, int arg1) {
+				if (TextUtils.isEmpty(editText.getText().toString())) {
+					Toast.makeText(context, R.string.dm_toast_emptyname,
+							Toast.LENGTH_SHORT).show();
+					return;
+				}
+
+				// File file = new File(filePath);
+				File newFile = new File(file.getParentFile(), editText
+						.getText().toString());
+				if (newFile.exists()) {
+					Toast.makeText(context, R.string.dm_toast_fileexist,
+							Toast.LENGTH_SHORT).show();
+				} else {
+					boolean result = file.renameTo(newFile);
+					if (result) {
+						if (null != handler) {
+							handler.sendEmptyMessage(REFRESH_UI);
+						}
+						scanFileAsync(context, file);
+						scanFileAsync(context, newFile);
+						Toast.makeText(context, R.string.dm_toast_rename_done,
+								Toast.LENGTH_SHORT).show();
+					}
+				}
+			}
+		});
+		builder.setNegativeButton(R.string.dm_dialog_cancel, null);
+		builder.create().show();
+	}
+
+	public static void scanFileAsync(Context ctx, File file) {
+		Intent scanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+		scanIntent.setData(Uri.fromFile(file));
+		ctx.sendBroadcast(scanIntent);
 	}
 }

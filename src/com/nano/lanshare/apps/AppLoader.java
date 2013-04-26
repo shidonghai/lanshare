@@ -23,6 +23,7 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -116,6 +117,7 @@ public class AppLoader {
 		}.start();
 	}
 
+	@SuppressLint("NewApi")
 	private void loadPkg() {
 		List<PackageInfo> list = mPkgMgr.getInstalledPackages(0);
 		Collections.sort(list, new NameComparator(mPkgMgr, mLabelCache));

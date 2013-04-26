@@ -15,7 +15,39 @@
         android:layout_height="75dip"
         android:layout_alignParentBottom="true" >
 
-        <include layout="@layout/main_bottom" />
+        <RelativeLayout
+            android:id="@+id/delete_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:background="@color/white"
+            android:visibility="gone" >
+
+            <TextView
+                android:id="@+id/del_cancel"
+                android:layout_width="80dip"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:background="@drawable/button_gray_left"
+                android:gravity="center"
+                android:text="@string/cancel" />
+
+            <TextView
+                android:id="@+id/del_confrim"
+                android:layout_width="200dip"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dip"
+                android:layout_toRightOf="@id/del_cancel"
+                android:background="@drawable/button_red_right"
+                android:gravity="center"
+                android:text="@string/dm_menu_delete" />
+        </RelativeLayout>
+
+        <include
+            android:id="@+id/tabs_container"
+            android:layout_height="match_parent"
+            layout="@layout/main_bottom"
+            android:visibility="visible" />
     </FrameLayout>
 
     <android.support.v4.view.ViewPager
