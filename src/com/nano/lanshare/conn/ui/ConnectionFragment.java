@@ -1,5 +1,6 @@
 package com.nano.lanshare.conn.ui;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.content.IntentFilter;
@@ -7,34 +8,28 @@ import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.nano.lanshare.R;
 import com.nano.lanshare.components.BasicTabFragment;
+import com.nano.lanshare.conn.logic.UserChangedListener;
 import com.nano.lanshare.conn.logic.UserManager;
 import com.nano.lanshare.conn.ui.PullToRefreshListView.OnRefreshListener;
-import com.nano.lanshare.main.LanshareApplication;
 import com.nano.lanshare.socket.SocketBroadcastReceiver;
-import com.nano.lanshare.socket.logic.SocketController;
-import com.nano.lanshare.socket.moudle.DiscoveryMessage;
-import com.nano.lanshare.socket.moudle.FileTransferMessage;
-import com.nano.lanshare.socket.moudle.SMessage;
 import com.nano.lanshare.socket.moudle.Stranger;
 
 public class ConnectionFragment extends BasicTabFragment implements
-		OnClickListener {
-	private ListView mListView;
+		OnClickListener, UserChangedListener {
+	private ListView mUserListView;
 	private LayoutInflater mInflater;
 	private Button mSearchHotspots;
+	private View mEmptyView;
 	private ViewGroup mEmptyHotspots;
 	private ListView mHotspotsList;
 	private HotspotsView mHotspotsView;
@@ -77,12 +72,14 @@ public class ConnectionFragment extends BasicTabFragment implements
 	public void onPause() {
 		super.onPause();
 		unregisterReceiver();
+		mUserManager.registerCallback(this);
 		mReceiver.unregister();
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
+		mUserManager.registerCallback(this);
 		registerReceiver();
 
 		mReceiver.register();
@@ -104,15 +101,18 @@ public class ConnectionFragment extends BasicTabFragment implements
 		View friendsContent = mInflater.inflate(R.layout.connect_people_list,
 				null);
 		getGroup(LEFT).addView(friendsContent);
-		mListView = (ListView) friendsContent.findViewById(R.id.friends_list);
-		mListView.setAdapter(mAdapter);
-		((PullToRefreshListView) mListView)
+		mEmptyView = friendsContent.findViewById(R.id.empty_list);
+		mUserListView = (ListView) friendsContent
+				.findViewById(R.id.friends_list);
+		mUserListView.setAdapter(mAdapter);
+		((PullToRefreshListView) mUserListView)
 				.setOnRefreshListener(new OnRefreshListener() {
 					@Override
 					public void onRefresh() {
 						new GetDataTask().execute();
 					}
 				});
+
 	}
 
 	private void initRightView() {
@@ -162,9 +162,21 @@ public class ConnectionFragment extends BasicTabFragment implements
 		protected void onPostExecute(String[] result) {
 
 			// Call onRefreshComplete when the list has been refreshed.
-			((PullToRefreshListView) mListView).onRefreshComplete();
+			((PullToRefreshListView) mUserListView).onRefreshComplete();
 
 			super.onPostExecute(result);
 		}
+	}
+
+	@Override
+	public void notifyUserChanged(ArrayList<Stranger> list) {
+		if (list.size() > 0) {
+			mUserListView.setVisibility(View.VISIBLE);
+			mEmptyView.setVisibility(View.GONE);
+		} else {
+			mEmptyView.setVisibility(View.VISIBLE);
+			mUserListView.setVisibility(View.GONE);
+		}
+		mAdapter.addUsers(list);
 	}
 }

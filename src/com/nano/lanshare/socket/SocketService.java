@@ -4,6 +4,7 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.IBinder;
+import android.widget.Toast;
 
 import com.nano.lanshare.main.LanshareApplication;
 import com.nano.lanshare.socket.logic.SocketController;
@@ -101,7 +102,7 @@ public class SocketService extends Service {
 
 	@Override
 	public void onDestroy() {
-		mHandler.getLooper().quit();
+		mHandler.removeMessages(CMD_DISCOVER);
 		super.onDestroy();
 	}
 
