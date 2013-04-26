@@ -23,6 +23,7 @@ import com.nano.lanshare.components.BasicTabFragment;
 import com.nano.lanshare.conn.logic.UserManager;
 import com.nano.lanshare.conn.ui.PullToRefreshListView.OnRefreshListener;
 import com.nano.lanshare.main.LanshareApplication;
+import com.nano.lanshare.socket.SocketBroadcastReceiver;
 import com.nano.lanshare.socket.logic.SocketController;
 import com.nano.lanshare.socket.moudle.DiscoveryMessage;
 import com.nano.lanshare.socket.moudle.FileTransferMessage;
@@ -43,6 +44,8 @@ public class ConnectionFragment extends BasicTabFragment implements
 	private UserManager mUserManager;
 
 	private UserAdapter mAdapter;
+
+	private SocketBroadcastReceiver mReceiver;
 
 	private Handler mHandler = new Handler() {
 		@Override
@@ -104,6 +107,7 @@ public class ConnectionFragment extends BasicTabFragment implements
 		super.onCreate(savedInstanceState);
 		mUserManager = UserManager.getInstance();
 		mAdapter = new UserAdapter(getActivity());
+		mReceiver = new SocketBroadcastReceiver(getActivity());
 	}
 
 	private void registerReceiver() {
@@ -129,12 +133,15 @@ public class ConnectionFragment extends BasicTabFragment implements
 	public void onPause() {
 		super.onPause();
 		unregisterReceiver();
+		mReceiver.unregister();
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
 		registerReceiver();
+
+		mReceiver.register();
 	}
 
 	@Override

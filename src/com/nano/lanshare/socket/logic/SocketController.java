@@ -71,8 +71,9 @@ public class SocketController {
 				android.os.Message message = new android.os.Message();
 				message.what = SMessage.MSG_FILE_TRANSFER;
 				message.obj = msg;
-				if (mHandler != null)
+				if (mHandler != null) {
 					mHandler.sendMessage(message);
+				}
 			}
 		};
 

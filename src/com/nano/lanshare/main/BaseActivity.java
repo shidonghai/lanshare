@@ -5,6 +5,7 @@ import java.util.List;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
@@ -29,6 +30,8 @@ import com.nano.lanshare.invitation.ui.InviteFriendsActivity;
 import com.nano.lanshare.main.adapter.FragmentTabsFactory;
 import com.nano.lanshare.main.adapter.MainViewPagerAdapter;
 import com.nano.lanshare.main.ui.ExitDialog;
+import com.nano.lanshare.socket.SocketBroadcastReceiver;
+import com.nano.lanshare.socket.SocketService;
 
 public class BaseActivity extends FragmentActivity implements
 		OnPageChangeListener, OnClickListener {
@@ -53,6 +56,10 @@ public class BaseActivity extends FragmentActivity implements
 
 	private DragController mDragController;
 
+	private Handler mHandler = new Handler();
+
+	private SocketBroadcastReceiver mReceiver;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -62,6 +69,22 @@ public class BaseActivity extends FragmentActivity implements
 				.getInstance((ViewGroup) findViewById(R.id.base_viewgroup));
 
 		MusicManger.getInstance().bindServer(this);
+
+		mReceiver = new SocketBroadcastReceiver(this);
+
+		startSocketService();
+	}
+
+	private void startSocketService() {
+		Intent intent = new Intent();
+		intent.setClass(BaseActivity.this, SocketService.class);
+		startService(intent);
+	}
+
+	private void stopSocketService() {
+		Intent intent = new Intent();
+		intent.setClass(BaseActivity.this, SocketService.class);
+		stopService(intent);
 	}
 
 	/**
@@ -107,7 +130,6 @@ public class BaseActivity extends FragmentActivity implements
 		mViewPager.setOnPageChangeListener(this);
 		mViewPager.setAdapter(mPagerAdapter); // 设置第一个tab为默认为选中状态
 		mViewPager.setCurrentItem(0);
-		setTabSelected(mAppTab);
 
 		View inviteView = findViewById(R.id.right);
 		inviteView.setOnClickListener(this);
@@ -125,7 +147,7 @@ public class BaseActivity extends FragmentActivity implements
 				if (mSelected != null) {
 					doScroll(mSelected, tab, mTabIndexMarker, 400);
 				} else {
-					doScroll(mMediaTab, mAppTab, mTabIndexMarker, 400);
+					doScroll(mMediaTab, mAppTab, mTabIndexMarker, 0);
 				}
 				mSelected = tab;
 			} else {
@@ -136,18 +158,27 @@ public class BaseActivity extends FragmentActivity implements
 
 	@Override
 	protected void onPause() {
+		mReceiver.unregister();
 		super.onPause();
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
+		mReceiver.register();
+		mHandler.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				setTabSelected(mAppTab);
+			}
+		}, 100);
 	}
 
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
 		MusicManger.getInstance().unBindServer(this);
+		stopSocketService();
 	}
 
 	@Override
