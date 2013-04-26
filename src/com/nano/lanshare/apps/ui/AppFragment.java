@@ -25,6 +25,7 @@ import com.nano.lanshare.components.operation.PopupMenuUtil;
 import com.nano.lanshare.main.LanshareApplication;
 import com.nano.lanshare.thumbnail.util.ImageCache.ImageCacheParams;
 import com.nano.lanshare.thumbnail.util.ImageWorker;
+import com.nano.lanshare.utils.FileUtil;
 
 public class AppFragment extends BasicTabFragment implements
 		OnItemClickListener {
@@ -175,6 +176,8 @@ public class AppFragment extends BasicTabFragment implements
 						case PopupMenuUtil.MENU_PROPARTY:
 							break;
 						case PopupMenuUtil.MENU_OPERATION:
+							FileUtil.showAppOperationDialog(getActivity(),
+									info.info);
 							break;
 						default:
 							break;

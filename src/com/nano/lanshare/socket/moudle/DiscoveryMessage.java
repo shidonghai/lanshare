@@ -15,6 +15,10 @@ public class DiscoveryMessage extends SMessage {
 	 * digest, optional, for future security requirement }
 	 */
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private byte[] mPhoto;
 
 	public void setphot(byte[] photo) {

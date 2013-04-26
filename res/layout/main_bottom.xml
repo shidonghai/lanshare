@@ -6,7 +6,7 @@
     <ImageView
         android:id="@id/tab_background"
         android:layout_width="800dip"
-        android:layout_height="match_parent"
+        android:layout_height="75dip"
         android:layout_gravity="center_horizontal"
         android:background="@drawable/zapya_common_tab_bg"
         android:gravity="bottom|center"

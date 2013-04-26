@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
 import android.net.Uri;
 import android.os.Environment;
 import android.os.Handler;
@@ -78,6 +79,47 @@ public class FileUtil {
 		} else {
 			Toast.makeText(context, R.string.dm_data_delete_non_exists,
 					Toast.LENGTH_SHORT).show();
+		}
+	}
+
+	public static void showAppOperationDialog(final Context context,
+			final ApplicationInfo info) {
+
+		if (null == info) {
+			return;
+		}
+		File file = new File(info.sourceDir);
+		if (file.exists()) {
+			AlertDialog.Builder builder = new AlertDialog.Builder(context);
+			builder.setTitle(R.string.menu_operation).setIcon(
+					android.R.drawable.ic_dialog_info);
+			builder.setItems(
+					new String[] {
+							context.getString(R.string.dm_zapya_backup_name),
+							context.getString(R.string.dm_menu_uninstall) },
+					new OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							switch (which) {
+							case 0:
+								break;
+							case 1:
+								try {
+									Uri packageURI = Uri.parse("package:"
+											+ info.packageName);
+									Intent uninstallIntent = new Intent(
+											Intent.ACTION_DELETE, packageURI);
+									context.startActivity(uninstallIntent);
+								} catch (Exception e) {
+									e.printStackTrace();
+								}
+								break;
+							default:
+								break;
+							}
+						}
+					});
+			builder.create().show();
 		}
 	}
 

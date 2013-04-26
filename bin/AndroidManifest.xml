@@ -14,7 +14,9 @@
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
-    <uses-permission android:name="android.permission.READ_CONTACTS"/>
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+
+    <uses_permission android:name="android.permission.DELETE_PACKAGES" />
 
     <application
         android:name=".main.LanshareApplication"
@@ -45,11 +47,13 @@
         <service android:name="com.nano.lanshare.audio.logic.MusicPlayService" >
         </service>
 
-        <receiver android:name="com.nano.lanshare.history.logic.HistoryReceiver">
-            <intent-filter >
-                <action android:name="com.nano.lanshare.TRAFFIC_UPDATE_ACIONT"/>
+        <receiver android:name="com.nano.lanshare.history.logic.HistoryReceiver" >
+            <intent-filter>
+                <action android:name="com.nano.lanshare.TRAFFIC_UPDATE_ACIONT" />
             </intent-filter>
         </receiver>
+
+        <service android:name="com.nano.lanshare.socket.SocketService" />
     </application>
 
 </manifest>

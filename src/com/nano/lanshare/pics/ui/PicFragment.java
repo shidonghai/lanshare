@@ -22,6 +22,7 @@ import com.nano.lanshare.components.operation.OperationDialog;
 import com.nano.lanshare.components.operation.PopupMenuUtil;
 import com.nano.lanshare.main.LanshareApplication;
 import com.nano.lanshare.thumbnail.util.ImageWorker;
+import com.nano.lanshare.utils.FileUtil;
 
 public class PicFragment extends BasicTabFragment implements
 		LoaderManager.LoaderCallbacks<Cursor>, OnItemClickListener {
@@ -154,6 +155,7 @@ public class PicFragment extends BasicTabFragment implements
 						case PopupMenuUtil.MENU_PROPARTY:
 							break;
 						case PopupMenuUtil.MENU_OPERATION:
+							FileUtil.showFileOperationDialog(getActivity(), "");
 							break;
 						default:
 							break;

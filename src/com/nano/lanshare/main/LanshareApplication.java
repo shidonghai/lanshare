@@ -11,13 +11,10 @@ public class LanshareApplication extends Application {
 
 	private ImageWorker mImageWorker;
 
-	private SocketController mController;
-
 	@Override
 	public void onCreate() {
 		super.onCreate();
 		mImageWorker = new ImageWorker(this);
-		mController = new SocketController(this);
 		new Thread() {
 			public void run() {
 				FileUtil.createInbox(getApplicationContext());
@@ -31,14 +28,5 @@ public class LanshareApplication extends Application {
 		return mImageWorker;
 	}
 
-	@Override
-	public void onTerminate() {
-		mController.destory();
-		super.onTerminate();
-	}
-
-	public SocketController getSocketController() {
-		return mController;
-	}
 
 }
