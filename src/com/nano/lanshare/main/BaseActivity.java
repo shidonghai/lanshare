@@ -5,6 +5,7 @@ import java.util.List;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
@@ -87,7 +88,6 @@ public class BaseActivity extends FragmentActivity implements
 		mViewPager.setOnPageChangeListener(this);
 		mViewPager.setAdapter(mPagerAdapter); // 设置第一个tab为默认为选中状态
 		mViewPager.setCurrentItem(0);
-		setTabSelected(mAppTab);
 	}
 
 	/**
@@ -102,7 +102,7 @@ public class BaseActivity extends FragmentActivity implements
 				if (mSelected != null) {
 					doScroll(mSelected, tab, mTabIndexMarker, 400);
 				} else {
-					doScroll(mMediaTab, mAppTab, mTabIndexMarker, 400);
+					doScroll(mMediaTab, mAppTab, mTabIndexMarker, 0);
 				}
 				mSelected = tab;
 			} else {
@@ -119,6 +119,12 @@ public class BaseActivity extends FragmentActivity implements
 	@Override
 	protected void onResume() {
 		super.onResume();
+		Handler handler = new Handler();
+		handler.postDelayed(new Runnable() {
+			public void run() {
+				setTabSelected(mAppTab);
+			}
+		}, 500);
 	}
 
 	@Override
