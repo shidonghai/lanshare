@@ -1,15 +1,3 @@
-/**
- * 文件名称 : FriendListFastScrollWarper.java
- * <p>
- * 作者信息 : Yang Ke
- * <p>
- * 创建时间 : Oct 9, 2011, 4:18:25 PM
- * <p>
- * 版权声明 : Copyright (c) 2009-2012 CIeNET Ltd. All rights reserved
- * <p>
- * 评审记录 :
- * <p>
- */
 
 package com.nano.lanshare.friend.scroll;
 

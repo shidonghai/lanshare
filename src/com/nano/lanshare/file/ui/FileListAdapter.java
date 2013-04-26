@@ -22,9 +22,7 @@ import com.nano.lanshare.R;
 import com.nano.lanshare.components.RectImageView;
 import com.nano.lanshare.file.FileItem;
 import com.nano.lanshare.file.FileList;
-import com.nano.lanshare.file.scan.FileScanner;
 import com.nano.lanshare.file.scan.FileScanner.ScanMode;
-import com.nano.lanshare.history.adapter.HistoryListAdapter.ViewHolder;
 import com.nano.lanshare.main.LanshareApplication;
 import com.nano.lanshare.thumbnail.util.ImageWorker;
 import com.nano.lanshare.thumbnail.util.ImageWorker.LoadMethod;
@@ -43,6 +41,8 @@ public class FileListAdapter extends BaseAdapter {
 	public static final int FILE_TYPE_AUDIO = 4;
 
 	public static final int FILE_TYPE_VIDEO = 5;
+
+	private static final String TAG = "FileListAdapter";
 
 	private final String APP = "app";
 	private final String BACKUP = "backup";
@@ -72,17 +72,25 @@ public class FileListAdapter extends BaseAdapter {
 		@Override
 		public Bitmap processBitmap(Object obj, Context context) {
 			String path = (String) obj;
-			Log.d("zxh", "processBitmap:" + path);
-			final BitmapFactory.Options options = new BitmapFactory.Options();
-			options.inJustDecodeBounds = true;
-			BitmapFactory.decodeFile(path, options);
+			if (null == path) {
+				return null;
+			}
+			try {
+				final BitmapFactory.Options options = new BitmapFactory.Options();
+				options.inJustDecodeBounds = true;
+				BitmapFactory.decodeFile(path, options);
 
-			// Calculate inSampleSize
-			options.inSampleSize = calculateInSampleSize(options, 50, 50);
+				// Calculate inSampleSize
+				options.inSampleSize = calculateInSampleSize(options, 50, 50);
 
-			// Decode bitmap with inSampleSize set
-			options.inJustDecodeBounds = false;
-			return BitmapFactory.decodeFile(path, options);
+				// Decode bitmap with inSampleSize set
+				options.inJustDecodeBounds = false;
+				return BitmapFactory.decodeFile(path, options);
+			} catch (Exception e) {
+				Log.e(TAG, e.toString());
+			}
+
+			return null;
 		}
 
 	};
@@ -91,10 +99,16 @@ public class FileListAdapter extends BaseAdapter {
 
 		@Override
 		public Bitmap processBitmap(Object obj, Context context) {
-			Bitmap bitmap = Thumbnails.getThumbnail(
-					context.getContentResolver(), (Long) obj,
-					Thumbnails.MICRO_KIND, null);
-			return bitmap;
+			try {
+				Bitmap bitmap = Thumbnails.getThumbnail(
+						context.getContentResolver(), (Long) obj,
+						Thumbnails.MICRO_KIND, null);
+				return bitmap;
+			} catch (Exception e) {
+				Log.e(TAG, e.toString());
+			}
+
+			return null;
 		}
 	};
 

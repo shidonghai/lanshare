@@ -1,7 +1,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent" >
+    android:layout_height="fill_parent"
+    android:background="@color/white" >
 
     <LinearLayout
         android:id="@+id/invite_top"
@@ -30,10 +31,103 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_below="@id/invite_top"
         android:id="@+id/content"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent"
+        android:layout_above="@+id/bottom"
+        android:layout_below="@id/invite_top"
+        android:layout_marginBottom="5dip" >
+    </LinearLayout>
+
+    <com.nano.lanshare.utils.RotateView
+        android:id="@+id/rotate_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true" />
+
+    <LinearLayout
+        android:id="@+id/bottom"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/ft_group_invite_invitation"
+        android:padding="10dip" >
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical" >
+
+            <ImageView
+                android:id="@+id/select_info_avatar_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/dm_icon_default_user" />
+
+            <TextView
+                android:id="@+id/select_info_name_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical" >
+
+            <ImageView
+                android:id="@+id/select_info_avatar_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/dm_icon_default_user" />
+
+            <TextView
+                android:id="@+id/select_info_name_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical" >
+
+            <ImageView
+                android:id="@+id/select_info_avatar_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/dm_icon_default_user" />
+
+            <TextView
+                android:id="@+id/select_info_name_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical" >
+
+            <ImageView
+                android:id="@+id/select_info_avatar_4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/dm_icon_default_user" />
+
+            <TextView
+                android:id="@+id/select_info_name_4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
     </LinearLayout>
 
     <RelativeLayout
@@ -41,9 +135,9 @@
         android:layout_width="fill_parent"
         android:layout_height="50.0dip"
         android:layout_below="@id/invite_top"
-        android:visibility="gone"
         android:background="@drawable/button_gray"
-        android:clickable="true" >
+        android:clickable="true"
+        android:visibility="gone" >
 
         <ImageView
             android:id="@id/tencent_logo"

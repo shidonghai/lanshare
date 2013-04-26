@@ -1,6 +1,7 @@
 package com.nano.lanshare.friend.logic;
 
 import java.io.BufferedInputStream;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -10,11 +11,6 @@ import java.util.Vector;
 import android.content.Context;
 import android.text.TextUtils;
 
-/**
- * This class is used to get the spelling string of a Chinese char or string.
- * 
- * @author wuliqiang
- */
 public class PinYin {
 	public static final int BUFFER_SIZE = 13;
 

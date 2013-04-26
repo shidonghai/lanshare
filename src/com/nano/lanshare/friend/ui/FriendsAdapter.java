@@ -15,6 +15,7 @@ import com.nano.lanshare.R;
 import com.nano.lanshare.friend.ContactInfo;
 
 public class FriendsAdapter extends BaseAdapter {
+
 	private LayoutInflater mInflater;
 
 	private List<ContactInfo> mInfos;
@@ -58,6 +59,10 @@ public class FriendsAdapter extends BaseAdapter {
 		ContactInfo info = mInfos.get(position);
 		holder.name.setText(info.mContactName);
 		holder.phone.setText(info.mPhone);
+
+		holder.select
+				.setImageResource(info.mSelected ? R.drawable.zapya_group_signal_checkbox_pressed
+						: R.drawable.zapya_group_signal_checkbox_normal);
 
 		return view;
 	}

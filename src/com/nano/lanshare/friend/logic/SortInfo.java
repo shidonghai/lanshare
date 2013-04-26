@@ -1,16 +1,3 @@
-/**
- * 文件名称 : SortInfo.java
- * <p>
- * 作者信息 : Yang Ke
- * <p>
- * 创建时间 : Feb 17, 2011, 2:07:07 PM
- * <p>
- * 版权声明 : Copyright (c) 2009-2012 CIeNET Ltd. All rights reserved
- * <p>
- * 评审记录 :
- * <p>
- */
-
 package com.nano.lanshare.friend.logic;
 
 import java.util.ArrayList;

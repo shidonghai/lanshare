@@ -1,7 +1,9 @@
 package com.nano.lanshare.friend.ui;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import android.R.integer;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.AsyncTask;
@@ -9,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.nano.lanshare.friend.ContactInfo;
@@ -18,7 +21,10 @@ import com.nano.lanshare.friend.scroll.IListScroll;
 import com.nano.lanshare.friend.scroll.ListScrollWarper;
 
 public class FriendListView extends ListView implements IListScroll,
-		OnScrollListener {
+		OnScrollListener, android.widget.AdapterView.OnItemClickListener {
+
+	private final int MAX_SElECT_SIZE = 4;
+
 	private boolean mIsScrolling;
 
 	private FriendsAdapter mAdapter;
@@ -27,42 +33,33 @@ public class FriendListView extends ListView implements IListScroll,
 
 	private ListScrollWarper mWarper;
 
+	private List<ContactInfo> mSelectedContacts = new ArrayList<ContactInfo>();
+
 	public FriendListView(Context context) {
 		super(context);
 
 		setScrollbarFadingEnabled(true);
 		setHorizontalScrollBarEnabled(false);
+		setVerticalScrollBarEnabled(false);
 		setCacheColorHint(Color.TRANSPARENT);
 		setDividerHeight(0);
 		setOnScrollListener(this);
+		// setOnItemClickListener(this);
 		setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT,
 				LayoutParams.FILL_PARENT));
 
 		mAdapter = new FriendsAdapter(context);
 		setAdapter(mAdapter);
 		mWarper = new ListScrollWarper(context);
-		new QueryContactTask().execute(context);
 	}
 
 	// public FriendListView(Context context, AttributeSet attrs) {
 	// super(context, attrs);
 	// }
 
-	private class QueryContactTask extends
-			AsyncTask<Context, Void, FriendSortListData> {
-
-		@Override
-		protected FriendSortListData doInBackground(Context... params) {
-			return FriendDataManager.getFriendDataManager().queryLocalContacts(
-					params[0]);
-		}
-
-		@Override
-		protected void onPostExecute(FriendSortListData result) {
-			mSortListData = result;
-			mAdapter.updateList(mSortListData.getSectionList());
-		}
-
+	public void updateList(FriendSortListData sortListData) {
+		mSortListData = sortListData;
+		mAdapter.updateList(mSortListData.getSectionList());
 	}
 
 	@Override
@@ -109,9 +106,11 @@ public class FriendListView extends ListView implements IListScroll,
 	public void onScroll(AbsListView view, int firstVisibleItem,
 			int visibleItemCount, int totalItemCount) {
 		if (mIsScrolling) {
-			final int index = firstVisibleItem + (visibleItemCount >> 1);
+			final int index = firstVisibleItem;
 			mWarper.showFastKey(getNameFirstChar(mAdapter.getContactList(),
 					index));
+			// mWarper.showFastKey(String.valueOf(mAdapter.getContactList().get(
+			// index).mSortInfo.getFirstChar() - 26));
 		}
 	}
 
@@ -152,5 +151,29 @@ public class FriendListView extends ListView implements IListScroll,
 		}
 
 		return null;
+	}
+
+	public List<ContactInfo> getContactList() {
+		return mAdapter.getContactList();
+	}
+
+	public void notifyDataSetChanged() {
+		mAdapter.notifyDataSetChanged();
+	}
+
+	@Override
+	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+		ContactInfo info = mAdapter.getContactList().get(arg2);
+		if (info.mSelected) {
+			info.mSelected = false;
+			mSelectedContacts.remove(info);
+		} else if (mSelectedContacts.size() < MAX_SElECT_SIZE) {
+			info.mSelected = true;
+			mSelectedContacts.add(info);
+		}
+
+		// mAdapter.getContactList().get(arg2).mSelected = !mAdapter
+		// .getContactList().get(arg2).mSelected;
+		mAdapter.notifyDataSetChanged();
 	}
 }
