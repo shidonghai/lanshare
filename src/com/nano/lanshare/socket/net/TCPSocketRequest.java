@@ -9,6 +9,7 @@ import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
 
+import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 
@@ -41,6 +42,7 @@ public class TCPSocketRequest extends SocketRequest {
 	@Override
 	public void startRequst() {
 		Looper.prepare();
+		Handler handler = new Handler();
 		try {
 			mSocket = new Socket(mTargetAddress, mTargetPort);
 			mSocket.setSoTimeout(mTimeout);
