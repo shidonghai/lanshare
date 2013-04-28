@@ -112,7 +112,9 @@ public class PicFragment extends BasicTabFragment implements
 
 	@Override
 	public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-		Log.e("finish loading", "" + cursor.getCount());
+		if (cursor == null) {
+			return;
+		}
 		if (loader.getId() == LEFT) {
 			mLeftAdapter.setContent(cursor);
 			setTitle(LEFT,

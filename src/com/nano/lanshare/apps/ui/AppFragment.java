@@ -161,6 +161,8 @@ public class AppFragment extends BasicTabFragment implements
 					public void onClick(DialogInterface dialog, int which) {
 						switch (which) {
 						case PopupMenuUtil.MENU_TRANSPORT:
+							startTransfer(info.info.sourceDir);
+							
 							break;
 						case PopupMenuUtil.MENU_ACTION:
 							try {

@@ -73,6 +73,17 @@ public class MessageCenter {
 				case SMessage.MSG_STATUS_UPDATE: {
 					dispatchEvent(MessageListener.MSG_USER_STATUS_UPDATE,
 							rcvMsg);
+					break;
+				}
+				case SMessage.MSG_FILE_TRANSFER: {
+					if (rcvMsg.getMsgDirection() == SMessage.REQ) {
+						dispatchEvent(MessageListener.MSG_TRANSFER_REQUEST,
+								rcvMsg);
+					} else {
+						dispatchEvent(MessageListener.MSG_TRANSFER_CONFIRM,
+								rcvMsg);
+					}
+					break;
 				}
 
 				default:
@@ -128,17 +139,17 @@ public class MessageCenter {
 							byte[] data) {
 						try {
 							// truck the of '0' in the data
-							StringBuffer buffer = new StringBuffer();
+							StringBuilder builder = new StringBuilder();
 							String str = new String(data, "utf8");
 							for (int i = 0; i < str.length(); i++) {
 								if (str.charAt(i) != '\0') {
-									buffer.append(str.charAt(i));
+									builder.append(str.charAt(i));
 								} else {
 									break;
 								}
 							}
-
-							JSONObject obj = new JSONObject(buffer.toString());
+							int index;
+							JSONObject obj = new JSONObject(builder.toString());
 
 							// TODO: define a constant final variant for all
 							// these JSON key

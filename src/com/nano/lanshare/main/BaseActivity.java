@@ -35,6 +35,8 @@ import com.nano.lanshare.socket.SocketService;
 
 public class BaseActivity extends FragmentActivity implements
 		OnPageChangeListener, OnClickListener {
+	public static final String PICK_A_FRIEND_AND_SEND = "pick_a_friend_and_send";
+
 	private ViewPager mViewPager;
 	private List<TextView> mTabs = new ArrayList<TextView>();
 	private MainViewPagerAdapter mPagerAdapter;

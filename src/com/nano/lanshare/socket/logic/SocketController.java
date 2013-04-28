@@ -8,13 +8,16 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 
+import com.nano.lanshare.socket.SocketService;
 import com.nano.lanshare.socket.connection.ConnectionManager;
 import com.nano.lanshare.socket.connection.ConnectionUtils;
 import com.nano.lanshare.socket.moudle.DiscoveryMessage;
@@ -65,8 +68,8 @@ public class SocketController {
 		MessageListener transferListener = new MessageListener() {
 			@Override
 			public void onEvent(int type, SMessage msg) {
-				Log.w("ShareApp", "message comes: " + type);
-				Log.w("ShareApp", "Message : " + msg.toJsonString());
+				Log.e("ShareApp", "message comes: " + type);
+				Log.e("ShareApp", "Message : " + msg.toJsonString());
 
 				android.os.Message message = new android.os.Message();
 				message.what = SMessage.MSG_FILE_TRANSFER;
@@ -78,7 +81,7 @@ public class SocketController {
 		};
 
 		transferListener.addFilterType(MessageListener.MSG_TRANSFER_REQUEST
-				| MessageListener.MSG_TRANSFER_REQUEST);
+				| MessageListener.MSG_TRANSFER_CONFIRM);
 		mMsgCenter.addMessageListener(transferListener);
 
 		// register to listen user status update message
@@ -156,10 +159,8 @@ public class SocketController {
 						msg.toJsonString().getBytes("utf8"));
 
 				// add 15 tick sleep to avoid socket buffer over follow
-				Thread.sleep(2);
+				// Thread.sleep(2);
 			} catch (UnsupportedEncodingException e) {
-				e.printStackTrace();
-			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 		}
@@ -193,33 +194,36 @@ public class SocketController {
 	}
 
 	public void responseForTransfer(FileTransferMessage message) {
-
 		// find a free TCP port to for file transferring
-		int port = SocketUtils.getFreeTCPPort();
+		final int port = SocketUtils.getFreeTCPPort();
 
 		// compose ACK message
 		FileTransferMessage msg = (FileTransferMessage) MessageFactory
 				.createMessage(SMessage.MSG_FILE_TRANSFER);
 
 		msg.setMsgDirection(SMessage.ACK);
-		msg.setFilePath(msg.getFilePath());
+		msg.setFilePath(message.getFilePath());
+		final long fileLength = msg.getFileLength();
 		msg.setMACAddress(ConnectionUtils.getLocalMacAddress(mContext));
 		msg.setMessageID(message.getMessageID());
-		msg.setRemoteAdress(message.getRemoteAddress());
-		msg.setRemotePort(message.getRemotePort());
+		msg.setRemoteAdress(ConnectionUtils.int2Ip(ConnectionUtils
+				.getLocalIp(mContext)));
+		msg.setRemotePort(port);
 
 		// target IP to receive the file
-		msg.setTargetIp(ConnectionUtils.int2Ip(ConnectionUtils
-				.getLocalIp(mContext)));
+		msg.setTargetIp(message.getRemoteAddress());
 		// target port to receive the file
-		msg.setTargetPort(port);
+		msg.setTargetPort(message.getRemotePort());
 
 		final String fileName = msg.getFilePath().substring(
 				msg.getFilePath().lastIndexOf("/"));
 
+		// send message
+
 		// start TCP server to wait file transfer, 80s timeout
 		try {
-			TCPSocketServer fileServer = new TCPSocketServer(port);
+			TCPSocketServer fileServer = new TCPSocketServer(
+					ConnectionManager.TRANSFER_PORT);
 			fileServer.setTimeout(30000);
 			fileServer.setCallBack(new TCPSocketServer.ServerCallback() {
 
@@ -236,12 +240,19 @@ public class SocketController {
 
 						try {
 							outStream = new FileOutputStream(saveFile);
-
+							final Received r = new Received();
 							int b = 0;
 							while ((b = inStream.read()) != -1) {
+								r.r += b;
 								outStream.write((char) b);
-							}
 
+								mHandler.post(new Runnable() {
+									@Override
+									public void run() {
+										dialog.setProgress((int) (r.r * 100 / fileLength));
+									}
+								});
+							}
 							inStream.close();
 							outStream.close();
 						} catch (FileNotFoundException e) {
@@ -255,6 +266,19 @@ public class SocketController {
 			fileServer.start();
 
 		} catch (IOException e) {
+			Log.e("transfer", e.toString());
+			e.printStackTrace();
+		}
+
+		try {
+			Log.e("service", "response file transfer request");
+			Log.e("my ip",
+					msg.getRemoteAddress() + ",port:" + msg.getRemotePort());
+			Log.e("target ip",
+					msg.getTargetIp() + ",port:" + msg.getTargetPort());
+			mConnMgr.sendMessage(msg.getMessageID(), msg.getTargetIp(), msg
+					.toJsonString().getBytes("utf-8"));
+		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
 
@@ -287,6 +311,15 @@ public class SocketController {
 
 	}
 
+	public void requestFileTransfer(FileTransferMessage message) {
+		try {
+			mConnMgr.sendMessage(message.getMessageID(), message.getTargetIp(),
+					message.toJsonString().getBytes("utf-8"));
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+	}
+
 	public void startToSendFile(FileTransferMessage message) {
 		mConnMgr.StartFileTransfer(message.getFilePath(),
 				message.getRemoteAddress(), message.getRemotePort(),
@@ -298,5 +331,9 @@ public class SocketController {
 		mMsgCenter = null;
 		mConnMgr.release();
 		mConnMgr = null;
+	}
+
+	class Received {
+		int r;
 	}
 }

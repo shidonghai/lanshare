@@ -32,6 +32,8 @@ public class ConnectionManager {
 	// this is not safe, in the future, we need define a series of "default"
 	// ports so that we can try to find an available one
 	public static int SIGNAL_PORT = 34521;
+	
+	public static int TRANSFER_PORT= 10103;
 
 	private static ConnectionManager mConnMgr = null;
 	private UDPSocketServer mMsgServer = null;
@@ -80,34 +82,30 @@ public class ConnectionManager {
 
 		try {
 			// start transfer file
-			TCPSocketRequest req = new TCPSocketRequest(port,
+			TCPSocketRequest req = new TCPSocketRequest(TRANSFER_PORT,
 					InetAddress.getByName(addr));
-
+			Log.e("transfer", port + "");
 			req.setRequestID(reqId);
 			req.setData(new File(path));
 			req.setCallBack(new TCPSocketRequest.TCPRequestCallback() {
 
 				@Override
 				public void onStart() {
-					Log.w("ShareApp", "File transfer started");
 					mCallback.onFileTransferStart(reqId);
 				}
 
 				@Override
 				public void onProgressUpdate(int sizeTransferred) {
-					Log.w("ShareApp", "File transfer started");
 					mCallback.onFileTransferProgress(reqId, sizeTransferred);
 				}
 
 				@Override
 				public void onFinish() {
-					Log.w("ShareApp", "File transfer Finished");
 					mCallback.onFileTransferFinished(reqId);
 				}
 
 				@Override
 				public void onError(String errorInfo) {
-					Log.w("ShareApp", "File transfer started");
 					mCallback.onFileTransferError(reqId);
 				}
 			});

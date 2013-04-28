@@ -89,6 +89,10 @@ public class FileTransferMessage extends SMessage {
 		}
 	}
 
+	public String toString() {
+		return "filepath:" + mFilePath;
+	}
+
 	@Override
 	public void formData() {
 		JSONObject dataObject = new JSONObject();
@@ -130,6 +134,7 @@ public class FileTransferMessage extends SMessage {
 
 	@Override
 	public String toJsonString() {
+		formData();
 		JSONObject obj = new JSONObject();
 
 		try {

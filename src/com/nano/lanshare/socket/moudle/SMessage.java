@@ -83,7 +83,7 @@ public abstract class SMessage implements Serializable {
 	}
 
 	public void dump() {
-		Log.w("ShareApp", toJsonString());
+		Log.w("ShareApp_dump", toJsonString());
 	}
 
 	public void setName(String name) {

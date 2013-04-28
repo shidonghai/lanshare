@@ -3,7 +3,9 @@ package com.nano.lanshare.conn.ui;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.IntentSender.SendIntentException;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
@@ -13,6 +15,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
 
@@ -21,7 +25,9 @@ import com.nano.lanshare.components.BasicTabFragment;
 import com.nano.lanshare.conn.logic.UserChangedListener;
 import com.nano.lanshare.conn.logic.UserManager;
 import com.nano.lanshare.conn.ui.PullToRefreshListView.OnRefreshListener;
+import com.nano.lanshare.main.BaseActivity;
 import com.nano.lanshare.socket.SocketBroadcastReceiver;
+import com.nano.lanshare.socket.SocketService;
 import com.nano.lanshare.socket.moudle.Stranger;
 
 public class ConnectionFragment extends BasicTabFragment implements
@@ -40,6 +46,8 @@ public class ConnectionFragment extends BasicTabFragment implements
 	private UserAdapter mAdapter;
 
 	private SocketBroadcastReceiver mReceiver;
+	private Intent mIntent;
+	private String mFile;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -83,6 +91,14 @@ public class ConnectionFragment extends BasicTabFragment implements
 		registerReceiver();
 
 		mReceiver.register();
+
+		mIntent = getActivity().getIntent();
+		if (mIntent == null) {
+			return;
+		}
+		if (BaseActivity.PICK_A_FRIEND_AND_SEND.equals(mIntent.getAction())) {
+			mFile = mIntent.getStringExtra("file");
+		}
 	}
 
 	@Override
@@ -112,6 +128,7 @@ public class ConnectionFragment extends BasicTabFragment implements
 						new GetDataTask().execute();
 					}
 				});
+		mUserListView.setOnItemClickListener(new OnUserClickListener());
 
 	}
 
@@ -178,5 +195,24 @@ public class ConnectionFragment extends BasicTabFragment implements
 			mUserListView.setVisibility(View.GONE);
 		}
 		mAdapter.addUsers(list);
+	}
+
+	class OnUserClickListener implements OnItemClickListener {
+
+		@Override
+		public void onItemClick(AdapterView<?> arg0, View arg1, int position,
+				long arg3) {
+			if (mFile != null) {
+				// TODO send
+				Intent intent = new Intent(getActivity(), SocketService.class);
+				intent.putExtra(SocketService.CMD_CODE,
+						SocketService.CMD_TRANSFER);
+				intent.putExtra(SocketService.DATA, mFile);
+				intent.putExtra(SocketService.TARGET_USER,
+						mAdapter.getItem(position - 1));
+				getActivity().startService(intent);
+			}
+		}
+
 	}
 }

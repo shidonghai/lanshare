@@ -1,4 +1,3 @@
-
 package com.nano.lanshare.conn.ui;
 
 import java.util.ArrayList;
@@ -32,229 +31,246 @@ import com.nano.lanshare.socket.moudle.Stranger;
 import com.nano.lanshare.utils.WifiManagerUtils;
 
 public class HotspotsView implements OnClickListener, OnItemClickListener {
-    private Context mContext;
-    private ListView mListView;
-    private LayoutInflater mInflater;
-    private Button mSearchHotspots;
-    private ViewGroup mEmptyHotspots;
-    private ListView mHotspotsList;
-    private TextView mCreateHotspots;
-    private WifiManager mWifiManager;
-    private ProgressBar mProgressBar;
-    private ConnectAdapter mAdapter;
-    private boolean isWifiApEnabel = false;
-    private static final int SEARCH_TIMEOUT = 3000;
-    public static final int START_WIFI_AP = 1;
-    public static final int SEARCH_WIFI_AP = 2;
-    private Handler mHandler = new Handler() {
-        public void handleMessage(Message msg) {
-            if (msg.what == START_WIFI_AP) {
+	private Context mContext;
+	private ListView mListView;
+	private LayoutInflater mInflater;
+	private Button mSearchHotspots;
+	private ViewGroup mEmptyHotspots;
+	private ListView mHotspotsList;
+	private TextView mCreateHotspots;
+	private WifiManager mWifiManager;
+	private ProgressBar mProgressBar;
+	private ConnectAdapter mAdapter;
+	private boolean isWifiApEnabel = false;
+	private static final int SEARCH_TIMEOUT = 3000;
+	public static final int START_WIFI_AP = 1;
+	public static final int SEARCH_WIFI_AP = 2;
+	private Handler mHandler = new Handler() {
+		public void handleMessage(Message msg) {
+			if (msg.what == START_WIFI_AP) {
 
-            } else if (msg.what == SEARCH_WIFI_AP) {
+			} else if (msg.what == SEARCH_WIFI_AP) {
 
-            }
-        };
-    };
+			}
+		};
+	};
 
-    private BroadcastReceiver mWifiStatusChangeReciver = new BroadcastReceiver() {
+	private BroadcastReceiver mWifiStatusChangeReciver = new BroadcastReceiver() {
 
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            addWifiAp2List();
-        }
-    };
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			try {
+				addWifiAp2List();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	};
 
-    private void addWifiAp2List() {
-        List<ScanResult> res = mWifiManager.getScanResults();
-        List<Stranger> wifiAps = new ArrayList<Stranger>();
-        for (ScanResult scanResult : res) {
-            if ("[ESS]".equals(scanResult.capabilities) && !wifiAps.contains(scanResult.SSID)) {
-                Stranger user = new Stranger();
-                user.setName(scanResult.SSID);
-                user.setUserIdentifier(scanResult.BSSID);
-                wifiAps.add(user);
-            }
-        }
-        if (!wifiAps.isEmpty() && mHotspotsList != null
-                && mHotspotsList.getVisibility() != View.VISIBLE) {
-            mHotspotsList.setVisibility(View.VISIBLE);
-            if (mEmptyHotspots != null && mEmptyHotspots.getVisibility() == View.VISIBLE) {
-                mEmptyHotspots.setVisibility(View.GONE);
-            }
-            Log.d("wyg", "mEmptyHotspots------------>>" + mEmptyHotspots.getVisibility());
-            mAdapter.addUsers(wifiAps);
-            mAdapter.notifyDataSetChanged();
-        }
-        showProgressBar(false);
-    }
+	private void addWifiAp2List() {
+		List<ScanResult> res = mWifiManager.getScanResults();
+		List<Stranger> wifiAps = new ArrayList<Stranger>();
+		for (ScanResult scanResult : res) {
+			if ("[ESS]".equals(scanResult.capabilities)
+					&& !wifiAps.contains(scanResult.SSID)) {
+				Stranger user = new Stranger();
+				user.setName(scanResult.SSID);
+				user.setUserIdentifier(scanResult.BSSID);
+				wifiAps.add(user);
+			}
+		}
+		if (!wifiAps.isEmpty() && mHotspotsList != null
+				&& mHotspotsList.getVisibility() != View.VISIBLE) {
+			mHotspotsList.setVisibility(View.VISIBLE);
+			if (mEmptyHotspots != null
+					&& mEmptyHotspots.getVisibility() == View.VISIBLE) {
+				mEmptyHotspots.setVisibility(View.GONE);
+			}
+			Log.d("wyg",
+					"mEmptyHotspots------------>>"
+							+ mEmptyHotspots.getVisibility());
+			mAdapter.addUsers(wifiAps);
+			mAdapter.notifyDataSetChanged();
+		}
+		showProgressBar(false);
+	}
 
-    public BroadcastReceiver getWifiStatusChangeReciver() {
-        return mWifiStatusChangeReciver;
-    }
+	public BroadcastReceiver getWifiStatusChangeReciver() {
+		return mWifiStatusChangeReciver;
+	}
 
-    public void updateView(Bundle bundle) {
+	public void updateView(Bundle bundle) {
 
-    }
+	}
 
-    public HotspotsView(Context context) {
-        mContext = context;
-        mWifiManager = (WifiManager) mContext.getSystemService(Context.WIFI_SERVICE);
-        mInflater = LayoutInflater.from(mContext);
-    }
+	public HotspotsView(Context context) {
+		mContext = context;
+		mWifiManager = (WifiManager) mContext
+				.getSystemService(Context.WIFI_SERVICE);
+		mInflater = LayoutInflater.from(mContext);
+	}
 
-    public View getView() {
-        View hotspotList = mInflater.inflate(R.layout.connect_hotspots_list, null);
-        mSearchHotspots = (Button) hotspotList.findViewById(R.id.search_hotspots_button);
-        mSearchHotspots.setOnClickListener(this);
-        mEmptyHotspots = (ViewGroup) hotspotList.findViewById(R.id.empty_hotspots);
-        mHotspotsList = (ListView) hotspotList.findViewById(R.id.hotspots_list);
-        mAdapter = new ConnectAdapter(mContext);
-        mHotspotsList.setAdapter(mAdapter);
-        mHotspotsList.setOnItemClickListener(this);
+	public View getView() {
+		View hotspotList = mInflater.inflate(R.layout.connect_hotspots_list,
+				null);
+		mSearchHotspots = (Button) hotspotList
+				.findViewById(R.id.search_hotspots_button);
+		mSearchHotspots.setOnClickListener(this);
+		mEmptyHotspots = (ViewGroup) hotspotList
+				.findViewById(R.id.empty_hotspots);
+		mHotspotsList = (ListView) hotspotList.findViewById(R.id.hotspots_list);
+		mAdapter = new ConnectAdapter(mContext);
+		mHotspotsList.setAdapter(mAdapter);
+		mHotspotsList.setOnItemClickListener(this);
 
-        mCreateHotspots = (TextView) hotspotList.findViewById(R.id.create_connect);
-        mProgressBar = (ProgressBar) hotspotList.findViewById(R.id.search_hotspots_progress);
-        mCreateHotspots.setOnClickListener(this);
-        return hotspotList;
-    }
+		mCreateHotspots = (TextView) hotspotList
+				.findViewById(R.id.create_connect);
+		mProgressBar = (ProgressBar) hotspotList
+				.findViewById(R.id.search_hotspots_progress);
+		mCreateHotspots.setOnClickListener(this);
+		return hotspotList;
+	}
 
-    private void connect2WifiAp(String ssid) {
-        WifiManagerUtils.connect2WifiAp(mWifiManager, ssid);
-    }
+	private void connect2WifiAp(String ssid) {
+		WifiManagerUtils.connect2WifiAp(mWifiManager, ssid);
+	}
 
-    @Override
-    public void onClick(View v) {
-        if (v == mSearchHotspots) {
-            mHandler.post(new Runnable() {
-                @Override
-                public void run() {
-                    showProgressBar(true);
-                    mWifiManager.startScan();
+	@Override
+	public void onClick(View v) {
+		if (v == mSearchHotspots) {
+			mHandler.post(new Runnable() {
+				@Override
+				public void run() {
+					showProgressBar(true);
+					mWifiManager.startScan();
 
-                }
-            });
-        } else if (v == mCreateHotspots) {
-            // new StartHotspotsTask().execute(Boolean.TRUE);
-            showProgressBar(true);
-            new Thread() {
-                public void run() {
-                    if (!isWifiApEnabel) {
-                        setWifiApEnabled(!isWifiApEnabel);
-                        isWifiApEnabel = true;
-                        mHandler.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                showProgressBar(false);
-                            }
-                        }, SEARCH_TIMEOUT);
-                    }
-                }
-            }.start();
-        }
-    }
+				}
+			});
+		} else if (v == mCreateHotspots) {
+			// new StartHotspotsTask().execute(Boolean.TRUE);
+			showProgressBar(true);
+			new Thread() {
+				public void run() {
+					if (!isWifiApEnabel) {
+						setWifiApEnabled(!isWifiApEnabel);
+						isWifiApEnabel = true;
+						mHandler.postDelayed(new Runnable() {
+							@Override
+							public void run() {
+								showProgressBar(false);
+							}
+						}, SEARCH_TIMEOUT);
+					}
+				}
+			}.start();
+		}
+	}
 
-    private boolean setWifiApEnabled(boolean flag) {
-        try {
-            if (mWifiManager.isWifiEnabled() && flag) {
-                mWifiManager.setWifiEnabled(false);
-            }
-            WifiConfiguration cfg = new WifiConfiguration();
-            cfg.SSID = "lanshare1";
-            cfg.preSharedKey = "";
-            Boolean enable = WifiManagerUtils.setWifiApEnabled(mWifiManager, cfg, flag);
-            if (!flag) {
-                mWifiManager.setWifiEnabled(true);
-            }
-            return enable;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
+	private boolean setWifiApEnabled(boolean flag) {
+		try {
+			if (mWifiManager.isWifiEnabled() && flag) {
+				mWifiManager.setWifiEnabled(false);
+			}
+			WifiConfiguration cfg = new WifiConfiguration();
+			cfg.SSID = "lanshare1";
+			cfg.preSharedKey = "";
+			Boolean enable = WifiManagerUtils.setWifiApEnabled(mWifiManager,
+					cfg, flag);
+			if (!flag) {
+				mWifiManager.setWifiEnabled(true);
+			}
+			return enable;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
 
-    private void showProgressBar(boolean flag) {
-        if (mProgressBar == null) {
-            return;
-        }
-        if (flag) {
-            mProgressBar.setVisibility(View.VISIBLE);
-            // mListView.setVisibility(View.GONE);
-            mEmptyHotspots.setVisibility(View.GONE);
-        } else {
-            mProgressBar.setVisibility(View.GONE);
-            // mListView.setVisibility(View.VISIBLE);
-            if (mAdapter.isEmpty()) {
-                mEmptyHotspots.setVisibility(View.VISIBLE);
-            }
-        }
-    }
+	private void showProgressBar(boolean flag) {
+		if (mProgressBar == null) {
+			return;
+		}
+		if (flag) {
+			mProgressBar.setVisibility(View.VISIBLE);
+			// mListView.setVisibility(View.GONE);
+			mEmptyHotspots.setVisibility(View.GONE);
+		} else {
+			mProgressBar.setVisibility(View.GONE);
+			// mListView.setVisibility(View.VISIBLE);
+			if (mAdapter.isEmpty()) {
+				mEmptyHotspots.setVisibility(View.VISIBLE);
+			}
+		}
+	}
 
-    public interface onWifiApStatusChange {
-        void onStatusChange();
-    }
+	public interface onWifiApStatusChange {
+		void onStatusChange();
+	}
 
-    private class SearchHotspotsTask extends AsyncTask<Void, Void, String> {
+	private class SearchHotspotsTask extends AsyncTask<Void, Void, String> {
 
-        @Override
-        protected String doInBackground(Void... params) {
-            return null;
-        }
+		@Override
+		protected String doInBackground(Void... params) {
+			return null;
+		}
 
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
 
-        }
+		}
 
-        @Override
-        protected void onCancelled() {
-            super.onCancelled();
-        }
+		@Override
+		protected void onCancelled() {
+			super.onCancelled();
+		}
 
-        @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-        }
+		@Override
+		protected void onPostExecute(String result) {
+			super.onPostExecute(result);
+		}
 
-        @Override
-        protected void onProgressUpdate(Void... values) {
-            super.onProgressUpdate(values);
-        }
-    }
+		@Override
+		protected void onProgressUpdate(Void... values) {
+			super.onProgressUpdate(values);
+		}
+	}
 
-    private class StartHotspotsTask extends AsyncTask<Boolean, Integer, Boolean> {
+	private class StartHotspotsTask extends
+			AsyncTask<Boolean, Integer, Boolean> {
 
-        @Override
-        protected Boolean doInBackground(Boolean... params) {
-            publishProgress(0);
-            boolean a = setWifiApEnabled(params[0]);
-            Log.d("wyg", "StartHotspotsTask.doInBackground---->>");
-            return a;
-        }
+		@Override
+		protected Boolean doInBackground(Boolean... params) {
+			publishProgress(0);
+			boolean a = setWifiApEnabled(params[0]);
+			Log.d("wyg", "StartHotspotsTask.doInBackground---->>");
+			return a;
+		}
 
-        @Override
-        protected void onCancelled() {
-            super.onCancelled();
-            showProgressBar(false);
-        }
+		@Override
+		protected void onCancelled() {
+			super.onCancelled();
+			showProgressBar(false);
+		}
 
-        @Override
-        protected void onPostExecute(Boolean result) {
-            Log.d("wyg", "StartHotspotsTask.onPostExecute---->>");
-            super.onPostExecute(result);
-            showProgressBar(false);
-        }
+		@Override
+		protected void onPostExecute(Boolean result) {
+			Log.d("wyg", "StartHotspotsTask.onPostExecute---->>");
+			super.onPostExecute(result);
+			showProgressBar(false);
+		}
 
-        @Override
-        protected void onProgressUpdate(Integer... values) {
-            showProgressBar(true);
-        }
-    }
+		@Override
+		protected void onProgressUpdate(Integer... values) {
+			showProgressBar(true);
+		}
+	}
 
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Stranger user = mAdapter.getItem(position-1);
-        connect2WifiAp(user.getName());
-    }
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position,
+			long id) {
+		Stranger user = mAdapter.getItem(position - 1);
+		connect2WifiAp(user.getName());
+	}
 
 }

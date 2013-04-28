@@ -1,5 +1,6 @@
 package com.nano.lanshare.components;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -14,6 +15,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.nano.lanshare.R;
+import com.nano.lanshare.conn.ui.ConnectActivity;
+import com.nano.lanshare.main.BaseActivity;
 
 public abstract class BasicTabFragment extends Fragment implements
 		OnClickListener {
@@ -189,5 +192,13 @@ public abstract class BasicTabFragment extends Fragment implements
 			return mRightContent;
 		}
 		return null;
+	}
+
+	protected void startTransfer(String path) {
+		Intent intent = new Intent();
+		intent.setClass(getActivity(), ConnectActivity.class);
+		intent.setAction(BaseActivity.PICK_A_FRIEND_AND_SEND);
+		intent.putExtra("file", path);
+		startActivity(intent);
 	}
 }

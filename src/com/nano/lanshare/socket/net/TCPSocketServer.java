@@ -5,6 +5,8 @@ import java.io.InputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import android.os.Looper;
+
 public class TCPSocketServer extends Thread
 {
     public static interface ServerCallback
@@ -34,6 +36,7 @@ public class TCPSocketServer extends Thread
     @Override
     public void run()
     {
+    	Looper.prepare();
         super.run();
 
         do 

@@ -87,7 +87,6 @@ public class DiscoveryMessage extends SMessage {
 		JSONObject obj = new JSONObject();
 
 		try {
-
 			// reserve for MD5
 			obj.put("md5", "");
 
