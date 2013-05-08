@@ -76,7 +76,7 @@ public class ConnectionManager {
 	}
 
 	// request to start file transferring
-	public void StartFileTransfer(final String path, String addr, int port,
+	public void startFileTransfer(final String path, String addr, int port,
 			final long reqId, Handler handler) {
 		if (mFileTransManager == null) {
 			mFileTransManager = new TCPRequestManager();

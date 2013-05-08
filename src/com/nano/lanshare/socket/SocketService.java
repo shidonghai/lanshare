@@ -31,8 +31,9 @@ public class SocketService extends Service {
 	public static final String DATA = "data";
 	public static final String TARGET_USER = "target_user";
 	public static final String TRANSFER_END = "transfer_end";
-
 	public static final String TRANSFER_STATUS = "transfer_status";
+	public static final String FILE_LENGTH = "file_length";
+	public static final String SENT_LENGTH = "sent_length";
 
 	public static final int RESULT_DISCOVER = 200;
 	public static final int RESULT_TRANSFER = 201;
@@ -45,9 +46,10 @@ public class SocketService extends Service {
 
 	public static final int TRANSFER_STARTED = 400;
 	public static final int TRANSFER_FINISHED = 401;
+	public static final int TRANSFER_PROGRESS = 402;
 
-	public static final int TRANSFER_OUT = 1;
-	public static final int TRANSFER_IN = 0;
+	public static final int TRANSFER_OUT = 501;
+	public static final int TRANSFER_IN = 500;
 
 	public SocketController mController;
 	private UserManager mManager;
@@ -83,7 +85,6 @@ public class SocketService extends Service {
 			}
 			case SMessage.MSG_DISCOVER: {
 				DiscoveryMessage discoverMsg = (DiscoveryMessage) msg.obj;
-
 				// add this user to the user list
 				Stranger stranger = new Stranger();
 				stranger.setName(discoverMsg.getName());
@@ -122,6 +123,7 @@ public class SocketService extends Service {
 			case TRANSFER_STARTED: {
 				Intent intent = new Intent(SOCKET_TRANSFER_ACTION);
 				intent.putExtra(TRANSFER_END, msg.arg1);
+				intent.putExtra(FILE_LENGTH, ((Long) msg.obj).toString());
 				intent.putExtra(TRANSFER_STATUS, TRANSFER_STARTED);
 				sendBroadcast(intent);
 				break;
@@ -129,6 +131,15 @@ public class SocketService extends Service {
 			case TRANSFER_FINISHED: {
 				Intent intent = new Intent(SOCKET_TRANSFER_ACTION);
 				intent.putExtra(TRANSFER_STATUS, TRANSFER_FINISHED);
+				sendBroadcast(intent);
+				break;
+			}
+			case TRANSFER_PROGRESS: {
+				Intent intent = new Intent(SOCKET_TRANSFER_ACTION);
+				intent.putExtra(TRANSFER_END, msg.arg1);
+				intent.putExtra(TRANSFER_STATUS, TRANSFER_PROGRESS);
+				intent.putExtra(FILE_LENGTH, ((Long) msg.obj).toString());
+				intent.putExtra(SENT_LENGTH, msg.arg2);
 				sendBroadcast(intent);
 				break;
 			}

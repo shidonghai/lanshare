@@ -201,7 +201,7 @@ public class SocketController {
 
 		msg.setMsgDirection(SMessage.ACK);
 		msg.setFilePath(message.getFilePath());
-		final long fileLength = msg.getFileLength();
+		final long fileLength = message.getFileLength();
 		msg.setMACAddress(ConnectionUtils.getLocalMacAddress(mContext));
 		msg.setMessageID(message.getMessageID());
 		msg.setRemoteAdress(ConnectionUtils.int2Ip(ConnectionUtils
@@ -238,19 +238,30 @@ public class SocketController {
 
 						try {
 							outStream = new FileOutputStream(saveFile);
-							final Received r = new Received();
-							int b = 0;
+							int received = 0;
+							int len = 0;
 							Message msg = mHandler.obtainMessage();
 							msg.what = SocketService.TRANSFER_STARTED;
 							msg.arg1 = SocketService.TRANSFER_IN;
+							msg.obj = fileLength;
 							msg.sendToTarget();
 							byte[] buffer = new byte[1024];
-							while ((b = inStream.read(buffer)) != -1) {
-								r.r += b;
-								outStream.write(buffer);
+							while ((len = inStream.read(buffer, 0,
+									buffer.length)) != -1) {
+								received += len;
+								outStream.write(buffer, 0, len);
+								if (received % 10 == 0) {
+									Message message = mHandler.obtainMessage();
+									message.what = SocketService.TRANSFER_PROGRESS;
+									message.arg1 = SocketService.TRANSFER_IN;
+									message.obj = fileLength;
+									message.arg2 = received;
+									message.sendToTarget();
+								}
 							}
 							mHandler.sendEmptyMessage(SocketService.TRANSFER_FINISHED);
 							inStream.close();
+							outStream.flush();
 							outStream.close();
 						} catch (FileNotFoundException e) {
 							e.printStackTrace();
@@ -312,7 +323,7 @@ public class SocketController {
 	}
 
 	public void startToSendFile(FileTransferMessage message) {
-		mConnMgr.StartFileTransfer(message.getFilePath(),
+		mConnMgr.startFileTransfer(message.getFilePath(),
 				message.getRemoteAddress(), message.getRemotePort(),
 				message.getMessageID(), mHandler);
 	}

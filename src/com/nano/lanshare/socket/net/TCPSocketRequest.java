@@ -9,12 +9,11 @@ import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
 
-import com.nano.lanshare.socket.SocketService;
-
 import android.os.Handler;
-import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
+
+import com.nano.lanshare.socket.SocketService;
 
 public class TCPSocketRequest extends SocketRequest {
 	public static interface TCPRequestCallback {
@@ -33,6 +32,7 @@ public class TCPSocketRequest extends SocketRequest {
 	private InetAddress mTargetAddress = null;
 	private InputStream mInputStream = null;
 	private Handler mHandler;
+	private long mLength;
 
 	public TCPSocketRequest(int port, InetAddress addr, Handler handler) {
 		mTargetPort = port;
@@ -49,6 +49,7 @@ public class TCPSocketRequest extends SocketRequest {
 		Message msg = mHandler.obtainMessage();
 		msg.what = SocketService.TRANSFER_STARTED;
 		msg.arg1 = SocketService.TRANSFER_OUT;
+		msg.obj = mLength;
 		msg.sendToTarget();
 		try {
 			mSocket = new Socket(mTargetAddress, mTargetPort);
@@ -57,7 +58,7 @@ public class TCPSocketRequest extends SocketRequest {
 			OutputStream os = mSocket.getOutputStream();
 
 			// read the input stream by unit of 4K
-			byte[] buffer = new byte[4 * 1024];
+			byte[] buffer = new byte[1024];
 			int len = 0;
 
 			if (mCallback != null) {
@@ -65,11 +66,23 @@ public class TCPSocketRequest extends SocketRequest {
 			}
 
 			int time = 0;
-			while ((len = mInputStream.read(buffer)) != -1) {
+			int sent = 0;
+			int count = 0;
+			while ((len = mInputStream.read(buffer, 0, buffer.length)) != -1) {
 				os.write(buffer, 0, len);
 
+				sent += len;
 				// need to update progress
-				mCallback.onProgressUpdate(4096 * (time++) + len);
+				if (count % 10 == 0) {
+					Message message = mHandler.obtainMessage();
+					message.what = SocketService.TRANSFER_PROGRESS;
+					message.arg1 = SocketService.TRANSFER_OUT;
+					message.obj = mLength;
+					message.arg2 = sent;
+					message.sendToTarget();
+					Log.e("sent progress", sent + "/" + mLength);
+				}
+				count++;
 			}
 
 			os.flush();
@@ -96,6 +109,7 @@ public class TCPSocketRequest extends SocketRequest {
 	public void setData(File file) {
 		try {
 			mInputStream = new FileInputStream(file);
+			mLength = file.length();
 		} catch (FileNotFoundException e) {
 			Log.e("error", "file not open");
 			if (mCallback != null) {

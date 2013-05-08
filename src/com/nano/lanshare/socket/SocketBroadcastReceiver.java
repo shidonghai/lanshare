@@ -10,6 +10,8 @@ import android.content.IntentFilter;
 import android.widget.Toast;
 
 import com.nano.lanshare.socket.moudle.Stranger;
+import com.nano.lanshare.utils.FileSizeUtil;
+import com.nano.lanshare.utils.FileUtil;
 
 public class SocketBroadcastReceiver extends BroadcastReceiver {
 	private static final int NEVER_COULD_BE = -1;
@@ -71,19 +73,49 @@ public class SocketBroadcastReceiver extends BroadcastReceiver {
 				SocketService.SOCKET_TRANSFER_ACTION)) {
 			int status = intent.getIntExtra(SocketService.TRANSFER_STATUS, -1);
 			switch (status) {
-			case SocketService.TRANSFER_STARTED:
+			case SocketService.TRANSFER_STARTED: {
 				int end = intent.getIntExtra(SocketService.TRANSFER_END, 0);
 				if (end == SocketService.TRANSFER_IN) {
-					mDialog.setMessage("接收中...");
+					mDialog.setMessage("接收中...\n"
+							+ "0kb/"
+							+ FileSizeUtil.formatFromByte(Long.parseLong(intent
+									.getStringExtra(SocketService.FILE_LENGTH))));
 				} else {
-					mDialog.setMessage("发送中...");
+					mDialog.setMessage("发送中...\n"
+							+ "0kb/"
+							+ FileSizeUtil.formatFromByte(Long.parseLong(intent
+									.getStringExtra(SocketService.FILE_LENGTH))));
 				}
 				mDialog.show();
 				break;
-			case SocketService.TRANSFER_FINISHED:
+			}
+			case SocketService.TRANSFER_FINISHED: {
 				mDialog.dismiss();
 				break;
-
+			}
+			case SocketService.TRANSFER_PROGRESS: {
+				if (mDialog.isShowing()) {
+					int end = intent.getIntExtra(SocketService.TRANSFER_END, 0);
+					if (end == SocketService.TRANSFER_IN) {
+						mDialog.setMessage("接收中...\n"
+								+ FileSizeUtil.formatFromByte(intent
+										.getIntExtra(SocketService.SENT_LENGTH,
+												0))
+								+ "/"
+								+ FileSizeUtil.formatFromByte(Long.parseLong(intent
+										.getStringExtra(SocketService.FILE_LENGTH))));
+					} else {
+						mDialog.setMessage("发送中...\n"
+								+ FileSizeUtil.formatFromByte(intent
+										.getIntExtra(SocketService.SENT_LENGTH,
+												0))
+								+ "/"
+								+ FileSizeUtil.formatFromByte(Long.parseLong(intent
+										.getStringExtra(SocketService.FILE_LENGTH))));
+						mDialog.show();
+					}
+				}
+			}
 			}
 		}
 	}
