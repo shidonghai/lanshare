@@ -9,8 +9,11 @@ import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
 
+import com.nano.lanshare.socket.SocketService;
+
 import android.os.Handler;
 import android.os.Looper;
+import android.os.Message;
 import android.util.Log;
 
 public class TCPSocketRequest extends SocketRequest {
@@ -29,10 +32,12 @@ public class TCPSocketRequest extends SocketRequest {
 	private int mTargetPort = 0;
 	private InetAddress mTargetAddress = null;
 	private InputStream mInputStream = null;
+	private Handler mHandler;
 
-	public TCPSocketRequest(int port, InetAddress addr) {
+	public TCPSocketRequest(int port, InetAddress addr, Handler handler) {
 		mTargetPort = port;
 		mTargetAddress = addr;
+		mHandler = handler;
 	}
 
 	public void setCallBack(TCPRequestCallback callback) {
@@ -41,8 +46,10 @@ public class TCPSocketRequest extends SocketRequest {
 
 	@Override
 	public void startRequst() {
-		Looper.prepare();
-		Handler handler = new Handler();
+		Message msg = mHandler.obtainMessage();
+		msg.what = SocketService.TRANSFER_STARTED;
+		msg.arg1 = SocketService.TRANSFER_OUT;
+		msg.sendToTarget();
 		try {
 			mSocket = new Socket(mTargetAddress, mTargetPort);
 			mSocket.setSoTimeout(mTimeout);
@@ -66,6 +73,8 @@ public class TCPSocketRequest extends SocketRequest {
 			}
 
 			os.flush();
+			mHandler.sendEmptyMessage(SocketService.TRANSFER_FINISHED);
+			mHandler = null;
 		} catch (IOException e) {
 			Log.e("transfer", e.toString());
 			e.printStackTrace();

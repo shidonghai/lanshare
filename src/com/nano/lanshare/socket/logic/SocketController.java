@@ -8,12 +8,10 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
-import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 
@@ -242,17 +240,16 @@ public class SocketController {
 							outStream = new FileOutputStream(saveFile);
 							final Received r = new Received();
 							int b = 0;
-							while ((b = inStream.read()) != -1) {
+							Message msg = mHandler.obtainMessage();
+							msg.what = SocketService.TRANSFER_STARTED;
+							msg.arg1 = SocketService.TRANSFER_IN;
+							msg.sendToTarget();
+							byte[] buffer = new byte[1024];
+							while ((b = inStream.read(buffer)) != -1) {
 								r.r += b;
-								outStream.write((char) b);
-
-								mHandler.post(new Runnable() {
-									@Override
-									public void run() {
-										dialog.setProgress((int) (r.r * 100 / fileLength));
-									}
-								});
+								outStream.write(buffer);
 							}
+							mHandler.sendEmptyMessage(SocketService.TRANSFER_FINISHED);
 							inStream.close();
 							outStream.close();
 						} catch (FileNotFoundException e) {
@@ -266,16 +263,10 @@ public class SocketController {
 			fileServer.start();
 
 		} catch (IOException e) {
-			Log.e("transfer", e.toString());
 			e.printStackTrace();
 		}
 
 		try {
-			Log.e("service", "response file transfer request");
-			Log.e("my ip",
-					msg.getRemoteAddress() + ",port:" + msg.getRemotePort());
-			Log.e("target ip",
-					msg.getTargetIp() + ",port:" + msg.getTargetPort());
 			mConnMgr.sendMessage(msg.getMessageID(), msg.getTargetIp(), msg
 					.toJsonString().getBytes("utf-8"));
 		} catch (UnsupportedEncodingException e) {
@@ -323,7 +314,7 @@ public class SocketController {
 	public void startToSendFile(FileTransferMessage message) {
 		mConnMgr.StartFileTransfer(message.getFilePath(),
 				message.getRemoteAddress(), message.getRemotePort(),
-				message.getMessageID());
+				message.getMessageID(), mHandler);
 	}
 
 	public void destory() {

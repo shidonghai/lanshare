@@ -66,4 +66,8 @@ public class DragController {
 			setPosition = true;
 		}
 	}
+
+	public void destroy() {
+		instance = null;
+	}
 }

@@ -72,6 +72,12 @@ public class SocketBroadcastReceiver extends BroadcastReceiver {
 			int status = intent.getIntExtra(SocketService.TRANSFER_STATUS, -1);
 			switch (status) {
 			case SocketService.TRANSFER_STARTED:
+				int end = intent.getIntExtra(SocketService.TRANSFER_END, 0);
+				if (end == SocketService.TRANSFER_IN) {
+					mDialog.setMessage("接收中...");
+				} else {
+					mDialog.setMessage("发送中...");
+				}
 				mDialog.show();
 				break;
 			case SocketService.TRANSFER_FINISHED:

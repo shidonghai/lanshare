@@ -182,6 +182,7 @@ public class BaseActivity extends FragmentActivity implements
 		super.onDestroy();
 		MusicManger.getInstance().unBindServer(this);
 		stopSocketService();
+		mDragController.destroy();
 	}
 
 	@Override

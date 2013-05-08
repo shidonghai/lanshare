@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.nano.lanshare.conn.logic.UserManager;
 import com.nano.lanshare.main.LanshareApplication;
@@ -20,6 +21,8 @@ import com.nano.lanshare.socket.moudle.SMessage;
 import com.nano.lanshare.socket.moudle.Stranger;
 
 public class SocketService extends Service {
+	protected static final String TAG = "socket service";
+
 	public static final String SOCKET_TRANSFER_ACTION = "transfer";
 	public static final String SOCKET_RESULT_ACTION = "result";
 	public static final String RESULT_CODE = "result_code";
@@ -27,6 +30,7 @@ public class SocketService extends Service {
 	public static final String CMD_CODE = "cmd_code";
 	public static final String DATA = "data";
 	public static final String TARGET_USER = "target_user";
+	public static final String TRANSFER_END = "transfer_end";
 
 	public static final String TRANSFER_STATUS = "transfer_status";
 
@@ -41,6 +45,9 @@ public class SocketService extends Service {
 
 	public static final int TRANSFER_STARTED = 400;
 	public static final int TRANSFER_FINISHED = 401;
+
+	public static final int TRANSFER_OUT = 1;
+	public static final int TRANSFER_IN = 0;
 
 	public SocketController mController;
 	private UserManager mManager;
@@ -64,13 +71,7 @@ public class SocketService extends Service {
 						.getLocalIp(getApplicationContext())));
 				message.setRemotePort(808);
 				message.setMsgDirection(SMessage.REQ);
-				Log.e("service", "request trasfer");
-				Log.e("my ip",
-						message.getRemoteAddress() + ",port:"
-								+ message.getRemotePort());
-				Log.e("target ip",
-						message.getTargetIp() + ",port:"
-								+ message.getTargetPort());
+				Log.e(TAG, "request to transfer a file");
 				mController.requestFileTransfer(message);
 				break;
 			}
@@ -102,20 +103,25 @@ public class SocketService extends Service {
 				break;
 			}
 			case SMessage.MSG_FILE_TRANSFER: {
-				// read this message, and response for it
 				FileTransferMessage transferMessage = (FileTransferMessage) msg.obj;
 				if (transferMessage.getMsgDirection() == SMessage.REQ) {
+					Log.e(TAG, "respond for file transfer request");
+					Toast.makeText(getApplicationContext(),
+							"respond for the file transfer request",
+							Toast.LENGTH_SHORT).show();
 					mController.responseForTransfer(transferMessage);
 				} else {
-					Log.e("service", "start transfer");
+					Log.e(TAG, "get response and start to transfer file");
+					Toast.makeText(getApplicationContext(),
+							"get response and start to transfer file",
+							Toast.LENGTH_SHORT).show();
 					mController.startToSendFile(transferMessage);
 				}
-				// otherwise, let UserChatAcitivity to handle
-
 				break;
 			}
 			case TRANSFER_STARTED: {
 				Intent intent = new Intent(SOCKET_TRANSFER_ACTION);
+				intent.putExtra(TRANSFER_END, msg.arg1);
 				intent.putExtra(TRANSFER_STATUS, TRANSFER_STARTED);
 				sendBroadcast(intent);
 				break;

@@ -6,8 +6,11 @@ import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 
+import com.nano.lanshare.socket.SocketService;
 import com.nano.lanshare.socket.net.TCPRequestManager;
 import com.nano.lanshare.socket.net.TCPSocketRequest;
 import com.nano.lanshare.socket.net.UDPRequestManager;
@@ -32,8 +35,8 @@ public class ConnectionManager {
 	// this is not safe, in the future, we need define a series of "default"
 	// ports so that we can try to find an available one
 	public static int SIGNAL_PORT = 34521;
-	
-	public static int TRANSFER_PORT= 10103;
+
+	public static int TRANSFER_PORT = 10103;
 
 	private static ConnectionManager mConnMgr = null;
 	private UDPSocketServer mMsgServer = null;
@@ -74,7 +77,7 @@ public class ConnectionManager {
 
 	// request to start file transferring
 	public void StartFileTransfer(final String path, String addr, int port,
-			final long reqId) {
+			final long reqId, Handler handler) {
 		if (mFileTransManager == null) {
 			mFileTransManager = new TCPRequestManager();
 			mFileTransManager.startProcess();
@@ -83,7 +86,7 @@ public class ConnectionManager {
 		try {
 			// start transfer file
 			TCPSocketRequest req = new TCPSocketRequest(TRANSFER_PORT,
-					InetAddress.getByName(addr));
+					InetAddress.getByName(addr), handler);
 			Log.e("transfer", port + "");
 			req.setRequestID(reqId);
 			req.setData(new File(path));
@@ -109,7 +112,6 @@ public class ConnectionManager {
 					mCallback.onFileTransferError(reqId);
 				}
 			});
-
 			mFileTransManager.Request(req);
 
 		} catch (UnknownHostException e) {
