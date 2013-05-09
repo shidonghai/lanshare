@@ -18,30 +18,35 @@
                 android:id="@+id/music_detail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:src="@drawable/zapya_data_music_normal" />
 
             <ImageView
                 android:id="@+id/music_pre"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:src="@drawable/music_tab_pre_selector" />
 
             <ImageView
                 android:id="@+id/music_pause"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:src="@drawable/zapya_data_music_play_normal" />
 
             <ImageView
                 android:id="@+id/music_next"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:src="@drawable/music_tab_next_selector" />
 
             <ImageView
                 android:id="@+id/music_mode"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:src="@drawable/zapya_data_music_random_ist_normal" />
         </LinearLayout>
 

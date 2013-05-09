@@ -27,7 +27,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="1/7"
             android:textColor="@color/dm_data_list_item_subtitle_color" />
 
         <ImageView
@@ -72,7 +71,6 @@
             android:layout_alignParentLeft="true"
             android:layout_marginBottom="2dip"
             android:layout_marginLeft="10dip"
-            android:text="00:00"
             android:textColor="@color/dm_data_list_item_subtitle_color" />
 
         <TextView
@@ -81,7 +79,6 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dip"
-            android:text="abcde"
             android:textColor="@color/dm_data_list_item_title_color"
             android:textSize="@dimen/connect_btn_text_size" />
 
@@ -92,7 +89,6 @@
             android:layout_below="@id/music_name"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="8dip"
-            android:text="fgh"
             android:textColor="@color/dm_data_list_item_title_color" />
 
         <TextView
@@ -103,7 +99,6 @@
             android:layout_alignParentRight="true"
             android:layout_marginBottom="2dip"
             android:layout_marginRight="10dip"
-            android:text="05:01"
             android:textColor="@color/dm_data_list_item_subtitle_color" />
 
         <SeekBar

@@ -23,7 +23,7 @@ public class MusicPlayService extends Service implements OnPreparedListener,
 
 	private MusicManger mMusicManger;
 
-	private int mCureentIndex;
+	private int mCureentIndex = -1;
 
 	@Override
 	public void onCreate() {
@@ -174,8 +174,13 @@ public class MusicPlayService extends Service implements OnPreparedListener,
 	}
 
 	public void playMusic(int id) {
+		if (id < 0) {
+			return;
+		}
+
 		if (null != mPlayer) {
 			isStarted = true;
+			Log.d("zxh", "playMusic:" + id);
 			mPlayer.reset();
 			try {
 				mCureentIndex = id;

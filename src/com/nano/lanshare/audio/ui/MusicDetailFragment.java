@@ -6,6 +6,7 @@ import java.util.Locale;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -92,7 +93,12 @@ public class MusicDetailFragment extends Fragment implements OnClickListener,
 	}
 
 	private void init() {
+		if (mMusicManger.getMusicList().size() <= 0) {
+			return;
+		}
+
 		int index = mMusicManger.getCurrentIndex();
+		Log.d("zxh", "index:" + index);
 		mTitle.setText(String.format(getString(R.string.music_title_index),
 				index + 1, mMusicManger.getMusicList().size()));
 
@@ -184,6 +190,10 @@ public class MusicDetailFragment extends Fragment implements OnClickListener,
 	}
 
 	private void togglePlaying() {
+		if (mMusicManger.getCurrentIndex() == -1) {
+			return;
+		}
+
 		if (!mMusicManger.isStarted()) {
 			mMusicManger.play(mMusicManger.getCurrentIndex());
 			mPlay.setImageResource(R.drawable.zapya_data_music_single_pause_normal);

@@ -52,6 +52,9 @@ public class FileListFragment extends BasicFileFragment {
 		mHandler = handler;
 	}
 
+	public FileListFragment() {
+	}
+
 	protected void handleMsg(Message msg) {
 		switch (msg.what) {
 		case REFRESH_FINISH: {

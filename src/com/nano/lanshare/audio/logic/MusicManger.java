@@ -12,8 +12,10 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.IBinder;
 import android.os.RemoteException;
+import android.provider.MediaStore;
 import android.provider.MediaStore.Audio;
 import android.provider.MediaStore.Audio.Media;
+import android.util.Log;
 
 import com.nano.lanshare.audio.bean.MusicInfo;
 
@@ -79,7 +81,7 @@ public class MusicManger {
 		List<MusicInfo> list = new ArrayList<MusicInfo>();
 		String[] projection = new String[] { Media._ID, Media.DISPLAY_NAME,
 				Media.MIME_TYPE, Media.TITLE, Media.ALBUM, Media.ARTIST,
-				Media.SIZE };
+				Media.SIZE, Media.DATA };
 
 		String selection = Media.SIZE + " >0 ";
 
@@ -104,10 +106,15 @@ public class MusicManger {
 									.getColumnIndex(android.provider.MediaStore.Audio.Media.SIZE));
 					info.uri = ContentUris.withAppendedId(
 							Audio.Media.EXTERNAL_CONTENT_URI, info.id);
+					info.path = cursor
+							.getString(cursor
+									.getColumnIndex(android.provider.MediaStore.Audio.Media.DATA));
+					Log.d("zxh", "info.path:" + info.path);
 					list.add(info);
 				} while (cursor.moveToNext());
 			} catch (Exception e) {
 				e.printStackTrace();
+				Log.e("zxh", "queryMusic" + e.toString());
 			} finally {
 				cursor.close();
 			}

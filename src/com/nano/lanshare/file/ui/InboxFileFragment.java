@@ -12,6 +12,9 @@ public class InboxFileFragment extends FileListFragment {
 		super(handler);
 	}
 
+	public InboxFileFragment() {
+	}
+
 	@Override
 	public void onViewCreated(View view, Bundle bundle) {
 		super.onViewCreated(view, bundle);
