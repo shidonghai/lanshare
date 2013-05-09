@@ -33,8 +33,9 @@ public class HistoryDBManager extends DBManager {
         return 0;
     }
 
-    public int insert(HistoryInfo hisInfo) {
+    public long insert(HistoryInfo hisInfo) {
         mDb.beginTransaction();
+        long insertId = 0;
         try {
             ContentValues cv = new ContentValues();
             cv.put(HistoryTable.Columns.PATH, hisInfo.filePath);
@@ -42,13 +43,13 @@ public class HistoryDBManager extends DBManager {
             cv.put(HistoryTable.Columns.SENDER, hisInfo.sender);
             cv.put(HistoryTable.Columns.RECIVER, hisInfo.reciver);
             cv.put(HistoryTable.Columns.TYPE, hisInfo.historyType);
-            mDb.insert(HistoryTable.TABLE_NAME, null, cv);
+            insertId = mDb.insert(HistoryTable.TABLE_NAME, null, cv);
             mDb.setTransactionSuccessful();
             notifyChange();
         } finally {
             mDb.endTransaction();
         }
-        return 0;
+        return insertId;
     }
 
     public int update(HistoryInfo hisInfo) {

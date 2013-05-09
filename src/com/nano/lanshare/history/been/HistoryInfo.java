@@ -6,6 +6,7 @@ import java.io.Serializable;
 import android.graphics.Bitmap;
 
 public class HistoryInfo implements Serializable {
+    private static final long serialVersionUID = 1L;
     public int id;
     public int historyType;
     public int fileType;
@@ -20,6 +21,18 @@ public class HistoryInfo implements Serializable {
     public String receSize;
     public String costTime;
     public String status;
+    public int transferProgress;
+
+    public static class HistoryType {
+        public static final int HISTORY_TYPE_SEND = 1;
+        public static final int HISTORY_TYPE_RECV = 2;
+    }
+
+    public static class Status {
+        public static final String STATUS_TRANSFERING = "transfering";
+        public static final String STATUS_TRANSFERING_FINISH = "finish";
+        public static final String STATUS_TRANSFERING_FAILED = "failed";
+    }
 
     public HistoryInfo() {
 

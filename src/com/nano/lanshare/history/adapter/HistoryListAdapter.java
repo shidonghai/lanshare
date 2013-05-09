@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.nano.lanshare.R;
@@ -188,6 +189,12 @@ public class HistoryListAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
+    public void updateFileTransferProgress(HistoryInfo info) {
+        if (mHistoryInfoList.contains(info)) {
+            notifyDataSetChanged();
+        }
+    }
+
     public List<HistoryInfo> getSelectedList() {
         return mSelectList;
     }
@@ -202,6 +209,7 @@ public class HistoryListAdapter extends BaseAdapter {
         public TextView fileOpeate;
         public ImageView fileChecked;
         public ImageView fileUncheck;
+        public ProgressBar progressBar;
 
         public ViewHolder(View view) {
             avater = (ImageView) view.findViewById(R.id.item_thumb);
@@ -213,6 +221,7 @@ public class HistoryListAdapter extends BaseAdapter {
             fileOpeate = (TextView) view.findViewById(R.id.file_opeart);
             fileChecked = (ImageView) view.findViewById(R.id.file_checked);
             fileUncheck = (ImageView) view.findViewById(R.id.file_uncheck);
+            progressBar = (ProgressBar) view.findViewById(R.id.file_transfer_progress);
         }
 
         public void setData(HistoryInfo info) {
@@ -223,6 +232,22 @@ public class HistoryListAdapter extends BaseAdapter {
                     setChecked(true);
                 } else {
                     setChecked(false);
+                }
+            }
+            if (HistoryInfo.Status.STATUS_TRANSFERING.equals(info.status)) {
+                updateProgress(info);
+            }
+        }
+
+        private void updateProgress(HistoryInfo info) {
+            if (progressBar != null) {
+                if (View.VISIBLE != progressBar.getVisibility()) {
+                    progressBar.setVisibility(View.VISIBLE);
+                }
+                progressBar.setProgress(info.transferProgress);
+                if (info.transferProgress == progressBar.getMax()) {
+                    progressBar.setVisibility(View.GONE);
+                    info.status = HistoryInfo.Status.STATUS_TRANSFERING_FINISH;
                 }
             }
         }

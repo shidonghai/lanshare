@@ -3,21 +3,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="100dip"
-    android:layout_margin="2dip"
-     >
-    
-        <FrameLayout
+    android:layout_margin="2dip" >
+
+    <FrameLayout
+        android:id="@+id/item_content"
         android:layout_width="260dip"
         android:layout_height="90dip"
-         android:layout_marginLeft="15dip"
-        android:id="@+id/item_content"
+        android:layout_marginLeft="15dip"
         android:background="@drawable/history_send_bg" >
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="80dip"
-            android:gravity="center_vertical" 
-            >
+            android:gravity="center_vertical" >
 
             <ImageView
                 android:id="@+id/file_icon"
@@ -44,6 +42,16 @@
                 android:layout_toRightOf="@id/file_icon"
                 android:text="20MB"
                 android:textColor="@color/black" />
+
+            <ProgressBar
+                android:id="@+id/file_transfer_progress"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="100dip"
+                android:layout_alignLeft="@id/file_size"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/file_size"
+                android:visibility="gone"
+                android:max="100" />
         </RelativeLayout>
     </FrameLayout>
 
@@ -51,8 +59,8 @@
         android:id="@+id/item_thumb"
         android:layout_width="30dip"
         android:layout_height="30dip"
-        android:layout_marginTop="5dip"
         android:layout_alignParentRight="true"
+        android:layout_marginTop="5dip"
         android:layout_toRightOf="@id/item_content"
         android:src="@drawable/zapya_history_person_hot" />
 
@@ -60,18 +68,18 @@
         android:id="@+id/item_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/item_content"
         android:layout_below="@id/item_thumb"
+        android:layout_toRightOf="@id/item_content"
         android:text="ssssdfsd" />
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/item_thumb"
+        android:layout_below="@id/item_name"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="25dip"
-        android:layout_alignLeft="@id/item_thumb"
-        android:layout_below="@id/item_name" >
+        android:layout_marginLeft="25dip" >
 
         <ImageView
             android:id="@+id/file_type"
@@ -106,7 +114,7 @@
         android:background="@drawable/transfer_install_btn"
         android:gravity="center"
         android:text="vb "
-        android:visibility="gone"
-        android:textColor="@color/black" />
+        android:textColor="@color/black"
+        android:visibility="gone" />
 
 </RelativeLayout>

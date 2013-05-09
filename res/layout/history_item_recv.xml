@@ -4,8 +4,8 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:layout_marginLeft="5dip"
-    android:gravity="center"
-    android:layout_marginRight="5dip" >
+    android:layout_marginRight="5dip"
+    android:gravity="center" >
 
     <ImageView
         android:id="@+id/item_thumb"
@@ -88,6 +88,16 @@
                 android:layout_toRightOf="@id/file_icon"
                 android:text="20MB"
                 android:textColor="@color/black" />
+
+            <ProgressBar
+                android:id="@+id/file_transfer_progress"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="100dip"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/file_size"
+                android:layout_below="@id/file_size"
+                android:max="100"
+                android:visibility="gone" />
         </RelativeLayout>
     </FrameLayout>
 
@@ -101,7 +111,7 @@
         android:background="@drawable/transfer_install_btn"
         android:gravity="center"
         android:text="open"
-        android:visibility="gone"
-        android:textColor="@color/black" />
+        android:textColor="@color/black"
+        android:visibility="gone" />
 
 </RelativeLayout>

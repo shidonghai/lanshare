@@ -31,6 +31,18 @@ public class WifiManagerUtils {
         }
     }
 
+    public static Boolean isWifiApEnable(WifiManager wifiManager) {
+        Method method;
+        try {
+            method = wifiManager.getClass().getMethod("isWifiApEnabled");
+            Boolean enable = (Boolean) method.invoke(wifiManager);
+            return enable;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     public static List getWifiApList(WifiManager wifiManager) {
         // wifiManager.s
         return null;

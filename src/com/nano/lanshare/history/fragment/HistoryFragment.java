@@ -3,9 +3,12 @@ package com.nano.lanshare.history.fragment;
 
 import java.util.List;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.DialogInterface.OnClickListener;
+import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -63,6 +66,22 @@ public class HistoryFragment extends Fragment implements OnItemClickListener, on
     private int mLoadDateType = LOAD_TYPE_RECODE;
     public static final int QUERY_LIST = 1;
     public static final int DELET_ITEMS = 2;
+    public static final String FILE_TRANSER_ACTION_SEND = "com.nano.lanshare.SendFile";
+    public static final String FILE_TRANSER_ACTION_RECEIVE = "com.nano.lanshare.ReceiveFile";
+    private BroadcastReceiver mFileTransferReceiver = new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (FILE_TRANSER_ACTION_RECEIVE.equals(intent.getAction())
+                    || FILE_TRANSER_ACTION_RECEIVE.equals(intent.getAction())) {
+                Object obj = intent.getSerializableExtra("");
+                if (obj != null && (obj instanceof HistoryInfo)) {
+                    HistoryInfo info = (HistoryInfo) intent.getSerializableExtra("");
+                    mAdapter.updateFileTransferProgress(info);
+                }
+            }
+        }
+    };
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -93,8 +112,23 @@ public class HistoryFragment extends Fragment implements OnItemClickListener, on
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(FILE_TRANSER_ACTION_RECEIVE);
+        filter.addAction(FILE_TRANSER_ACTION_SEND);
+        getActivity().registerReceiver(mFileTransferReceiver, filter);
+    }
+
+    @Override
     public void onPause() {
         super.onPause();
+        getActivity().unregisterReceiver(mFileTransferReceiver);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
     }
 
     @Override

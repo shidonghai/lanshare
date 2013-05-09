@@ -2,6 +2,7 @@
 package com.nano.lanshare.socket.moudle;
 
 import java.io.Serializable;
+import java.util.Arrays;
 
 public abstract class User implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -81,6 +82,13 @@ public abstract class User implements Serializable {
 
     public byte[] getUserPhoto() {
         return mUserPhoto;
+    }
+
+    @Override
+    public String toString() {
+        return "User [mStatus=" + mStatus + ", mHasNewMessage=" + mHasNewMessage + ", mType="
+                + mType + ", mUserName=" + mUserName + ", mUserIdentifier=" + mUserIdentifier
+                + ", mUserIp=" + mUserIp + ", mUserPhoto=" + Arrays.toString(mUserPhoto) + "]";
     }
 
     @Override
