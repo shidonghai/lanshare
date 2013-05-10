@@ -139,7 +139,8 @@ public class PicFragment extends BasicTabFragment implements
 	}
 
 	@Override
-	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+	public void onItemClick(AdapterView<?> arg0, final View arg1, int arg2,
+			long arg3) {
 		final OperationDialog operationDialog = new OperationDialog(
 				getActivity());
 
@@ -155,9 +156,12 @@ public class PicFragment extends BasicTabFragment implements
 						case PopupMenuUtil.MENU_ACTION:
 							break;
 						case PopupMenuUtil.MENU_PROPARTY:
+							FileUtil.showPropertyDialog(getActivity(),
+									String.valueOf(arg1.getTag()));
 							break;
 						case PopupMenuUtil.MENU_OPERATION:
-							FileUtil.showFileOperationDialog(getActivity(), "");
+							FileUtil.showFileOperationDialog(getActivity(),
+									String.valueOf(arg1.getTag()));
 							break;
 						default:
 							break;

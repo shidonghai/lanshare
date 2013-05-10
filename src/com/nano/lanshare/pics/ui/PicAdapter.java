@@ -113,6 +113,7 @@ public class PicAdapter extends CursorAdapter implements BasicContentStore {
 		ImageView icon = (ImageView) view.findViewById(R.id.icon);
 		mWorker.loadImage(cursor.getString(mDataIndex), icon,
 				mDefaultImageIcon, mPicLoader);
+		view.setTag(cursor.getString(mDataIndex));
 		icon.setDrawingCacheEnabled(true);
 	}
 
@@ -120,4 +121,5 @@ public class PicAdapter extends CursorAdapter implements BasicContentStore {
 	public View newView(Context context, Cursor cursor, ViewGroup group) {
 		return mLayoutInflater.inflate(R.layout.pic_item, null);
 	}
+
 }

@@ -176,6 +176,7 @@ public class AppFragment extends BasicTabFragment implements
 							}
 							break;
 						case PopupMenuUtil.MENU_PROPARTY:
+							FileUtil.showPropertyDialog(getActivity(), info.path);
 							break;
 						case PopupMenuUtil.MENU_OPERATION:
 							FileUtil.showAppOperationDialog(getActivity(),
