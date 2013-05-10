@@ -72,9 +72,9 @@ public class HotspotsView implements OnClickListener, OnItemClickListener {
         List<ScanResult> res = mWifiManager.getScanResults();
         List<Stranger> wifiAps = new ArrayList<Stranger>();
         for (ScanResult scanResult : res) {
-            if ("[ESS]".equals(scanResult.capabilities)
+            Log.d("wyg", "wifiAps---scanResult-->>" + scanResult);
+            if (("[ESS]".equals(scanResult.capabilities)|| "".equals(scanResult.capabilities))
                     && !wifiAps.contains(scanResult.SSID)) {
-                Log.d("wyg", "wifiAps---scanResult-->>"+scanResult);
                 Stranger user = new Stranger();
                 user.setName(scanResult.SSID);
                 user.setUserIdentifier(scanResult.BSSID);
@@ -130,8 +130,8 @@ public class HotspotsView implements OnClickListener, OnItemClickListener {
         return hotspotList;
     }
 
-    private void connect2WifiAp(String ssid) {
-        WifiManagerUtils.connect2WifiAp(mWifiManager, ssid);
+    private void connect2WifiAp(String ssid, String bssid) {
+        WifiManagerUtils.connect2WifiAp(mWifiManager, ssid, bssid);
     }
 
     @Override
@@ -275,8 +275,8 @@ public class HotspotsView implements OnClickListener, OnItemClickListener {
     public void onItemClick(AdapterView<?> parent, View view, int position,
             long id) {
         Stranger user = mAdapter.getItem(position - 1);
-        Log.d("wyg", "onItemClick----->>>"+user);
-        connect2WifiAp(user.getName());
+        Log.d("wyg", "onItemClick----->>>" + user);
+        connect2WifiAp(user.getName(),user.getUserIdentifier());
     }
 
 }

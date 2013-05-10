@@ -14,9 +14,16 @@
     <ListView
         android:id="@+id/history_list"
         android:layout_width="fill_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@id/history_title" >
         
     </ListView>
+    <TextView android:id="@+id/list_item_empty_info"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/history_list"
+        android:gravity="center"
+        android:text="@string/dm_history_no_history"
+        />
 
 </RelativeLayout>

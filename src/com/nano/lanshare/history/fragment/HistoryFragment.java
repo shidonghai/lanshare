@@ -6,8 +6,8 @@ import java.util.List;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.DialogInterface.OnClickListener;
+import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -24,6 +24,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
@@ -56,6 +57,7 @@ public class HistoryFragment extends Fragment implements OnItemClickListener, on
     private Button mKaiyaInfo;
     // The list of the history
     private ListView mHistoryList;
+    private TextView mListEmtype;
     private HistoryListAdapter mAdapter;
     private HistoryDBManager mDbManager;
     private LoaderManager mLoaderManager;
@@ -69,7 +71,6 @@ public class HistoryFragment extends Fragment implements OnItemClickListener, on
     public static final String FILE_TRANSER_ACTION_SEND = "com.nano.lanshare.SendFile";
     public static final String FILE_TRANSER_ACTION_RECEIVE = "com.nano.lanshare.ReceiveFile";
     private BroadcastReceiver mFileTransferReceiver = new BroadcastReceiver() {
-
         @Override
         public void onReceive(Context context, Intent intent) {
             if (FILE_TRANSER_ACTION_RECEIVE.equals(intent.getAction())
@@ -86,13 +87,7 @@ public class HistoryFragment extends Fragment implements OnItemClickListener, on
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.history_layout, container, false);
-        // View listHeader = inflater.inflate(R.layout.history_list_header,
-        // null);
-        mHistoryList = (ListView) view.findViewById(R.id.history_list);
         initView(view);
-        mHistoryList.setOnItemClickListener(this);
-        mLoaderManager = getLoaderManager();
-        mLoaderManager.initLoader(QUERY_LIST, null, this);
         return view;
     }
 
@@ -100,6 +95,8 @@ public class HistoryFragment extends Fragment implements OnItemClickListener, on
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mAdapter = new HistoryListAdapter(getActivity(), null, true);
+        mAdapter.setonDateLoadChangeListener(this);
+        mLoaderManager = getLoaderManager();
         mDbManager = new HistoryDBManager(getActivity());
         mDbManager.registerContentObserver(this);
         registeHistoryDeleteListener();
@@ -147,6 +144,12 @@ public class HistoryFragment extends Fragment implements OnItemClickListener, on
 
     private void initView(View view) {
         mMenu = new OperationDialog(getActivity());
+
+        mListEmtype = (TextView) view.findViewById(R.id.list_item_empty_info);
+        mHistoryList = (ListView) view.findViewById(R.id.history_list);
+        mHistoryList.setOnItemClickListener(this);
+        Log.d("wyg", "initView---------->>");
+        mLoaderManager.initLoader(QUERY_LIST, null, this);
 
         ImageWorker worker = ((LanshareApplication) getActivity()
                 .getApplication()).getImageWorker();
@@ -272,6 +275,23 @@ public class HistoryFragment extends Fragment implements OnItemClickListener, on
 
     }
 
+    private void checkEmptyListInfo() {
+        if (mAdapter.getCount() <= 1) {
+            if (mListEmtype != null && mListEmtype.getVisibility() != View.VISIBLE) {
+                mListEmtype.setVisibility(View.VISIBLE);
+            }
+            if (LOAD_TYPE_RECODE == mLoadDateType) {
+                mListEmtype.setText(R.string.dm_history_no_history);
+            } else {
+                mListEmtype.setText(R.string.history_no_message);
+            }
+        } else {
+            if (mListEmtype != null && mListEmtype.getVisibility() == View.VISIBLE) {
+                mListEmtype.setVisibility(View.GONE);
+            }
+        }
+    }
+
     private static class HistoryLoader extends AsyncTaskLoader<List<HistoryInfo>> {
         HistoryDBManager dbManager;
 
@@ -282,6 +302,7 @@ public class HistoryFragment extends Fragment implements OnItemClickListener, on
 
         @Override
         public List<HistoryInfo> loadInBackground() {
+            Log.d("wyg", "loadInBackground------------>>");
             // just test date
             /*
              * for (int i = 0; i < 20; i++) { HistoryInfo info = new
@@ -307,7 +328,7 @@ public class HistoryFragment extends Fragment implements OnItemClickListener, on
 
     @Override
     public void onLoadFinished(Loader<List<HistoryInfo>> arg0, List<HistoryInfo> list) {
-        Log.d("wyg", "size---->>" + list.size());
+        Log.d("wyg", "size---->>================" + list.size());
         mAdapter.setDate(list);
         mAdapter.notifyDataSetChanged();
     }
@@ -339,6 +360,7 @@ public class HistoryFragment extends Fragment implements OnItemClickListener, on
 
     @Override
     public void onDataChange() {
+        Log.d("wyg", "onDataChange----------");
         mLoaderManager.restartLoader(QUERY_LIST, null, this);
     }
 
@@ -349,6 +371,7 @@ public class HistoryFragment extends Fragment implements OnItemClickListener, on
         } else {
             mLoadDateType = LOAD_TYPE_MSG;
         }
+        checkEmptyListInfo();
     }
 
     @Override
@@ -383,5 +406,4 @@ public class HistoryFragment extends Fragment implements OnItemClickListener, on
         // TODO Auto-generated method stub
 
     }
-
 }

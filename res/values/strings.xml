@@ -617,5 +617,6 @@ Others can't see."</string>
     <string name="pull_to_refresh_refreshing_label">Loading...</string>
     <string name="pull_to_refresh_tap_label">Tap to refresh...</string>
     <string name="no_friend_in_same_net">Not find any user in this network,the same network user can be find and send files.</string>
-	<string name="show_lanshare_msg">ShowMessage</string>    
+	<string name="show_lanshare_msg">ShowMessage</string>
+	<string name="history_no_message">You have not receive message yet.</string>    
 </resources>

@@ -307,7 +307,8 @@ public class HistoryListAdapter extends BaseAdapter {
         msgBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                // mDataLoadChange.onChange();
+                Log.d("wyg", "OnClickListener---->>");
+                mDataLoadChange.onChange();
             }
         });
         return convertView;

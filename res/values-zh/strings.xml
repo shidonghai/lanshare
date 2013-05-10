@@ -615,5 +615,6 @@ All Rights Resevered"</string>
     <string name="wifi_conn">WIFI连接(%1$d)</string>
     <string name="hot_spot">热点连接(%1$d)</string>
     <string name="show_lanshare_msg">查看快牙消息</string>
+    <string name="history_no_message">你还没有收到通知</string>
 
 </resources>
