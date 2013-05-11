@@ -70,6 +70,7 @@ public class HistoryFragment extends Fragment implements OnItemClickListener, on
     public static final int DELET_ITEMS = 2;
     public static final String FILE_TRANSER_ACTION_SEND = "com.nano.lanshare.SendFile";
     public static final String FILE_TRANSER_ACTION_RECEIVE = "com.nano.lanshare.ReceiveFile";
+    private boolean isRegister;
     private BroadcastReceiver mFileTransferReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -115,12 +116,16 @@ public class HistoryFragment extends Fragment implements OnItemClickListener, on
         filter.addAction(FILE_TRANSER_ACTION_RECEIVE);
         filter.addAction(FILE_TRANSER_ACTION_SEND);
         getActivity().registerReceiver(mFileTransferReceiver, filter);
+        isRegister = true;
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        getActivity().unregisterReceiver(mFileTransferReceiver);
+        if(isRegister){
+            getActivity().unregisterReceiver(mFileTransferReceiver);
+            isRegister = false;
+        }
     }
 
     @Override
