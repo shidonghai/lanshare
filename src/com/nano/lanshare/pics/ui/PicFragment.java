@@ -8,6 +8,7 @@ import android.provider.MediaStore;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -152,6 +153,10 @@ public class PicFragment extends BasicTabFragment implements
 					public void onClick(DialogInterface dialog, int which) {
 						switch (which) {
 						case PopupMenuUtil.MENU_TRANSPORT:
+							String path = String.valueOf(arg1.getTag());
+							if (!TextUtils.isEmpty(path)) {
+								startTransfer(path);
+							}
 							break;
 						case PopupMenuUtil.MENU_ACTION:
 							break;

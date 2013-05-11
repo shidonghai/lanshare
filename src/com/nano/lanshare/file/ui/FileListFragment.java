@@ -178,7 +178,8 @@ public class FileListFragment extends BasicFileFragment {
 					public void onClick(DialogInterface dialog, int which) {
 						switch (which) {
 						case PopupMenuUtil.MENU_TRANSPORT:
-
+							FileUtil.startTransfer(getActivity(),
+									item.file.getAbsolutePath());
 							break;
 						case PopupMenuUtil.MENU_ACTION:
 							openAction(item.file);

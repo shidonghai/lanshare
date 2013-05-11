@@ -117,7 +117,7 @@ public class VideoListFragment extends BasicItemFragment implements
 					public void onClick(DialogInterface dialog, int which) {
 						switch (which) {
 						case PopupMenuUtil.MENU_TRANSPORT:
-
+							FileUtil.startTransfer(getActivity(), path);
 							break;
 						case PopupMenuUtil.MENU_ACTION:
 							Intent intent = new Intent(Intent.ACTION_VIEW);

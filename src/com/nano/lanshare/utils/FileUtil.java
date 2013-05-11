@@ -19,6 +19,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.nano.lanshare.R;
+import com.nano.lanshare.conn.ui.ConnectActivity;
+import com.nano.lanshare.main.BaseActivity;
 
 public class FileUtil {
 
@@ -253,5 +255,13 @@ public class FileUtil {
 		Intent scanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
 		scanIntent.setData(Uri.fromFile(file));
 		ctx.sendBroadcast(scanIntent);
+	}
+
+	public static void startTransfer(Context context, String path) {
+		Intent intent = new Intent();
+		intent.setClass(context, ConnectActivity.class);
+		intent.setAction(BaseActivity.PICK_A_FRIEND_AND_SEND);
+		intent.putExtra("file", path);
+		context.startActivity(intent);
 	}
 }

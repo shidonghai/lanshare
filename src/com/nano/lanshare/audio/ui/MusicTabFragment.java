@@ -150,7 +150,8 @@ public class MusicTabFragment extends BasicItemFragment implements
 					public void onClick(DialogInterface dialog, int which) {
 						switch (which) {
 						case PopupMenuUtil.MENU_TRANSPORT:
-
+							FileUtil.startTransfer(getActivity(), mMusicManger
+									.getMusicList().get(position).path);
 							break;
 						case PopupMenuUtil.MENU_ACTION:
 							mMusicManger.play(position);

@@ -85,11 +85,6 @@ public class InviteFriendsActivity extends FragmentActivity implements
 			mSelectedLayouts[i].name.setText(info.mContactName);
 		}
 
-		// for (int i = 0; i < mSelectedLayouts.length; i++) {
-		// ContactInfo info = mSelectedContacts.get(i);
-		// mSelectedLayouts[i].name.setText(info == null ? ""
-		// : info.mContactName);
-		// }
 		int length = mSelectedLayouts.length;
 		int size = mSelectedContacts.size();
 		for (int i = length - 1; i > size - 1; i--) {

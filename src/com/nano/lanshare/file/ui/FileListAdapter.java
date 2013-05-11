@@ -64,6 +64,7 @@ public class FileListAdapter extends BaseAdapter {
 	private LayoutInflater mInflater;
 
 	private Bitmap mDefaultImageIcon;
+
 	private ImageWorker mWorker;
 
 	private ScanMode mScanMode;
