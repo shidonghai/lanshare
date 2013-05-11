@@ -211,6 +211,7 @@ public class ConnectionFragment extends BasicTabFragment implements
 				intent.putExtra(SocketService.TARGET_USER,
 						mAdapter.getItem(position - 1));
 				getActivity().startService(intent);
+				getActivity().finish();
 			}
 		}
 

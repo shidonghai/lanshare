@@ -24,6 +24,7 @@ import android.widget.TextView;
 import com.nano.lanshare.R;
 import com.nano.lanshare.audio.logic.MusicManger;
 import com.nano.lanshare.common.DragController;
+import com.nano.lanshare.conn.logic.UserManager;
 import com.nano.lanshare.conn.ui.ConnectActivity;
 import com.nano.lanshare.history.logic.IHistoryDelete;
 import com.nano.lanshare.invitation.ui.InviteFriendsActivity;
@@ -182,6 +183,7 @@ public class BaseActivity extends FragmentActivity implements
 		super.onDestroy();
 		MusicManger.getInstance().unBindServer(this);
 		stopSocketService();
+		UserManager.getInstance().clearUser();
 		mDragController.destroy();
 	}
 

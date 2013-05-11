@@ -5,6 +5,11 @@ import org.json.JSONObject;
 
 public class FileTransferMessage extends SMessage {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	/*
 	 * transfer Message format, example
 	 * 

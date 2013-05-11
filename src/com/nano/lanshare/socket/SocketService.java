@@ -8,7 +8,6 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.nano.lanshare.conn.logic.UserManager;
 import com.nano.lanshare.main.LanshareApplication;
@@ -23,7 +22,9 @@ import com.nano.lanshare.socket.moudle.Stranger;
 public class SocketService extends Service {
 	protected static final String TAG = "socket service";
 
+	public static final String SOCKET_TRANSFER_REQUEST = "transfer_request";
 	public static final String SOCKET_TRANSFER_ACTION = "transfer";
+	public static final String SOCKET_TRANSFER_MSG = "transfer_message";
 	public static final String SOCKET_RESULT_ACTION = "result";
 	public static final String RESULT_CODE = "result_code";
 	public static final String RESULT_DATA = "result_data";
@@ -47,6 +48,8 @@ public class SocketService extends Service {
 	public static final int TRANSFER_STARTED = 400;
 	public static final int TRANSFER_FINISHED = 401;
 	public static final int TRANSFER_PROGRESS = 402;
+	public static final int TRANSFER_RESPONSE_REFUSED = 403;
+	public static final int TRANSFER_RESPONSE_ACCEPT = 404;
 
 	public static final int TRANSFER_OUT = 501;
 	public static final int TRANSFER_IN = 500;
@@ -107,17 +110,23 @@ public class SocketService extends Service {
 				FileTransferMessage transferMessage = (FileTransferMessage) msg.obj;
 				if (transferMessage.getMsgDirection() == SMessage.REQ) {
 					Log.e(TAG, "respond for file transfer request");
-					Toast.makeText(getApplicationContext(),
-							"respond for the file transfer request",
-							Toast.LENGTH_SHORT).show();
-					mController.responseForTransfer(transferMessage);
+					Intent intent = new Intent(SOCKET_TRANSFER_REQUEST);
+					intent.putExtra(SOCKET_TRANSFER_MSG, transferMessage);
+					sendBroadcast(intent);
 				} else {
 					Log.e(TAG, "get response and start to transfer file");
-					Toast.makeText(getApplicationContext(),
-							"get response and start to transfer file",
-							Toast.LENGTH_SHORT).show();
 					mController.startToSendFile(transferMessage);
 				}
+				break;
+			}
+			case TRANSFER_RESPONSE_REFUSED: {
+				FileTransferMessage transferMessage = (FileTransferMessage) msg.obj;
+				mController.responseForTransfer(transferMessage);
+				break;
+			}
+			case TRANSFER_RESPONSE_ACCEPT: {
+				FileTransferMessage transferMessage = (FileTransferMessage) msg.obj;
+				mController.responseForTransfer(transferMessage);
 				break;
 			}
 			case TRANSFER_STARTED: {
@@ -149,7 +158,8 @@ public class SocketService extends Service {
 			default:
 				break;
 			}
-		};
+		}
+
 	};
 
 	public SocketService() {
@@ -178,6 +188,13 @@ public class SocketService extends Service {
 			msg.what = intent.getIntExtra(CMD_CODE, 0);
 			msg.sendToTarget();
 
+			break;
+		}
+		case TRANSFER_RESPONSE_ACCEPT: {
+			Message msg = mHandler.obtainMessage();
+			msg.obj = intent.getSerializableExtra(SOCKET_TRANSFER_MSG);
+			msg.what = TRANSFER_RESPONSE_ACCEPT;
+			msg.sendToTarget();
 			break;
 		}
 		}
